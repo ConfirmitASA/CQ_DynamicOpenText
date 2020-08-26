@@ -14,7 +14,6 @@ function addKeywordsRow() {
 
     newRowInputs.forEach(function (rowInput) {
         rowInput.value = '';
-        //rowInput.addEventListener('change', saveChanges);
     });
 
     keywordsTable.appendChild(newRow);
