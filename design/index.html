@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="design-page-styles.css"/>
+        <script src="custom-question.js"></script>
+        <script src="click-handlers.js"></script>
+        <script type="text/javascript" src="design-page-components.js"></script>
+    </head>
+    <body>
+        <div class="node-properties__key-properties">
+            <div class="comd-panel node-property node-property--progress">
+                <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
+                    <div class="node-properties__toggle co-flex co-flex--center">
+                        <h4 class="co-text-size-normal">Encouragement progress bar</h4>
+                    </div>
+                    <div class="co-flex co-flex--center">
+                        <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
+                    </div>
+                </header>
+                <div class="comd-panel__collapse-area node-property__content node-property__content--progress">
+                    <div class="setting-row">
+                        <div class="co-toggle co-toggle--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="pbEnabled" checked="checked"/>
+                            <label for="pbEnabled" class="node-property__label node-property__label--checkbox">
+                                <div class="icon icon-checkbox co-icon">
+                                </div>
+                                <span>Section enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="setting-col node-property__sub-content">
+                        <div class="setting-row">
+                            <div class="setting-col progress__height">
+                                <label class="node-property__label" for="pbHeight">Height</label>
+                                <div class="setting-row">
+                                    <input class="form-control input-sm form-input" type="text" id="pbHeight" value="5"/>
+                                    <span class="node-property__after node-property__after--progress" for="pbHeight">px</span>
+                                </div>
+                            </div>
+                            <div class="setting-col progress__prompt">
+                                <label class="node-property__label" for="pbPosition">Prompt Position <div class="sd-tooltip-help" data-tooltip-text="Text will only be positioned Inside when the Height is 15px or larger."></div></label>
+                                <select class="form-control form-input" id="pbPosition" name="pbPosition">
+                                    <option value="1" selected="selected">Above the bar</option>
+                                    <option value="2">Inside the bar</option>
+                                    <option value="3">Below the bar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-col">
+                            <div class="setting-row value__option-table">
+                                <label class="node-property__label value__option-header value__option-header--min">Min value <div class="sd-tooltip-help" data-tooltip-text="Minimum character count before the bar changes color and shows encouragement text. The list is ordered ascending, please enter the lowest value on the first row."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--color">Color <div class="sd-tooltip-help" data-tooltip-text="Color to show on bar when min value has been reached."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="Shown to user when min value has been reached."></div></label>
+                            </div>
+                            <div class="setting-row value__option-table">
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="1" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#ff0000"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="Good start"/></div>
+                            </div>
+                            <div class="setting-row value__option-table">
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="15" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#ffff00"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="A little more information would be appreciated"/></div>
+                            </div>
+                            <div class="setting-row value__option-table">
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="30" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#00ff00"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="Fantastic! Many thanks for your feedback"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comd-panel node-property node-property--count comd-panel--collapsed">
+                <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
+                    <div class="node-properties__toggle co-flex co-flex--center">
+                        <h4 class="co-text-size-normal">Character count</h4>
+                    </div>
+                    <div class="co-flex co-flex--center">
+                        <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
+                    </div>
+                </header>
+                <div class="comd-panel__collapse-area node-property__content node-property__content--count">
+                    <div class="setting-row">
+                        <div class="co-toggle co-toggle--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="countEnabled"/>
+                            <label for="countEnabled" class="node-property__label node-property__label--checkbox">
+                                <div class="icon icon-checkbox co-icon">
+                                </div>
+                                <span>Section enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="setting-col node-property__sub-content">
+                        <div class="setting-col">
+                            <div class="comd-alert comd-alert--info">
+                                <div class="comd-alert__text">
+                                    Number of the characters to enter. Please make sure it corresponds to the question settings.
+                                </div>
+                            </div>
+                            <div class="value__option-input count__option-input"><input class="form-control form-input" name="cCount" id="cCount" type="number"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comd-panel node-property node-property--keyword comd-panel--collapsed">
+                <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
+                    <div class="node-properties__toggle co-flex co-flex--center">
+                        <h4 class="co-text-size-normal">Keywords</h4>
+                    </div>
+                    <div class="co-flex co-flex--center">
+                        <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
+                    </div>
+                </header>
+                <div class="comd-panel__collapse-area node-property__content node-property__content--keyword">
+                    <div class="setting-row">
+                        <div class="co-toggle co-toggle--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="keywordEnabled"/>
+                            <label for="keywordEnabled" class="node-property__label node-property__label--checkbox">
+                                <div class="icon icon-checkbox co-icon">
+                                </div>
+                                <span>Section enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="setting-col node-property__sub-content">
+                        <div class="setting-col">
+                            <div class="comd-alert comd-alert--info">
+                                <div class="comd-alert__text">
+                                    Enter a comma separated list of keywords and a prompt which will be shown if the user enters any of the associated keyword/s.
+                                </div>
+                            </div>
+                            <div class="setting-row keyword__option-table">
+                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords <div class="sd-tooltip-help" data-tooltip-text="Comma separated list."></div></div>
+                                <div class="value__option-header keyword__option-header--text">User Prompts</div>
+                            </div>
+                            <div class="setting-col keyword__options">
+                                <div class="setting-row keywords__option-table">
+                                    <div class="value__option-input keyword__option-input--word"><input class="form-control form-input" name="keyword" type="text" /></div>
+                                    <div class="value__option-input keyword__option-input--text"><input class="form-control form-input" name="keywordPrompt" type="text" /></div>
+                                </div>
+                                <div class="setting-row keyword__option-table">
+                                    <div class="value__option-input keyword__option-input--word"><input class="form-control form-input" name="keyword" type="text" /></div>
+                                    <div class="value__option-input keyword__option-input--text"><input class="form-control form-input" name="keywordPrompt" type="text" /></div>
+                                </div>
+                                <div class="setting-row keyword__option-table">
+                                    <div class="value__option-input keyword__option-input--word"><input class="form-control form-input" name="keyword" type="text" /></div>
+                                    <div class="value__option-input keyword__option-input--text"><input class="form-control form-input" name="keywordPrompt" type="text" /></div>
+                                </div>
+                            </div>
+                            <div class="node-property button-block keyword__button">
+                                <div class="button-block">
+                                    <button class="comd-button comd-button--secondary-neutral">
+                                        <span class="comd-button__content">
+                                            <div class="comd-portal-trigger">+ Add row</div>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="comd-tooltip comd-tooltip--right" id="tooltipBox">
+            <div class="comd-tooltip__arrow"></div>
+            <div class="comd-tooltip__inner"></div>
+        </div>
+        <script>
+            var pbEnabled = document.getElementById('pbEnabled');
+            var pbHeightInput = document.getElementById('pbHeight');
+            var pbPositionSelector = document.getElementById('pbPosition');
+            var pbMinInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--min input'));
+            var pbColorInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--color input'));
+            var pbPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
+
+            var countEnabled = document.getElementById('countEnabled');
+            var characterCountInput = document.getElementById('cCount');
+
+            var keywordEnabled = document.getElementById('keywordEnabled');
+            var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
+            var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+            console.log("starterKeywordWordInputs = " + starterKeywordWordInputs);
+            console.log("starterKeywordPromptInputs = " + starterKeywordPromptInputs);
+
+
+            function setValues(settings) {
+                pbEnabled.checked = settings.pbEnabled;
+                pbHeightInput.value = settings.pbHeight;
+                pbPositionSelector.value = settings.pbPosition;
+
+                var pbMinValues = settings.pbMinValues;
+                var pbColors = settings.pbColors;
+                var pbPrompts = settings.pbPrompts;
+
+                for(var i = 0; i < pbMinValues.length; i++) {
+                    pbMinInputs[i].value = pbMinValues[i];
+                    pbColorInputs[i].value = pbColors[i];
+                    pbPromptInputs[i].value = pbPrompts[i];
+                }
+
+                countEnabled.checked = settings.countEnabled;
+                characterCountInput.value = settings.characterCount;
+
+                keywordEnabled.checked = settings.keywordEnabled;
+
+                var keywordWords = settings.keywordWords;
+                var keywordPrompts = settings.keywordPrompts;
+
+                if(keywordWords.length > starterKeywordWordInputs.length) {
+                    var newRowsToAdd = keywordWords.length - starterKeywordWordInputs.length;
+                    for(var k = 0; k < newRowsToAdd; k++) {
+                        addKeywordsRow();
+                    }
+                }
+
+                starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
+                starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+                console.log("setValues starterKeywordWordInputs = " + starterKeywordWordInputs);
+                console.log("setValues starterKeywordPromptInputs = " + starterKeywordPromptInputs);
+
+                for(var j = 0; j < keywordWords.length; j++) {
+                    starterKeywordWordInputs[j].value = keywordWords[j];
+                    starterKeywordPromptInputs[j].value = keywordPrompts[j];
+                }
+            }
+
+            function saveChanges() {
+                var pbMinValues = [];
+                var pbColors = [];
+                var pbPrompts = [];
+
+                for(var i = 0; i < pbMinInputs.length; i++) {
+                    pbMinValues.push(parseInt(pbMinInputs[i].value));
+                    pbColors.push(pbColorInputs[i].value);
+                    pbPrompts.push(pbPromptInputs[i].value);
+                }
+
+                var keywordWords = [];
+                var keywordPrompts = [];
+
+                var keywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
+                var keywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+                console.log("saveChanges KeywordWordInputs = " + keywordWordInputs);
+                console.log("saveChanges KeywordPromptInputs = " + keywordPromptInputs);
+
+                for(var j = 0; j < keywordWordInputs.length; j++) {
+                    keywordWords.push(keywordWordInputs[j].value);
+                    keywordPrompts.push(keywordPromptInputs[j].value);
+                }
+
+                var settings = { pbEnabled: pbEnabled.checked,
+                                 pbHeight: parseInt(pbHeightInput.value),
+                                 pbPosition: pbPositionSelector.options[pbPositionSelector.selectedIndex].value,
+                                 pbMinValues: pbMinValues,
+                                 pbColors: pbColors,
+                                 pbPrompts: pbPrompts,
+                                 countEnabled: countEnabled.checked,
+                                 characterCount: parseInt(characterCountInput.value),
+                                 keywordEnabled: keywordEnabled.checked,
+                                 keywordWords: keywordWords,
+                                 keywordPrompts: keywordPrompts};
+
+                var hasError = pbHeightInput.value === '';
+                customQuestion.saveChanges(settings, hasError);
+            }
+
+            customQuestion.onSettingsReceived = setValues;
+
+            pbEnabled.addEventListener('change', saveChanges);
+            pbHeightInput.addEventListener('change', saveChanges);
+            pbPositionSelector.addEventListener('change', saveChanges);
+
+            for(var i = 0; i < pbMinInputs.length; i++) {
+                pbMinInputs[i].addEventListener('change', saveChanges);
+                pbColorInputs[i].addEventListener('change', saveChanges);
+                pbPromptInputs[i].addEventListener('change', saveChanges);
+            }
+
+            countEnabled.addEventListener('change', saveChanges);
+            characterCountInput.addEventListener('change', saveChanges);
+
+            keywordEnabled.addEventListener('change', saveChanges);
+
+            for(var j = 0; j < starterKeywordWordInputs.length; j++) {
+                starterKeywordWordInputs[j].addEventListener('change', saveChanges);
+                starterKeywordPromptInputs[j].addEventListener('change', saveChanges);
+            }
+
+        </script>
+    </body>
+</html>
+

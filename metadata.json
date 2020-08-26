@@ -1,0 +1,24 @@
+{
+  "id": "2748e8ce-b154-485a-aa36-3a4c93176b5d",
+  "name": "EV Simple open text",
+  "description": "",
+  "baseQuestionType": "OpenForm",
+  "disableDefaultRendering": false,
+  "iconUrl": "design/icon.svg",
+  "designEntryPoint": "design/index.html",
+  "runtimeEntryPoint": {
+    "component": "runtime/component.js",
+    "deps": {
+      "scripts": [
+        "https://author.euro.confirmit.com/isa/BDJPFRDMEYBPBKLVADAYFQCDAVIOEQJR/AGalaida/jquery.1.12.4.min.js",
+        "dev/DynamicOpenText_progress-bar.js",
+        "dev/DynamicOpenText_character-count.js",
+        "dev/DynamicOpenText_keywords.js",
+        "dev/Helper.js"
+      ],
+      "styles": [
+        "runtime/styles.css"
+      ]
+    }
+  }
+}
