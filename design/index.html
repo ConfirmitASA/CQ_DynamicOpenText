@@ -149,13 +149,24 @@
                                     <div class="value__option-input keyword__option-input--text"><input class="form-control form-input" name="keywordPrompt" type="text" /></div>
                                 </div>
                             </div>
-                            <div class="node-property button-block keyword__button">
-                                <div class="button-block">
-                                    <button class="comd-button comd-button--secondary-neutral">
-                                        <span class="comd-button__content">
-                                            <div class="comd-portal-trigger">+ Add row</div>
-                                        </span>
-                                    </button>
+                            <div class="setting-row">
+                                <div class="node-property button-block keyword__button--add">
+                                    <div class="button-block">
+                                        <button class="comd-button comd-button--secondary-neutral">
+                                            <span class="comd-button__content">
+                                                <div class="comd-portal-trigger">+ Add row</div>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="node-property button-block keyword__button--save">
+                                    <div class="button-block">
+                                        <button class="comd-button comd-button--secondary-neutral">
+                                            <span class="comd-button__content">
+                                                <div class="comd-portal-trigger">Save keywords</div>
+                                            </span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -181,9 +192,7 @@
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
-
-            console.log("starterKeywordWordInputs = " + starterKeywordWordInputs);
-            console.log("starterKeywordPromptInputs = " + starterKeywordPromptInputs);
+            var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
 
 
             function setValues(settings) {
@@ -219,9 +228,6 @@
                 starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
                 starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
 
-                console.log("setValues starterKeywordWordInputs = " + starterKeywordWordInputs);
-                console.log("setValues starterKeywordPromptInputs = " + starterKeywordPromptInputs);
-
                 for(var j = 0; j < keywordWords.length; j++) {
                     starterKeywordWordInputs[j].value = keywordWords[j];
                     starterKeywordPromptInputs[j].value = keywordPrompts[j];
@@ -244,9 +250,6 @@
 
                 var keywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
                 var keywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
-
-                console.log("saveChanges KeywordWordInputs = " + keywordWordInputs);
-                console.log("saveChanges KeywordPromptInputs = " + keywordPromptInputs);
 
                 for(var j = 0; j < keywordWordInputs.length; j++) {
                     keywordWords.push(keywordWordInputs[j].value);
@@ -286,10 +289,12 @@
 
             keywordEnabled.addEventListener('change', saveChanges);
 
-            for(var j = 0; j < starterKeywordWordInputs.length; j++) {
+            /*for(var j = 0; j < starterKeywordWordInputs.length; j++) {
                 starterKeywordWordInputs[j].addEventListener('change', saveChanges);
                 starterKeywordPromptInputs[j].addEventListener('change', saveChanges);
-            }
+            }*/
+
+            keywordSaveButton.addEventListener('click', saveChanges);
 
         </script>
     </body>
