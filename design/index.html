@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="setting-row keyword__option-table">
-                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords <div class="sd-tooltip-help" data-tooltip-text="Comma separated list."></div></div>
+                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords <div class="sd-tooltip-help" data-tooltip-text="Use comma separated list if you want to have several keywords trigger the same prompt."></div></div>
                                 <div class="value__option-header keyword__option-header--text">User Prompts</div>
                             </div>
                             <div class="setting-col keyword__options">
@@ -218,7 +218,7 @@
                 var keywordWords = settings.keywordWords;
                 var keywordPrompts = settings.keywordPrompts;
 
-                if(keywordWords.length > starterKeywordWordInputs.length) {
+                if(starterKeywordWordInputs.length === 3 && keywordWords.length > starterKeywordWordInputs.length) {
                     var newRowsToAdd = keywordWords.length - starterKeywordWordInputs.length;
                     for(var k = 0; k < newRowsToAdd; k++) {
                         addKeywordsRow();
@@ -231,6 +231,14 @@
                 for(var j = 0; j < keywordWords.length; j++) {
                     starterKeywordWordInputs[j].value = keywordWords[j];
                     starterKeywordPromptInputs[j].value = keywordPrompts[j];
+                }
+
+                if(keywordWords.length >= 3 && starterKeywordWordInputs.length > keywordWords.length) {
+                    for(var extra = keywordWords.length; extra < starterKeywordWordInputs.length; extra++) {
+                        starterKeywordWordInputs[extra].value = "";
+                        starterKeywordPromptInputs[extra].value = "";
+                        //starterKeywordPromptInputs[extra].parentElement.parentElement.style.display = "none";
+                    }
                 }
             }
 
@@ -252,8 +260,10 @@
                 var keywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
 
                 for(var j = 0; j < keywordWordInputs.length; j++) {
-                    keywordWords.push(keywordWordInputs[j].value);
-                    keywordPrompts.push(keywordPromptInputs[j].value);
+                    if(keywordWordInputs[j].value != "" && keywordPromptInputs[j].value != "") {
+                        keywordWords.push(keywordWordInputs[j].value);
+                        keywordPrompts.push(keywordPromptInputs[j].value);
+                    }
                 }
 
                 var settings = { pbEnabled: pbEnabled.checked,
@@ -288,11 +298,6 @@
             characterCountInput.addEventListener('change', saveChanges);
 
             keywordEnabled.addEventListener('change', saveChanges);
-
-            /*for(var j = 0; j < starterKeywordWordInputs.length; j++) {
-                starterKeywordWordInputs[j].addEventListener('change', saveChanges);
-                starterKeywordPromptInputs[j].addEventListener('change', saveChanges);
-            }*/
 
             keywordSaveButton.addEventListener('click', saveChanges);
 
