@@ -147,3 +147,7 @@ input#keywordEnabled {
 .co-toggle {
     margin-top: 5px;
 }
+
+input[type = color] {
+    max-width: 50px;
+}

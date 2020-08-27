@@ -1,20 +1,21 @@
-window.onload = function () {
-    var keywordButton = document.getElementsByClassName("keyword__button--add")[0];
-    var keywordButtonInput = keywordButton.querySelectorAll("button")[0];
+document.addEventListener('DOMContentLoaded', function(){
+    let keywordButton = document.getElementsByClassName("keyword__button--add")[0];
+    let keywordButtonInput = keywordButton.querySelectorAll("button")[0];
     if(keywordButtonInput) {
         keywordButtonInput.onclick = addKeywordsRow;
     }
-}
 
-function addKeywordsRow() {
-    var keywordsTable = document.getElementsByClassName("keyword__options")[0];
-    var keywordTableLastRow = keywordsTable.firstElementChild;
-    var newRow = keywordTableLastRow.cloneNode(true);
-    var newRowInputs = Array.prototype.slice.call(newRow.querySelectorAll("input"));
+    function addKeywordsRow() {
+        let keywordsTable = document.getElementsByClassName("keyword__options")[0];
+        let keywordTableLastRow = keywordsTable.firstElementChild;
+        let newRow = keywordTableLastRow.cloneNode(true);
+        let newRowInputs = Array.prototype.slice.call(newRow.querySelectorAll("input"));
 
-    newRowInputs.forEach(function (rowInput) {
-        rowInput.value = '';
-    });
+        newRowInputs.forEach(function (rowInput) {
+            rowInput.value = '';
+        });
 
-    keywordsTable.appendChild(newRow);
-}
+        keywordsTable.appendChild(newRow);
+    }
+});
+
