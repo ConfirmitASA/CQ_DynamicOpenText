@@ -1,3 +1,8 @@
 /.idea/
 /common/
 /EVCustomQuestionTest.zip
+/EVCustomQuestionTest-working.zip.zip
+/.cache/
+/dist/
+/node_modules/
+/package-lock.json

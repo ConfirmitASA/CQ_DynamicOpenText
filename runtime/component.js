@@ -1,6 +1,4 @@
 /* global register */
-//import ProgressBar from "../design/DynamicOpenText_progress-bar";
-//import CharacterCount from "../design/DynamicOpenText_character-count";
 
 const defaultSettings = {
     pbEnabled: false,
@@ -12,35 +10,29 @@ const defaultSettings = {
     countEnabled: false,
     characterCount: 150,
     keywordEnabled: false,
-    keywordWords: ["hello"],
+    keywordWords: ["Hello"],
     keywordPrompts: ["This is a new prompt"]
 };
 
 register(function (question, customQuestionSettings, questionViewSettings) {
 
-    var activeSettings = customQuestionSettings || defaultSettings;
+    let activeSettings = customQuestionSettings || defaultSettings;
 
-    var pbEnabled = activeSettings.pbEnabled;
-    var pbHeight = parseInt(activeSettings.pbHeight);
-    var pbPosition = activeSettings.pbPosition;
-    var pbMinValues = activeSettings.pbMinValues;
-    var pbColors = activeSettings.pbColors;
-    var pbPrompts = activeSettings.pbPrompts;
+    let pbEnabled = activeSettings.pbEnabled;
+    let pbHeight = parseInt(activeSettings.pbHeight);
+    let pbPosition = activeSettings.pbPosition;
+    let pbMinValues = activeSettings.pbMinValues;
+    let pbColors = activeSettings.pbColors;
+    let pbPrompts = activeSettings.pbPrompts;
 
-    var countEnabled = activeSettings.countEnabled;
-    var characterCount = activeSettings.characterCount;
+    let countEnabled = activeSettings.countEnabled;
+    let characterCount = activeSettings.characterCount;
 
-    var keywordEnabled = activeSettings.keywordEnabled;
-    var keywordWords = activeSettings.keywordWords;
-    var keywordPrompts = activeSettings.keywordPrompts;
+    let keywordEnabled = activeSettings.keywordEnabled;
+    let keywordWords = activeSettings.keywordWords;
+    let keywordPrompts = activeSettings.keywordPrompts;
 
-    //var pb = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-    //var cc = new CharacterCount(question, characterCount);
-
-    //pb.render();
-    //cc.render();
-
-    if(pbEnabled) {
+    /*if(pbEnabled) {
         progressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
     }
 
@@ -50,5 +42,8 @@ register(function (question, customQuestionSettings, questionViewSettings) {
 
     if(keywordEnabled) {
         keywords(question, keywordWords, keywordPrompts);
-    }
+    }*/
+
+    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterCount, keywordEnabled, keywordWords, keywordPrompts);
+    dynamicOpenText.render();
 });

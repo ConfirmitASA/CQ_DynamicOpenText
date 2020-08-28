@@ -11,10 +11,7 @@
     "deps": {
       "scripts": [
         "https://author.euro.confirmit.com/isa/BDJPFRDMEYBPBKLVADAYFQCDAVIOEQJR/AGalaida/jquery.1.12.4.min.js",
-        "dev/DynamicOpenText_progress-bar.js",
-        "dev/DynamicOpenText_character-count.js",
-        "dev/DynamicOpenText_keywords.js",
-        "dev/Helper.js"
+        "runtime/bundle.js"
       ],
       "styles": [
         "runtime/styles.css"

@@ -6,6 +6,8 @@
     color: #555555;
     font-size: 14px;
     font-family: "Source Sans Pro", sans-serif;
+    transition: width 2s;
+    -webkit-transition: width 2s;
 }
 .dynamic-progress-bar__content{
     width: 5%;

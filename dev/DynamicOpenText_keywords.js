@@ -1,97 +1,99 @@
-function keywords(question, keywordWords, keywordPrompts) {
+export default class Keywords {
+    constructor(question, keywordWords, keywordPrompts) {
+        this.keywordQuestion = question;
+        this.words = keywordWords ? keywordWords : [];
+        this.prompts = keywordPrompts ? keywordPrompts : [];
+        this.newKeywords = this.organizeKeywords(this.words);
+    }
 
-    var keywordQuestion = question;
-    var words = keywordWords ? keywordWords : [];
-    var prompts = keywordPrompts ? keywordPrompts : [];
+    render() {
 
-    var questionElement = document.getElementById(keywordQuestion.id);
+        let questionElement = document.getElementById(this.keywordQuestion.id);
+        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
 
-    renderKeywords(questionElement, words, prompts);
-}
+        let keywordElement = this.createKeywordElement(questionElement_textarea.offsetWidth);
+        questionElement.appendChild(keywordElement);
 
-function renderKeywords(questionElement, words, prompts) {
+        questionElement_textarea.addEventListener("input", this.updateKeywords);
+        questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
+    }
 
-    var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
+    updateKeywords = () => {
+        let questionElement = document.getElementById(this.keywordQuestion.id);
+        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
+        let keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
+        let textValue = questionElement_textarea.value.trim().toLowerCase();
+        let keywordList = keywordElement.firstElementChild;
+        let existingItemsAsKeyword = [];
+        let existingItemsAsRow = [];
 
-    var keywordElement = createKeywordElement(questionElement_textarea.offsetWidth);
-    questionElement.appendChild(keywordElement);
-
-    var newKeywords = organizeKeywords(words);
-
-    questionElement_textarea.addEventListener("mouseup", function () {
-        setWidth(keywordElement, questionElement_textarea.offsetWidth, "px");
-    });
-
-    questionElement_textarea.addEventListener("input", function () {
-        updateKeywords(keywordElement, questionElement_textarea, newKeywords, prompts);
-    });
-}
-
-function updateKeywords(keywordElement, textAreaElement, words, prompts) {
-    var textValue = textAreaElement.value.trim().toLowerCase();
-    var keywordList = keywordElement.firstElementChild;
-    var existingItemsAsKeyword = []; //= Array.prototype.slice.call(keywordElement.querySelectorAll(".dynamic-keywords__item"));
-    var existingItemsAsRow = [];
-
-    for(var i = 0; i < words.length; i++) {
-        for(var j = 0; j < words[i].length; j++) {
-            existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + words[i][j] + '"]'));
+        for(let i = 0; i < this.newKeywords.length; i++) for (let j = 0; j < this.newKeywords[i].length; j++) {
+            existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + this.newKeywords[i][j] + '"]'));
             existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + i + '"]'));
 
-            if(textValue.indexOf(words[i][j]) > -1) {
-                if(existingItemsAsRow.length == 0) {
-                    keywordElement.firstElementChild.appendChild(createKeywordItem("row-id" + i, words[i][j], prompts[i]));
+            if (textValue.indexOf(this.newKeywords[i][j]) > -1) {
+                if (existingItemsAsRow.length === 0) {
+                    keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + i, this.newKeywords[i][j], this.prompts[i]));
                     break;
                 }
             } else {
-                if(existingItemsAsKeyword.length > 0) {
-                    existingItemsAsKeyword.forEach(function (existingItem) {
-                        var removeChild = keywordList.removeChild(existingItem);
+                if (existingItemsAsKeyword.length > 0) {
+                    Array.prototype.forEach.call(existingItemsAsKeyword, function (el) {
+                        let removeChild = keywordList.removeChild(el);
                     })
                 }
             }
         }
     }
-}
 
-function organizeKeywords(words) {
-    var newKeywords = [];
+    updateKeywordsWidth = () => {
+        let questionElement = document.getElementById(this.keywordQuestion.id);
+        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
+        let keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
 
-    words.forEach(function (wordRow) {
-        var newRow = [];
-        if(wordRow.length > 0) {
-            newRow = wordRow.split(",");
+        keywordElement.style.width = questionElement_textarea.offsetWidth + "px";
+    }
 
-            for(var i = 0; i < newRow.length; i++) {
-                newRow[i] = newRow[i].trim().toLowerCase();
+    organizeKeywords(words) {
+        let newKeywords = [];
+
+        words.forEach(function (wordRow) {
+            let newRow = [];
+            if(wordRow.length > 0) {
+                newRow = wordRow.split(",");
+
+                for(let i = 0; i < newRow.length; i++) {
+                    newRow[i] = newRow[i].trim().toLowerCase();
+                }
             }
-        }
 
-        newKeywords.push(newRow);
-    });
+            newKeywords.push(newRow);
+        });
 
-    return newKeywords;
-}
+        return newKeywords;
+    }
 
-function createKeywordItem(rowId, keyword, prompt) {
-    var keywordItem = document.createElement("li");
-    keywordItem.className = "dynamic-keywords__item";
-    keywordItem.innerHTML = prompt;
-    keywordItem.setAttribute("row-id", rowId);
-    keywordItem.setAttribute("keyword", keyword);
+    createKeywordItem(rowId, keyword, prompt) {
+        let keywordItem = document.createElement("li");
+        keywordItem.className = "dynamic-keywords__item";
+        keywordItem.innerHTML = prompt;
+        keywordItem.setAttribute("row-id", rowId);
+        keywordItem.setAttribute("keyword", keyword);
 
-    return keywordItem;
-}
+        return keywordItem;
+    }
 
-function createKeywordElement(width) {
-    var keywordElement = document.createElement("div");
-    keywordElement.className += "cf-question__dynamic-keywords";
-    keywordElement.style.width = width + "px";
+    createKeywordElement(width) {
+        let keywordElement = document.createElement("div");
+        keywordElement.className += "cf-question__dynamic-keywords";
+        keywordElement.style.width = width + "px";
 
-    var keywordElementList = document.createElement("ul");
-    keywordElementList.className += "dynamic-keywords__list";
+        let keywordElementList = document.createElement("ul");
+        keywordElementList.className += "dynamic-keywords__list";
 
-    keywordElement.appendChild(keywordElementList);
+        keywordElement.appendChild(keywordElementList);
 
-    return keywordElement;
+        return keywordElement;
+    }
+
 }
