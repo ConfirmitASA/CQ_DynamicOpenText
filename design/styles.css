@@ -143,11 +143,12 @@ input#keywordEnabled {
     transition-duration: 200ms;
     outline: none;
 }
-
 .co-toggle {
     margin-top: 5px;
 }
-
 input[type = color] {
     max-width: 50px;
+}
+.hidden {
+    display: none;
 }

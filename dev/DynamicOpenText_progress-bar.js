@@ -108,19 +108,16 @@ function updateBarColor(pbElement, textAreaElement, allValues) {
     if(textLength >= allValues[allValues.length - 1].value) {
         pbElementContent.style.backgroundColor = allValues[allValues.length - 1].color;
         setWidth(pbElementContent, 100, "%");
-        //animateBarColor(pbElementContent, 100);
     } else {
         if(textLength < allValues[0].value) {
             pbElementContent.style.backgroundColor = "transparent";
             setWidth(pbElementContent, 100, "%");
-            //animateBarColor(pbElementContent, 1);
         } else {
             for(var i = 0; i < allValues.length - 1; i++) {
                 if(textLength >= allValues[i].value && textLength < allValues[i + 1].value) {
                     var newWidth = 100/allValues.length * (i+1);
                     pbElementContent.style.backgroundColor = allValues[i].color;
                     setWidth(pbElementContent, newWidth, "%");
-                    //animateBarColor(pbElementContent, newWidth);
                 }
             }
 
@@ -163,12 +160,6 @@ function createArrayOfAllValues(minValues, colors, prompts) {
     values.sort(sortMinValuesAscending);
 
     return values;
-}
-
-function animateBarColor(pbElement, width) {
-    $(pbElement).animate({width: width + "%"}, 350, function () {
-        setWidth(pbElement, width, "%")
-    });
 }
 
 function sortMinValuesAscending(a, b) {

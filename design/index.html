@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="node-properties__key-properties">
-            <div class="comd-panel node-property node-property--progress">
+            <div class="comd-panel node-property node-properties-key-fields node-property--progress">
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Encouragement progress bar</h4>
@@ -21,15 +21,15 @@
                 <div class="comd-panel__collapse-area node-property__content node-property__content--progress">
                     <div class="setting-row">
                         <div class="co-toggle co-toggle--checkbox">
-                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="pbEnabled" checked="checked"/>
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="pbEnabled"/>
                             <label for="pbEnabled" class="node-property__label node-property__label--checkbox">
                                 <div class="icon icon-checkbox co-icon">
                                 </div>
-                                <span>Section enabled</span>
+                                <span>Enabled</span>
                             </label>
                         </div>
                     </div>
-                    <div class="setting-col node-property__sub-content">
+                    <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-row">
                             <div class="setting-col progress__height">
                                 <label class="node-property__label" for="pbHeight">Height</label>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <div class="comd-panel node-property node-property--count comd-panel--collapsed">
+            <div class="comd-panel node-property node-properties-key-fields node-property--count">
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Character count</h4>
@@ -88,11 +88,11 @@
                             <label for="countEnabled" class="node-property__label node-property__label--checkbox">
                                 <div class="icon icon-checkbox co-icon">
                                 </div>
-                                <span>Section enabled</span>
+                                <span>Enabled</span>
                             </label>
                         </div>
                     </div>
-                    <div class="setting-col node-property__sub-content">
+                    <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-col">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div class="comd-panel node-property node-property--keyword comd-panel--collapsed">
+            <div class="comd-panel node-property node-properties-key-fields node-property--keyword">
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Keywords</h4>
@@ -120,11 +120,11 @@
                             <label for="keywordEnabled" class="node-property__label node-property__label--checkbox">
                                 <div class="icon icon-checkbox co-icon">
                                 </div>
-                                <span>Section enabled</span>
+                                <span>Enabled</span>
                             </label>
                         </div>
                     </div>
-                    <div class="setting-col node-property__sub-content">
+                    <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-col">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
@@ -196,7 +196,15 @@
 
 
             function setValues(settings) {
+
                 pbEnabled.checked = settings.pbEnabled;
+                countEnabled.checked = settings.countEnabled;
+                keywordEnabled.checked = settings.keywordEnabled;
+
+                hideSubsectionAfterBoxChecked(pbEnabled);
+                hideSubsectionAfterBoxChecked(countEnabled);
+                hideSubsectionAfterBoxChecked(keywordEnabled);
+
                 pbHeightInput.value = settings.pbHeight;
                 pbPositionSelector.value = settings.pbPosition;
 
@@ -210,10 +218,8 @@
                     pbPromptInputs[i].value = pbPrompts[i];
                 }
 
-                countEnabled.checked = settings.countEnabled;
-                characterCountInput.value = settings.characterCount;
 
-                keywordEnabled.checked = settings.keywordEnabled;
+                characterCountInput.value = settings.characterCount;
 
                 var keywordWords = settings.keywordWords;
                 var keywordPrompts = settings.keywordPrompts;

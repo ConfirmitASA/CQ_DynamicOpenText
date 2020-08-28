@@ -3,17 +3,17 @@
 //import CharacterCount from "../design/DynamicOpenText_character-count";
 
 const defaultSettings = {
-    pbEnabled: true,
+    pbEnabled: false,
     pbHeight: 5,
     pbPosition: '1',
     pbMinValues: [1,15,30],
     pbColors: ['#ff0000','#ffff00','#00ff00'],
     pbPrompts: ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'],
     countEnabled: false,
-    characterCount: 0,
+    characterCount: 150,
     keywordEnabled: false,
-    keywordWords: [],
-    keywordPrompts: []
+    keywordWords: ["hello"],
+    keywordPrompts: ["This is a new prompt"]
 };
 
 register(function (question, customQuestionSettings, questionViewSettings) {
