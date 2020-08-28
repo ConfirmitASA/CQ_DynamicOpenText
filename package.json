@@ -1,0 +1,29 @@
+{
+  "name": "ConfirmitDynamicOpentextDemo",
+  "version": "1.0.0",
+  "description": "Dynamic Open text rebuild",
+  "main": "entry.js",
+  "scripts": {
+    "start": "parcel dev/index-dev.js --hmr-hostname localhost --https",
+    "build": "rm -rf ./dist && parcel build ./src/index.js",
+    "polyfil": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConfirmitASA/CQ_DynamicOpenText.git"
+  },
+  "author": "Elena Vlasova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ConfirmitASA/CQ_DynamicOpenText/issues"
+  },
+  "homepage": "https://github.com/ConfirmitASA/CQ_DynamicOpenText#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
