@@ -5,7 +5,7 @@ const defaultSettings = {
     pbHeight: 5,
     pbPosition: '1',
     pbMinValues: [1,15,30],
-    pbColors: ['#ff0000','#ffff00','#00ff00'],
+    pbColors: ['#c41919','#e7e706','#4a964a'],
     pbPrompts: ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'],
     countEnabled: false,
     characterCount: 150,
@@ -31,18 +31,6 @@ register(function (question, customQuestionSettings, questionViewSettings) {
     let keywordEnabled = activeSettings.keywordEnabled;
     let keywordWords = activeSettings.keywordWords;
     let keywordPrompts = activeSettings.keywordPrompts;
-
-    /*if(pbEnabled) {
-        progressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-    }
-
-    if(countEnabled) {
-        characterCounter(question, characterCount);
-    }
-
-    if(keywordEnabled) {
-        keywords(question, keywordWords, keywordPrompts);
-    }*/
 
     const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterCount, keywordEnabled, keywordWords, keywordPrompts);
     dynamicOpenText.render();

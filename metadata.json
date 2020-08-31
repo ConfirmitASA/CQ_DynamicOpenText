@@ -1,6 +1,6 @@
 {
   "id": "2748e8ce-b154-485a-aa36-3a4c93176b5d",
-  "name": "EV Simple open text",
+  "name": "Confirmit Dynamic Open text Demo",
   "description": "",
   "baseQuestionType": "OpenForm",
   "disableDefaultRendering": false,
@@ -10,7 +10,6 @@
     "component": "runtime/component.js",
     "deps": {
       "scripts": [
-        "https://author.euro.confirmit.com/isa/BDJPFRDMEYBPBKLVADAYFQCDAVIOEQJR/AGalaida/jquery.1.12.4.min.js",
         "runtime/bundle.js"
       ],
       "styles": [

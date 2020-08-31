@@ -265,7 +265,7 @@
                 var keywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
 
                 for(var j = 0; j < keywordWordInputs.length; j++) {
-                    if(keywordWordInputs[j].value != "" && keywordPromptInputs[j].value != "") {
+                    if(keywordWordInputs[j].value !== "" && keywordPromptInputs[j].value !== "") {
                         keywordWords.push(keywordWordInputs[j].value);
                         keywordPrompts.push(keywordPromptInputs[j].value);
                     }
@@ -283,7 +283,7 @@
                                  keywordWords: keywordWords,
                                  keywordPrompts: keywordPrompts};
 
-                var hasError = pbHeightInput.value === '';
+                var hasError = false;
                 customQuestion.saveChanges(settings, hasError);
             }
 

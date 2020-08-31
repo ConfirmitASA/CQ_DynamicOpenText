@@ -26,7 +26,7 @@ export default class ProgressBar {
                 questionElement.insertBefore(promptElement, pbElement);
                 break;
             case "2":
-                if(height < 15) {
+                if(this.pbHeight < 15) {
                     questionElement.insertBefore(promptElement, pbElement);
                 } else {
                     pbElement.lastElementChild.appendChild(promptElement);
