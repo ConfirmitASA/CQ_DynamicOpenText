@@ -40,6 +40,6 @@ export default class DynamicOpenText {
 
     onQuestionValidationComplete() {
         console.log("validation check");
-}
+    }
 
 }

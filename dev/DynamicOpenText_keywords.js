@@ -60,14 +60,18 @@ export default class Keywords {
         words.forEach(function (wordRow) {
             let newRow = [];
             if(wordRow.length > 0) {
-                newRow = wordRow.split(",");
+                let newRowSplit = wordRow.split(",");
 
-                for(let i = 0; i < newRow.length; i++) {
-                    newRow[i] = newRow[i].trim().toLowerCase();
+                for(let i = 0; i < newRowSplit.length; i++) {
+                    //if(newRowSplit[i].trim().length > 0) {
+                        newRow.push(newRowSplit[i].trim().toLowerCase());
+                    //}
                 }
             }
 
-            newKeywords.push(newRow);
+            //if(newRow.length > 0) {
+                newKeywords.push(newRow);
+            //}
         });
 
         return newKeywords;

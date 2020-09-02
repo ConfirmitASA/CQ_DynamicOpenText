@@ -177,38 +177,37 @@ var ProgressBar = /*#__PURE__*/function () {
   _createClass(ProgressBar, [{
     key: "render",
     value: function render() {
-      var questionElement = document.getElementById(this.pbQuestion.id);
-      var questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
-      questionElement.insertBefore(pbElement, questionElement_content);
-      var promptElement = this.createPromptElement();
-
-      switch (this.pbPosition) {
-        case "1":
-          questionElement.insertBefore(promptElement, pbElement);
-          break;
-
-        case "2":
-          if (this.pbHeight < 15) {
-            questionElement.insertBefore(promptElement, pbElement);
-          } else {
-            pbElement.lastElementChild.appendChild(promptElement);
-          }
-
-          break;
-
-        case "3":
-          questionElement.insertBefore(promptElement, pbElement.nextSibling);
-          break;
-      }
-
       if (this.allValues.length > 0) {
+        var questionElement = document.getElementById(this.pbQuestion.id);
+        var questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
+        var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
+        var pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
+        questionElement.insertBefore(pbElement, questionElement_content);
+        var promptElement = this.createPromptElement();
+
+        switch (this.pbPosition) {
+          case "1":
+            questionElement.insertBefore(promptElement, pbElement);
+            break;
+
+          case "2":
+            if (this.pbHeight < 15) {
+              questionElement.insertBefore(promptElement, pbElement);
+            } else {
+              pbElement.lastElementChild.appendChild(promptElement);
+            }
+
+            break;
+
+          case "3":
+            questionElement.insertBefore(promptElement, pbElement.nextSibling);
+            break;
+        }
+
         questionElement_textarea.addEventListener("input", this.updatePrompt);
         questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+        questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
       }
-
-      questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
     }
   }, {
     key: "createBarElement",
@@ -233,7 +232,6 @@ var ProgressBar = /*#__PURE__*/function () {
   }, {
     key: "createArrayOfAllValues",
     value: function createArrayOfAllValues(minValues, colors, prompts) {
-      debugger;
       var values = [];
 
       for (var i = 0; i < minValues.length; i++) {
@@ -397,14 +395,16 @@ var Keywords = /*#__PURE__*/function () {
         var newRow = [];
 
         if (wordRow.length > 0) {
-          newRow = wordRow.split(",");
+          var newRowSplit = wordRow.split(",");
 
-          for (var i = 0; i < newRow.length; i++) {
-            newRow[i] = newRow[i].trim().toLowerCase();
+          for (var i = 0; i < newRowSplit.length; i++) {
+            //if(newRowSplit[i].trim().length > 0) {
+            newRow.push(newRowSplit[i].trim().toLowerCase()); //}
           }
-        }
+        } //if(newRow.length > 0) {
 
-        newKeywords.push(newRow);
+
+        newKeywords.push(newRow); //}
       });
       return newKeywords;
     }
