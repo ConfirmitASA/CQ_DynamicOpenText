@@ -436,25 +436,42 @@ function DynamicOpenText_defineProperties(target, props) { for (var i = 0; i < p
 
 function DynamicOpenText_createClass(Constructor, protoProps, staticProps) { if (protoProps) DynamicOpenText_defineProperties(Constructor.prototype, protoProps); if (staticProps) DynamicOpenText_defineProperties(Constructor, staticProps); return Constructor; }
 
+function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
 
 var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
   function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterCount, keywordEnabled, keywordWords, keywordPrompts) {
+    var _this = this;
+
     DynamicOpenText_classCallCheck(this, DynamicOpenText);
 
+    DynamicOpenText_defineProperty(this, "setValueToQuestion", function () {
+      var questionInput = document.getElementById(_this.question.id + "_input");
+
+      _this.question.setValue(questionInput.value);
+    });
+
+    this.question = question;
     this.progressBarEnabled = pbEnabled;
     this.characterCountEnabled = countEnabled;
     this.keywordsEnabled = keywordEnabled;
     this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
     this.characterCount = new CharacterCount(question, characterCount);
     this.keywords = new Keywords(question, keywordWords, keywordPrompts);
+    /*this.question.validationEvent.on(
+        this.onQuestionValidationComplete.bind(this)
+    );*/
   }
 
   DynamicOpenText_createClass(DynamicOpenText, [{
     key: "render",
     value: function render() {
+      var questionInput = document.getElementById(this.question.id + "_input");
+      questionInput.addEventListener("input", this.setValueToQuestion);
+
       if (this.progressBarEnabled) {
         this.progressBar.render();
       }
@@ -466,6 +483,11 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
       if (this.keywordsEnabled) {
         this.keywords.render();
       }
+    }
+  }, {
+    key: "onQuestionValidationComplete",
+    value: function onQuestionValidationComplete() {
+      console.log("validation check");
     }
   }]);
 
