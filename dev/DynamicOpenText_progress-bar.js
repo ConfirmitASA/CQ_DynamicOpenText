@@ -11,35 +11,38 @@ export default class ProgressBar {
     }
 
     render() {
-        let questionElement = document.getElementById(this.pbQuestion.id);
+        if(this.allValues.length > 0) {
+            let questionElement = document.getElementById(this.pbQuestion.id);
 
-        let questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
+            let questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
+            let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
 
-        let pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
-        questionElement.insertBefore(pbElement, questionElement_content);
+            let pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
+            questionElement.insertBefore(pbElement, questionElement_content);
 
-        let promptElement = this.createPromptElement();
+            let promptElement = this.createPromptElement();
 
-        switch (this.pbPosition) {
-            case "1":
-                questionElement.insertBefore(promptElement, pbElement);
-                break;
-            case "2":
-                if(this.pbHeight < 15) {
+            switch (this.pbPosition) {
+                case "1":
                     questionElement.insertBefore(promptElement, pbElement);
-                } else {
-                    pbElement.lastElementChild.appendChild(promptElement);
-                }
-                break;
-            case "3":
-                questionElement.insertBefore(promptElement, pbElement.nextSibling);
-                break;
-        }
+                    break;
+                case "2":
+                    if (this.pbHeight < 15) {
+                        questionElement.insertBefore(promptElement, pbElement);
+                    } else {
+                        pbElement.lastElementChild.appendChild(promptElement);
+                    }
+                    break;
+                case "3":
+                    questionElement.insertBefore(promptElement, pbElement.nextSibling);
+                    break;
+            }
 
-        questionElement_textarea.addEventListener("input", this.updatePrompt);
-        questionElement_textarea.addEventListener("keyup", this.updateBarColor);
-        questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+
+            questionElement_textarea.addEventListener("input", this.updatePrompt);
+            questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+            questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+        }
     }
 
     updatePrompt = () => {
@@ -126,12 +129,14 @@ export default class ProgressBar {
     createArrayOfAllValues(minValues, colors, prompts) {
         let values = [];
         for(let i = 0; i < minValues.length; i++) {
-            let obj = {
-                value: minValues[i],
-                color: colors[i],
-                prompt: prompts[i]
-            };
-            values.push(obj);
+            if(!!minValues[i]) {
+                let obj = {
+                    value: minValues[i],
+                    color: colors[i],
+                    prompt: prompts[i]
+                };
+                values.push(obj);
+            }
         }
 
         values.sort(this.sortMinValuesAscending);

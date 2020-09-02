@@ -14,11 +14,7 @@ export default class DynamicOpenText {
         this.characterCount = new CharacterCount(question, characterCount);
         this.keywords = new Keywords(question, keywordWords, keywordPrompts);
 
-        /*this.question.validationEvent.on(
-            this.onQuestionValidationComplete.bind(this)
-        );*/
-
-            }
+    }
 
     render() {
         let questionInput = document.getElementById(this.question.id + "_input");

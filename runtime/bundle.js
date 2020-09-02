@@ -203,8 +203,11 @@ var ProgressBar = /*#__PURE__*/function () {
           break;
       }
 
-      questionElement_textarea.addEventListener("input", this.updatePrompt);
-      questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+      if (this.allValues.length > 0) {
+        questionElement_textarea.addEventListener("input", this.updatePrompt);
+        questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+      }
+
       questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
     }
   }, {
@@ -230,15 +233,18 @@ var ProgressBar = /*#__PURE__*/function () {
   }, {
     key: "createArrayOfAllValues",
     value: function createArrayOfAllValues(minValues, colors, prompts) {
+      debugger;
       var values = [];
 
       for (var i = 0; i < minValues.length; i++) {
-        var obj = {
-          value: minValues[i],
-          color: colors[i],
-          prompt: prompts[i]
-        };
-        values.push(obj);
+        if (!!minValues[i]) {
+          var obj = {
+            value: minValues[i],
+            color: colors[i],
+            prompt: prompts[i]
+          };
+          values.push(obj);
+        }
       }
 
       values.sort(this.sortMinValuesAscending);
@@ -461,9 +467,6 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
     this.characterCount = new CharacterCount(question, characterCount);
     this.keywords = new Keywords(question, keywordWords, keywordPrompts);
-    /*this.question.validationEvent.on(
-        this.onQuestionValidationComplete.bind(this)
-    );*/
   }
 
   DynamicOpenText_createClass(DynamicOpenText, [{
