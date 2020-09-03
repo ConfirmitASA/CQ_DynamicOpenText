@@ -287,14 +287,8 @@ var CharacterCount = /*#__PURE__*/function () {
       var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
       var currentCharacterCount = questionElement_textarea.value.length;
       var countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
-
-      if (currentCharacterCount <= _this.maxCharacterCount) {
-        countElement.textContent = currentCharacterCount + "/" + _this.maxCharacterCount;
-        countElement.style.color = '#000000';
-      } else {
-        countElement.textContent = currentCharacterCount + "/" + _this.maxCharacterCount + " You have reached the limit.";
-        countElement.style.color = '#ff0000';
-      }
+      countElement.textContent = currentCharacterCount + "/" + _this.maxCharacterCount;
+      countElement.style.color = '#000000';
     });
 
     this.ccQuestion = question;

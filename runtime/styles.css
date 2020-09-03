@@ -33,3 +33,6 @@
     display: flex;
     flex-direction: column;
 }
+.cf-question__dynamic-character-counter {
+    font-size: 15px;
+}

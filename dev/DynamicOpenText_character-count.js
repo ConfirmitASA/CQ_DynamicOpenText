@@ -25,13 +25,8 @@ export default class CharacterCount {
         let currentCharacterCount = questionElement_textarea.value.length;
         let countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
 
-        if (currentCharacterCount <= this.maxCharacterCount) {
-            countElement.textContent = currentCharacterCount + "/" + this.maxCharacterCount;
-            countElement.style.color = '#000000';
-        } else {
-            countElement.textContent = currentCharacterCount + "/" + this.maxCharacterCount + " You have reached the limit.";
-            countElement.style.color = '#ff0000';
-        }
+        countElement.textContent = currentCharacterCount + "/" + this.maxCharacterCount;
+        countElement.style.color = '#000000';
 
     }
 }
