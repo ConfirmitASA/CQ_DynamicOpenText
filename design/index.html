@@ -30,6 +30,13 @@
                         </div>
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
+                        <div class="setting-col">
+                            <div class="comd-alert comd-alert--info">
+                                <div class="comd-alert__text">
+                                    Show a bar with messages and colored backgrounds controlled by character count, to encourage your respondents to provide more detail.
+                                </div>
+                            </div>
+                        </div>
                         <div class="setting-row">
                             <div class="setting-col progress__height">
                                 <label class="node-property__label" for="pbHeight">Height</label>
@@ -39,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="setting-col progress__prompt">
-                                <label class="node-property__label" for="pbPosition">Prompt Position <div class="sd-tooltip-help" data-tooltip-text="Text will only be positioned Inside when the Height is 15px or larger."></div></label>
+                                <label class="node-property__label" for="pbPosition">Prompt position <div class="sd-tooltip-help" data-tooltip-text="Display the encouragement texts above, within or below the bar. Note that the text will only be displayed within the bar if the bar height is 15px or larger."></div></label>
                                 <select class="form-control form-input" id="pbPosition" name="pbPosition">
                                     <option value="1" selected="selected">Above the bar</option>
                                     <option value="2">Inside the bar</option>
@@ -49,9 +56,9 @@
                         </div>
                         <div class="setting-col">
                             <div class="setting-row value__option-table">
-                                <label class="node-property__label value__option-header value__option-header--min">Min value <div class="sd-tooltip-help" data-tooltip-text="Minimum character count before the bar changes color and shows encouragement text. The list is ordered ascending, please enter the lowest value on the first row."></div></label>
-                                <label class="node-property__label value__option-header value__option-header--color">Color <div class="sd-tooltip-help" data-tooltip-text="Color to show on bar when min value has been reached."></div></label>
-                                <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="Shown to user when min value has been reached."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--min">Min value <div class="sd-tooltip-help" data-tooltip-text="The character count threshold for change of color and text."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--color">Color <div class="sd-tooltip-help" data-tooltip-text="The color to be displayed in the bar once the minimum value is reached."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="The text to be displayed to the respondent once the minimum value is reached."></div></label>
                             </div>
                             <div class="setting-row value__option-table">
                                 <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="1" /></div>
@@ -128,12 +135,12 @@
                         <div class="setting-col">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
-                                    Enter a keyword and a prompt which will be shown if the user enters any of the associated keyword/s. Use comma separated list if you want to have several keywords trigger the same prompt.
+                                    Add prompts and encouragements to the question, triggered by keywords, that will hopefully elicit more detail in the response. If you want to have several keywords trigger the same prompt, separate the keywords with commas.
                                 </div>
                             </div>
                             <div class="setting-row keyword__option-table">
-                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords</div>
-                                <div class="value__option-header keyword__option-header--text">User Prompts</div>
+                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords<div class="sd-tooltip-help" data-tooltip-text="Enter a comma-separated list of keywords which, if used by the respondent, will trigger the prompt text."></div></div>
+                                <div class="node-property__label value__option-header keyword__option-header--text">Prompt text<div class="sd-tooltip-help" data-tooltip-text="Add text which will be displayed when a trigger word is entered, to encourage the respondent to include more detail in their response."></div></div>
                             </div>
                             <div class="setting-col keyword__options">
                                 <div class="setting-row keywords__option-table">
