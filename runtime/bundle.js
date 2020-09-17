@@ -101,6 +101,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var promptPosition = Object.freeze({
+  "above": "1",
+  "inside": "2",
+  "below": "3"
+});
+
 var ProgressBar = /*#__PURE__*/function () {
   function ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
     var _this = this;
@@ -164,6 +170,24 @@ var ProgressBar = /*#__PURE__*/function () {
       pbElement.style.width = questionElement_textarea.offsetWidth + 'px';
     });
 
+    _defineProperty(this, "adjustPromptPositionIfInsideBar", function () {
+      var questionElement = document.getElementById(_this.pbQuestion.id);
+      var pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+      var pbPrompt = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+      var barWidth = questionElement.querySelectorAll('textarea')[0].offsetWidth;
+      var promptWidth = pbPrompt.scrollWidth;
+
+      if (pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth < promptWidth) {
+        questionElement.insertBefore(pbPrompt, pbElement);
+        pbPrompt.classList.remove("cf-question__dynamic-progress-prompt--inside");
+      }
+
+      if (!pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth > promptWidth) {
+        pbElement.lastElementChild.appendChild(pbPrompt);
+        pbPrompt.classList.add("cf-question__dynamic-progress-prompt--inside");
+      }
+    });
+
     this.pbQuestion = question;
     this.pbHeight = pbHeight && pbHeight > 0 ? pbHeight : 5;
     this.pbPosition = pbPosition ? pbPosition : '1';
@@ -186,11 +210,11 @@ var ProgressBar = /*#__PURE__*/function () {
         var promptElement = this.createPromptElement();
 
         switch (this.pbPosition) {
-          case "1":
+          case promptPosition.above:
             questionElement.insertBefore(promptElement, pbElement);
             break;
 
-          case "2":
+          case promptPosition.inside:
             if (this.pbHeight < 15) {
               questionElement.insertBefore(promptElement, pbElement);
             } else {
@@ -199,7 +223,7 @@ var ProgressBar = /*#__PURE__*/function () {
 
             break;
 
-          case "3":
+          case promptPosition.below:
             questionElement.insertBefore(promptElement, pbElement.nextSibling);
             break;
         }
@@ -207,6 +231,14 @@ var ProgressBar = /*#__PURE__*/function () {
         questionElement_textarea.addEventListener("input", this.updatePrompt);
         questionElement_textarea.addEventListener("keyup", this.updateBarColor);
         questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+
+        if (this.pbPosition === promptPosition.inside && this.pbHeight >= 15) {
+          promptElement.classList.add("cf-question__dynamic-progress-prompt--inside");
+          this.adjustPromptPositionIfInsideBar();
+          questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
+          questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
+          window.addEventListener("resize", this.adjustPromptPositionIfInsideBar);
+        }
       }
     }
   }, {

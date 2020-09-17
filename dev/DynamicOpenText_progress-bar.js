@@ -1,3 +1,9 @@
+export const promptPosition = Object.freeze({
+    "above": "1",
+    "inside": "2",
+    "below": "3"
+})
+
 export default class ProgressBar {
     constructor(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
         this.pbQuestion = question;
@@ -23,25 +29,33 @@ export default class ProgressBar {
             let promptElement = this.createPromptElement();
 
             switch (this.pbPosition) {
-                case "1":
+                case promptPosition.above:
                     questionElement.insertBefore(promptElement, pbElement);
                     break;
-                case "2":
+                case promptPosition.inside:
                     if (this.pbHeight < 15) {
                         questionElement.insertBefore(promptElement, pbElement);
                     } else {
                         pbElement.lastElementChild.appendChild(promptElement);
                     }
                     break;
-                case "3":
+                case promptPosition.below:
                     questionElement.insertBefore(promptElement, pbElement.nextSibling);
                     break;
             }
 
-
             questionElement_textarea.addEventListener("input", this.updatePrompt);
             questionElement_textarea.addEventListener("keyup", this.updateBarColor);
             questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+
+            if(this.pbPosition === promptPosition.inside && this.pbHeight >= 15) {
+                promptElement.classList.add("cf-question__dynamic-progress-prompt--inside");
+                this.adjustPromptPositionIfInsideBar();
+
+                questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
+                questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
+                window.addEventListener("resize", this.adjustPromptPositionIfInsideBar);
+            }
         }
     }
 
@@ -103,6 +117,27 @@ export default class ProgressBar {
         let pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
 
         pbElement.style.width = questionElement_textarea.offsetWidth + 'px';
+    }
+
+    adjustPromptPositionIfInsideBar = () => {
+        let questionElement = document.getElementById(this.pbQuestion.id);
+        let pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+        let pbPrompt = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+
+        let barWidth = questionElement.querySelectorAll('textarea')[0].offsetWidth;
+        let promptWidth = pbPrompt.scrollWidth;
+
+        if(pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside")
+            && barWidth < promptWidth) {
+                questionElement.insertBefore(pbPrompt, pbElement);
+                pbPrompt.classList.remove("cf-question__dynamic-progress-prompt--inside");
+        }
+
+        if(!pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside")
+            && barWidth > promptWidth) {
+            pbElement.lastElementChild.appendChild(pbPrompt);
+            pbPrompt.classList.add("cf-question__dynamic-progress-prompt--inside");
+        }
     }
 
     createBarElement(height, width, backgroundColor) {
