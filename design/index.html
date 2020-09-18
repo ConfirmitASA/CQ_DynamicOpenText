@@ -312,21 +312,12 @@
 
             customQuestion.onSettingsReceived = setValues;
 
-            pbEnabled.addEventListener('change', saveChanges);
-            pbHeightInput.addEventListener('change', saveChanges);
-            pbPositionSelector.addEventListener('change', saveChanges);
-
-            for(var i = 0; i < pbMinInputs.length; i++) {
-                pbMinInputs[i].addEventListener('change', saveChanges);
-                pbColorInputs[i].addEventListener('change', saveChanges);
-                pbPromptInputs[i].addEventListener('change', saveChanges);
+            let containers = document.querySelectorAll(".comd-panel");
+            for (const container of containers) {
+                container.addEventListener('change', saveChanges);
             }
 
-            countEnabled.addEventListener('change', saveChanges);
-            characterLimit.addEventListener('change', saveChanges);
-            showCharacterLimit.addEventListener('change', saveChanges);
-
-            keywordEnabled.addEventListener('change', saveChanges);
+            pbPositionSelector.addEventListener('change', saveChanges);
 
             keywordSaveButton.addEventListener('click', saveChanges);
 
