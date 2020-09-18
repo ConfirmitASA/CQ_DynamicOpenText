@@ -307,11 +307,11 @@ function DynamicOpenText_character_count_createClass(Constructor, protoProps, st
 
 function DynamicOpenText_character_count_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var CharacterCount = /*#__PURE__*/function () {
-  function CharacterCount(question, characterCount) {
+var DynamicOpenText_character_count_characterLimit = /*#__PURE__*/function () {
+  function characterLimit(question, _characterLimit, showCharacterLimit) {
     var _this = this;
 
-    DynamicOpenText_character_count_classCallCheck(this, CharacterCount);
+    DynamicOpenText_character_count_classCallCheck(this, characterLimit);
 
     DynamicOpenText_character_count_defineProperty(this, "updateCount", function () {
       var questionElement = document.getElementById(_this.ccQuestion.id);
@@ -319,15 +319,20 @@ var CharacterCount = /*#__PURE__*/function () {
       var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
       var currentCharacterCount = questionElement_textarea.value.length;
       var countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
-      countElement.textContent = currentCharacterCount + "/" + _this.maxCharacterCount;
-      countElement.style.color = '#000000';
+      countElement.textContent = currentCharacterCount;
+
+      if (_this.showCharacterLimit && _this.characterLimit) {
+        countElement.textContent += "/" + _this.characterLimit;
+      } //countElement.style.color = '#000000';
+
     });
 
     this.ccQuestion = question;
-    this.maxCharacterCount = characterCount && characterCount > 0 ? characterCount : 150;
+    this.characterLimit = _characterLimit;
+    this.showCharacterLimit = showCharacterLimit;
   }
 
-  DynamicOpenText_character_count_createClass(CharacterCount, [{
+  DynamicOpenText_character_count_createClass(characterLimit, [{
     key: "render",
     value: function render() {
       var questionElement = document.getElementById(this.ccQuestion.id);
@@ -335,13 +340,18 @@ var CharacterCount = /*#__PURE__*/function () {
       var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
       var ccElement = document.createElement('div');
       ccElement.className += 'cf-question__dynamic-character-counter';
-      ccElement.textContent = "0/" + this.maxCharacterCount;
+      ccElement.textContent = "0";
+
+      if (this.showCharacterLimit && this.characterLimit) {
+        ccElement.textContent += "/" + this.characterLimit;
+      }
+
       questionElement_content.insertAdjacentElement("beforeend", ccElement);
       questionElement_textarea.addEventListener("input", this.updateCount);
     }
   }]);
 
-  return CharacterCount;
+  return characterLimit;
 }();
 
 
@@ -475,7 +485,7 @@ function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Obj
 
 
 var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
-  function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterCount, keywordEnabled, keywordWords, keywordPrompts) {
+  function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterLimit, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
     var _this = this;
 
     DynamicOpenText_classCallCheck(this, DynamicOpenText);
@@ -491,7 +501,7 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     this.characterCountEnabled = countEnabled;
     this.keywordsEnabled = keywordEnabled;
     this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-    this.characterCount = new CharacterCount(question, characterCount);
+    this.characterCount = new DynamicOpenText_character_count_characterLimit(question, characterLimit, showCharacterLimit);
     this.keywords = new Keywords(question, keywordWords, keywordPrompts);
   }
 
