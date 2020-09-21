@@ -101,6 +101,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var promptPosition = Object.freeze({
+  "above": "1",
+  "inside": "2",
+  "below": "3"
+});
+
 var ProgressBar = /*#__PURE__*/function () {
   function ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
     var _this = this;
@@ -164,6 +170,24 @@ var ProgressBar = /*#__PURE__*/function () {
       pbElement.style.width = questionElement_textarea.offsetWidth + 'px';
     });
 
+    _defineProperty(this, "adjustPromptPositionIfInsideBar", function () {
+      var questionElement = document.getElementById(_this.pbQuestion.id);
+      var pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+      var pbPrompt = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+      var barWidth = questionElement.querySelectorAll('textarea')[0].offsetWidth;
+      var promptWidth = pbPrompt.scrollWidth;
+
+      if (pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth < promptWidth) {
+        questionElement.insertBefore(pbPrompt, pbElement);
+        pbPrompt.classList.remove("cf-question__dynamic-progress-prompt--inside");
+      }
+
+      if (!pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth > promptWidth) {
+        pbElement.lastElementChild.appendChild(pbPrompt);
+        pbPrompt.classList.add("cf-question__dynamic-progress-prompt--inside");
+      }
+    });
+
     this.pbQuestion = question;
     this.pbHeight = pbHeight && pbHeight > 0 ? pbHeight : 5;
     this.pbPosition = pbPosition ? pbPosition : '1';
@@ -186,11 +210,11 @@ var ProgressBar = /*#__PURE__*/function () {
         var promptElement = this.createPromptElement();
 
         switch (this.pbPosition) {
-          case "1":
+          case promptPosition.above:
             questionElement.insertBefore(promptElement, pbElement);
             break;
 
-          case "2":
+          case promptPosition.inside:
             if (this.pbHeight < 15) {
               questionElement.insertBefore(promptElement, pbElement);
             } else {
@@ -199,7 +223,7 @@ var ProgressBar = /*#__PURE__*/function () {
 
             break;
 
-          case "3":
+          case promptPosition.below:
             questionElement.insertBefore(promptElement, pbElement.nextSibling);
             break;
         }
@@ -207,6 +231,14 @@ var ProgressBar = /*#__PURE__*/function () {
         questionElement_textarea.addEventListener("input", this.updatePrompt);
         questionElement_textarea.addEventListener("keyup", this.updateBarColor);
         questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+
+        if (this.pbPosition === promptPosition.inside && this.pbHeight >= 15) {
+          promptElement.classList.add("cf-question__dynamic-progress-prompt--inside");
+          this.adjustPromptPositionIfInsideBar();
+          questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
+          questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
+          window.addEventListener("resize", this.adjustPromptPositionIfInsideBar);
+        }
       }
     }
   }, {
@@ -275,11 +307,11 @@ function DynamicOpenText_character_count_createClass(Constructor, protoProps, st
 
 function DynamicOpenText_character_count_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var CharacterCount = /*#__PURE__*/function () {
-  function CharacterCount(question, characterCount) {
+var DynamicOpenText_character_count_characterLimit = /*#__PURE__*/function () {
+  function characterLimit(question, _characterLimit, showCharacterLimit) {
     var _this = this;
 
-    DynamicOpenText_character_count_classCallCheck(this, CharacterCount);
+    DynamicOpenText_character_count_classCallCheck(this, characterLimit);
 
     DynamicOpenText_character_count_defineProperty(this, "updateCount", function () {
       var questionElement = document.getElementById(_this.ccQuestion.id);
@@ -287,15 +319,20 @@ var CharacterCount = /*#__PURE__*/function () {
       var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
       var currentCharacterCount = questionElement_textarea.value.length;
       var countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
-      countElement.textContent = currentCharacterCount + "/" + _this.maxCharacterCount;
-      countElement.style.color = '#000000';
+      countElement.textContent = currentCharacterCount;
+
+      if (_this.showCharacterLimit && _this.characterLimit) {
+        countElement.textContent += "/" + _this.characterLimit;
+      } //countElement.style.color = '#000000';
+
     });
 
     this.ccQuestion = question;
-    this.maxCharacterCount = characterCount && characterCount > 0 ? characterCount : 150;
+    this.characterLimit = _characterLimit;
+    this.showCharacterLimit = showCharacterLimit;
   }
 
-  DynamicOpenText_character_count_createClass(CharacterCount, [{
+  DynamicOpenText_character_count_createClass(characterLimit, [{
     key: "render",
     value: function render() {
       var questionElement = document.getElementById(this.ccQuestion.id);
@@ -303,17 +340,28 @@ var CharacterCount = /*#__PURE__*/function () {
       var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
       var ccElement = document.createElement('div');
       ccElement.className += 'cf-question__dynamic-character-counter';
-      ccElement.textContent = "0/" + this.maxCharacterCount;
+      ccElement.textContent = "0";
+
+      if (this.showCharacterLimit && this.characterLimit) {
+        ccElement.textContent += "/" + this.characterLimit;
+      }
+
       questionElement_content.insertAdjacentElement("beforeend", ccElement);
       questionElement_textarea.addEventListener("input", this.updateCount);
     }
   }]);
 
-  return CharacterCount;
+  return characterLimit;
 }();
 
 
 // CONCATENATED MODULE: ./dev/DynamicOpenText_keywords.js
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function DynamicOpenText_keywords_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function DynamicOpenText_keywords_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -337,14 +385,18 @@ var Keywords = /*#__PURE__*/function () {
       var existingItemsAsKeyword = [];
       var existingItemsAsRow = [];
 
-      for (var i = 0; i < _this.newKeywords.length; i++) {
-        for (var j = 0; j < _this.newKeywords[i].length; j++) {
-          existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + _this.newKeywords[i][j] + '"]'));
-          existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + i + '"]'));
+      var _iterator = _createForOfIteratorHelper(_this.keywordPromptPairs),
+          _step;
 
-          if (textValue.indexOf(_this.newKeywords[i][j]) > -1) {
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var pair = _step.value;
+          existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
+          existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
+
+          if (textValue.indexOf(pair.keyword) > -1) {
             if (existingItemsAsRow.length === 0) {
-              keywordElement.firstElementChild.appendChild(_this.createKeywordItem("row-id" + i, _this.newKeywords[i][j], _this.prompts[i]));
+              keywordElement.firstElementChild.appendChild(_this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
               break;
             }
           } else {
@@ -355,6 +407,10 @@ var Keywords = /*#__PURE__*/function () {
             }
           }
         }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
       }
     });
 
@@ -368,7 +424,7 @@ var Keywords = /*#__PURE__*/function () {
     this.keywordQuestion = question;
     this.words = keywordWords ? keywordWords : [];
     this.prompts = keywordPrompts ? keywordPrompts : [];
-    this.newKeywords = this.organizeKeywords(this.words);
+    this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
   }
 
   DynamicOpenText_keywords_createClass(Keywords, [{
@@ -383,24 +439,29 @@ var Keywords = /*#__PURE__*/function () {
     }
   }, {
     key: "organizeKeywords",
-    value: function organizeKeywords(words) {
-      var newKeywords = [];
-      words.forEach(function (wordRow) {
-        var newRow = [];
+    value: function organizeKeywords(words, prompts) {
+      var keywordPromptPairs = [];
+
+      for (var i = 0; i < words.length; i++) {
+        var wordRow = words[i];
 
         if (wordRow.length > 0) {
           var newRowSplit = wordRow.split(",");
 
-          for (var i = 0; i < newRowSplit.length; i++) {
-            //if(newRowSplit[i].trim().length > 0) {
-            newRow.push(newRowSplit[i].trim().toLowerCase()); //}
+          for (var j = 0; j < newRowSplit.length; j++) {
+            if (newRowSplit[j].trim().length > 0) {
+              var pair = {
+                keyword: newRowSplit[j].trim().toLowerCase(),
+                prompt: prompts[i],
+                rowId: i
+              };
+              keywordPromptPairs.push(pair);
+            }
           }
-        } //if(newRow.length > 0) {
+        }
+      }
 
-
-        newKeywords.push(newRow); //}
-      });
-      return newKeywords;
+      return keywordPromptPairs;
     }
   }, {
     key: "createKeywordItem",
@@ -443,7 +504,7 @@ function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Obj
 
 
 var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
-  function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterCount, keywordEnabled, keywordWords, keywordPrompts) {
+  function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterLimit, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
     var _this = this;
 
     DynamicOpenText_classCallCheck(this, DynamicOpenText);
@@ -459,7 +520,7 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     this.characterCountEnabled = countEnabled;
     this.keywordsEnabled = keywordEnabled;
     this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-    this.characterCount = new CharacterCount(question, characterCount);
+    this.characterCount = new DynamicOpenText_character_count_characterLimit(question, characterLimit, showCharacterLimit);
     this.keywords = new Keywords(question, keywordWords, keywordPrompts);
   }
 

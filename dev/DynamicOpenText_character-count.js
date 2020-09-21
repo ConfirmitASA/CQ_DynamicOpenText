@@ -1,7 +1,8 @@
-export default class CharacterCount {
-    constructor(question, characterCount) {
+export default class characterLimit {
+    constructor(question, characterLimit, showCharacterLimit) {
         this.ccQuestion = question;
-        this.maxCharacterCount = characterCount && characterCount > 0 ? characterCount : 150;
+        this.characterLimit = characterLimit;
+        this.showCharacterLimit = showCharacterLimit;
     }
 
     render() {
@@ -11,7 +12,10 @@ export default class CharacterCount {
 
         let ccElement = document.createElement('div');
         ccElement.className += 'cf-question__dynamic-character-counter';
-        ccElement.textContent = "0/" + this.maxCharacterCount;
+        ccElement.textContent = "0"
+        if (this.showCharacterLimit && this.characterLimit) {
+            ccElement.textContent += "/" + this.characterLimit;
+        }
         questionElement_content.insertAdjacentElement("beforeend", ccElement);
 
         questionElement_textarea.addEventListener("input", this.updateCount);
@@ -25,8 +29,10 @@ export default class CharacterCount {
         let currentCharacterCount = questionElement_textarea.value.length;
         let countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
 
-        countElement.textContent = currentCharacterCount + "/" + this.maxCharacterCount;
-        countElement.style.color = '#000000';
-
+        countElement.textContent = currentCharacterCount;
+        if(this.showCharacterLimit && this.characterLimit) {
+            countElement.textContent += "/" + this.characterLimit;
+        }
+        //countElement.style.color = '#000000';
     }
 }

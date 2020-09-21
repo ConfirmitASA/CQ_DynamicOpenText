@@ -71,6 +71,9 @@ input#keywordEnabled {
 .form-input--color {
     width: 1rem;
 }
+.form-input--8ch {
+    width: calc(8ch + 30px);
+}
 .progress__height {
     margin-right: 20px;
 }

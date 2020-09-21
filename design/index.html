@@ -13,6 +13,7 @@
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Encouragement progress bar</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Show a bar with messages and colored backgrounds controlled by character count, to encourage your respondents to provide more detail."></div>
                     </div>
                     <div class="co-flex co-flex--center">
                         <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
@@ -39,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="setting-col progress__prompt">
-                                <label class="node-property__label" for="pbPosition">Prompt Position <div class="sd-tooltip-help" data-tooltip-text="Text will only be positioned Inside when the Height is 15px or larger."></div></label>
+                                <label class="node-property__label" for="pbPosition">Prompt position <div class="sd-tooltip-help" data-tooltip-text="Display the encouragement texts above, within or below the bar. Note that the text will only be displayed within the bar if the bar height is 15px or larger."></div></label>
                                 <select class="form-control form-input" id="pbPosition" name="pbPosition">
                                     <option value="1" selected="selected">Above the bar</option>
                                     <option value="2">Inside the bar</option>
@@ -49,9 +50,9 @@
                         </div>
                         <div class="setting-col">
                             <div class="setting-row value__option-table">
-                                <label class="node-property__label value__option-header value__option-header--min">Min value <div class="sd-tooltip-help" data-tooltip-text="Minimum character count before the bar changes color and shows encouragement text. The list is ordered ascending, please enter the lowest value on the first row."></div></label>
-                                <label class="node-property__label value__option-header value__option-header--color">Color <div class="sd-tooltip-help" data-tooltip-text="Color to show on bar when min value has been reached."></div></label>
-                                <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="Shown to user when min value has been reached."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--min">Min value <div class="sd-tooltip-help" data-tooltip-text="The character count threshold for change of color and text."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--color">Color <div class="sd-tooltip-help" data-tooltip-text="The color to be displayed in the bar once the minimum value is reached."></div></label>
+                                <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="The text to be displayed to the respondent once the minimum value is reached."></div></label>
                             </div>
                             <div class="setting-row value__option-table">
                                 <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="1" /></div>
@@ -76,6 +77,7 @@
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Character count</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Show the number of characters entered by your respondent. You can also show Character limit beside counter."></div>
                     </div>
                     <div class="co-flex co-flex--center">
                         <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
@@ -96,10 +98,27 @@
                         <div class="setting-col">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
-                                    Number of the characters to enter. Please make sure it corresponds to the question settings.
+                                    Please make sure Character limit corresponds to the question settings.
                                 </div>
                             </div>
-                            <div class="value__option-input count__option-input"><input class="form-control form-input" name="cCount" id="cCount" type="number"/></div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="co-toggle co-toggle--checkbox">
+                                <input class="co-toggle__input node-property__checkbox" type="checkbox" id="showCharacterLimit"/>
+                                <label for="showCharacterLimit" class="node-property__label node-property__label--checkbox">
+                                    <div class="icon icon-checkbox co-icon">
+                                    </div>
+                                    <span>Show Character limit beside counter (if it's set)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="setting-col">
+                            <label class="node-property__label" for="characterLimit">Character limit</label>
+                            <div class="setting-row">
+                                <div class="value__option-input count__option-input">
+                                    <input class="form-control form-input form-input--8ch" name="characterLimit" id="characterLimit" type="number"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,6 +127,7 @@
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
                         <h4 class="co-text-size-normal">Keywords</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Add prompts and encouragements to the question, triggered by keywords, that will hopefully elicit more detail in the response."></div>
                     </div>
                     <div class="co-flex co-flex--center">
                         <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
@@ -128,12 +148,12 @@
                         <div class="setting-col">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
-                                    Enter a keyword and a prompt which will be shown if the user enters any of the associated keyword/s. Use comma separated list if you want to have several keywords trigger the same prompt.
+                                    If you want to have several keywords trigger the same prompt, separate the keywords with commas.
                                 </div>
                             </div>
                             <div class="setting-row keyword__option-table">
-                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords</div>
-                                <div class="value__option-header keyword__option-header--text">User Prompts</div>
+                                <div class="node-property__label value__option-header keyword__option-header--word">Keywords<div class="sd-tooltip-help" data-tooltip-text="Enter a comma-separated list of keywords which, if used by the respondent, will trigger the prompt text."></div></div>
+                                <div class="node-property__label value__option-header keyword__option-header--text">Prompt text<div class="sd-tooltip-help" data-tooltip-text="Add text which will be displayed when a trigger word is entered, to encourage the respondent to include more detail in their response."></div></div>
                             </div>
                             <div class="setting-col keyword__options">
                                 <div class="setting-row keywords__option-table">
@@ -159,15 +179,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="node-property button-block keyword__button--save">
-                                    <div class="button-block">
-                                        <button class="comd-button comd-button--secondary-neutral">
-                                            <span class="comd-button__content">
-                                                <div class="comd-portal-trigger">Save keywords</div>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,12 +198,13 @@
             var pbPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
 
             var countEnabled = document.getElementById('countEnabled');
-            var characterCountInput = document.getElementById('cCount');
+            var characterLimit = document.getElementById('characterLimit');
+            var showCharacterLimit = document.getElementById('showCharacterLimit');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
-            var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
+            //var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
 
 
             function setValues(settings) {
@@ -219,7 +231,8 @@
                 }
 
 
-                characterCountInput.value = settings.characterCount;
+                characterLimit.value = settings.characterLimit;
+                showCharacterLimit.checked = settings.showCharacterLimit;
 
                 var keywordWords = settings.keywordWords;
                 var keywordPrompts = settings.keywordPrompts;
@@ -278,7 +291,8 @@
                                  pbColors: pbColors,
                                  pbPrompts: pbPrompts,
                                  countEnabled: countEnabled.checked,
-                                 characterCount: parseInt(characterCountInput.value),
+                                 characterLimit: parseInt(characterLimit.value),
+                                 showCharacterLimit: showCharacterLimit.checked,
                                  keywordEnabled: keywordEnabled.checked,
                                  keywordWords: keywordWords,
                                  keywordPrompts: keywordPrompts};
@@ -289,22 +303,12 @@
 
             customQuestion.onSettingsReceived = setValues;
 
-            pbEnabled.addEventListener('change', saveChanges);
-            pbHeightInput.addEventListener('change', saveChanges);
-            pbPositionSelector.addEventListener('change', saveChanges);
-
-            for(var i = 0; i < pbMinInputs.length; i++) {
-                pbMinInputs[i].addEventListener('change', saveChanges);
-                pbColorInputs[i].addEventListener('change', saveChanges);
-                pbPromptInputs[i].addEventListener('change', saveChanges);
+            var containers = Array.prototype.slice.call(document.querySelectorAll(".comd-panel"));
+            for (var c = 0; c < containers.length; c++) {
+                containers[c].addEventListener('input', saveChanges, true);
             }
 
-            countEnabled.addEventListener('change', saveChanges);
-            characterCountInput.addEventListener('change', saveChanges);
-
-            keywordEnabled.addEventListener('change', saveChanges);
-
-            keywordSaveButton.addEventListener('click', saveChanges);
+            pbPositionSelector.addEventListener('change', saveChanges, true);
 
         </script>
     </body>

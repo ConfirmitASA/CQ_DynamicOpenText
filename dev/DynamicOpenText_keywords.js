@@ -3,7 +3,7 @@ export default class Keywords {
         this.keywordQuestion = question;
         this.words = keywordWords ? keywordWords : [];
         this.prompts = keywordPrompts ? keywordPrompts : [];
-        this.newKeywords = this.organizeKeywords(this.words);
+        this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
     }
 
     render() {
@@ -27,13 +27,13 @@ export default class Keywords {
         let existingItemsAsKeyword = [];
         let existingItemsAsRow = [];
 
-        for(let i = 0; i < this.newKeywords.length; i++) for (let j = 0; j < this.newKeywords[i].length; j++) {
-            existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + this.newKeywords[i][j] + '"]'));
-            existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + i + '"]'));
+        for(const pair of this.keywordPromptPairs) {
+            existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
+            existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-            if (textValue.indexOf(this.newKeywords[i][j]) > -1) {
+            if (textValue.indexOf(pair.keyword) > -1) {
                 if (existingItemsAsRow.length === 0) {
-                    keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + i, this.newKeywords[i][j], this.prompts[i]));
+                    keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
                     break;
                 }
             } else {
@@ -54,27 +54,27 @@ export default class Keywords {
         keywordElement.style.width = questionElement_textarea.offsetWidth + "px";
     }
 
-    organizeKeywords(words) {
-        let newKeywords = [];
+    organizeKeywords(words, prompts) {
+        let keywordPromptPairs = [];
 
-        words.forEach(function (wordRow) {
-            let newRow = [];
+        for(let i = 0; i < words.length; i++) {
+            let wordRow = words[i];
             if(wordRow.length > 0) {
                 let newRowSplit = wordRow.split(",");
 
-                for(let i = 0; i < newRowSplit.length; i++) {
-                    //if(newRowSplit[i].trim().length > 0) {
-                        newRow.push(newRowSplit[i].trim().toLowerCase());
-                    //}
+                for(let j = 0; j < newRowSplit.length; j++) {
+                    if(newRowSplit[j].trim().length > 0) {
+                        let pair = {
+                            keyword: newRowSplit[j].trim().toLowerCase(),
+                            prompt: prompts[i],
+                            rowId: i
+                        };
+                        keywordPromptPairs.push(pair);
+                    }
                 }
             }
-
-            //if(newRow.length > 0) {
-                newKeywords.push(newRow);
-            //}
-        });
-
-        return newKeywords;
+        }
+        return keywordPromptPairs;
     }
 
     createKeywordItem(rowId, keyword, prompt) {

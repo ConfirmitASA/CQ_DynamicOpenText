@@ -20,9 +20,12 @@
     -webkit-transition: width 2s, background-color 2s;
 }
 .cf-question__dynamic-progress-prompt {
-    max-width: 100%;
+    max-width: fit-content;
     position: relative;
     text-overflow: ellipsis;
+    white-space: normal;
+}
+.cf-question__dynamic-progress-prompt--inside {
     white-space: nowrap;
 }
 .cf-question__dynamic-keywords {
