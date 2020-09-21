@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(){
     let keywordButton = document.getElementsByClassName("keyword__button--add")[0];
-    let keywordButtonInput = keywordButton.querySelectorAll("button")[0];
-    if(keywordButtonInput) {
-        keywordButtonInput.onclick = addKeywordsRow;
+    if(keywordButton) {
+        let keywordButtonInput = keywordButton.querySelectorAll("button")[0];
+        if (keywordButtonInput) {
+            keywordButtonInput.onclick = addKeywordsRow;
+        }
     }
 
     let pbCheckbox = document.getElementById("pbEnabled");

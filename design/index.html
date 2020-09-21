@@ -179,15 +179,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="node-property button-block keyword__button--save">
-                                    <div class="button-block">
-                                        <button class="comd-button comd-button--secondary-neutral">
-                                            <span class="comd-button__content">
-                                                <div class="comd-portal-trigger">Save keywords</div>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -213,7 +204,7 @@
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
-            var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
+            //var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
 
 
             function setValues(settings) {
@@ -312,14 +303,12 @@
 
             customQuestion.onSettingsReceived = setValues;
 
-            let containers = document.querySelectorAll(".comd-panel");
-            for (const container of containers) {
-                container.addEventListener('change', saveChanges);
+            var containers = Array.prototype.slice.call(document.querySelectorAll(".comd-panel"));
+            for (var c = 0; c < containers.length; c++) {
+                containers[c].addEventListener('input', saveChanges, true);
             }
 
-            pbPositionSelector.addEventListener('change', saveChanges);
-
-            keywordSaveButton.addEventListener('click', saveChanges);
+            pbPositionSelector.addEventListener('change', saveChanges, true);
 
         </script>
     </body>
