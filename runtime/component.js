@@ -1,7 +1,6 @@
 /* global register */
 
-//AnnaG question id bb9f993d-0c63-49bf-afb7-aebc01e2bf74
-//Confirmit DEMO question id 2748e8ce-b154-485a-aa36-3a4c93176b5d
+//Confirmit DEMO question id bb9f993d-0c63-49bf-afb7-aebc01e2bf74
 
 const defaultSettings = {
     pbEnabled: false,
