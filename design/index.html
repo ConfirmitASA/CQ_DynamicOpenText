@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
-                        <div class="setting-col">
+                        <div class="setting-row">
                             <div class="comd-alert comd-alert--info">
                                 <div class="comd-alert__text">
                                     Please make sure Character limit corresponds to the question settings.
@@ -110,14 +110,6 @@
                                     </div>
                                     <span>Show Character limit beside counter (if it's set)</span>
                                 </label>
-                            </div>
-                        </div>
-                        <div class="setting-col">
-                            <label class="node-property__label" for="characterLimit">Character limit</label>
-                            <div class="setting-row">
-                                <div class="value__option-input count__option-input">
-                                    <input class="form-control form-input form-input--8ch" name="characterLimit" id="characterLimit" type="number"/>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,13 +185,12 @@
             var pbPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
 
             var countEnabled = document.getElementById('countEnabled');
-            var characterLimit = document.getElementById('characterLimit');
+            //var characterLimit = document.getElementById('characterLimit');
             var showCharacterLimit = document.getElementById('showCharacterLimit');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
-            //var keywordSaveButton = Array.prototype.slice.call(document.querySelectorAll(".keyword__button--save button"))[0];
 
 
             function setValues(settings) {
@@ -226,7 +217,7 @@
                 }
 
 
-                characterLimit.value = settings.characterLimit;
+                //characterLimit.value = settings.characterLimit;
                 showCharacterLimit.checked = settings.showCharacterLimit;
 
                 var keywordWords = settings.keywordWords;
@@ -286,7 +277,7 @@
                                  pbColors: pbColors,
                                  pbPrompts: pbPrompts,
                                  countEnabled: countEnabled.checked,
-                                 characterLimit: parseInt(characterLimit.value),
+                                 //characterLimit: parseInt(characterLimit.value),
                                  showCharacterLimit: showCharacterLimit.checked,
                                  keywordEnabled: keywordEnabled.checked,
                                  keywordWords: keywordWords,

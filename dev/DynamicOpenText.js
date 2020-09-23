@@ -4,14 +4,14 @@ import Keywords from "./DynamicOpenText_keywords";
 
 export default class DynamicOpenText {
 
-    constructor(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterLimit, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
+    constructor(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
         this.question = question;
         this.progressBarEnabled = pbEnabled;
         this.characterCountEnabled = countEnabled;
         this.keywordsEnabled = keywordEnabled;
 
         this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-        this.characterCount = new CharacterCount(question, characterLimit, showCharacterLimit);
+        this.characterCount = new CharacterCount(question, showCharacterLimit);
         this.keywords = new Keywords(question, keywordWords, keywordPrompts);
 
     }

@@ -10,7 +10,6 @@ const defaultSettings = {
     pbColors: ['#c41919','#e7e706','#4a964a'],
     pbPrompts: ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'],
     countEnabled: false,
-    characterLimit: null,
     showCharacterLimit: false,
     keywordEnabled: false,
     keywordWords: ["Hello"],
@@ -29,13 +28,12 @@ register(function (question, customQuestionSettings, questionViewSettings) {
     let pbPrompts = activeSettings.pbPrompts;
 
     let countEnabled = activeSettings.countEnabled;
-    let characterLimit = activeSettings.characterLimit;
     let showCharacterLimit = activeSettings.showCharacterLimit;
 
     let keywordEnabled = activeSettings.keywordEnabled;
     let keywordWords = activeSettings.keywordWords;
     let keywordPrompts = activeSettings.keywordPrompts;
 
-    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterLimit, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts);
+    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts);
     dynamicOpenText.render();
 });
