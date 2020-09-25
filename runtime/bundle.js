@@ -394,7 +394,7 @@ var Keywords = /*#__PURE__*/function () {
           existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
           existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-          if (textValue.indexOf(pair.keyword) > -1) {
+          if (_this.containsExactWord(textValue, pair.keyword)) {
             if (existingItemsAsRow.length === 0) {
               keywordElement.firstElementChild.appendChild(_this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
               break;
@@ -436,6 +436,12 @@ var Keywords = /*#__PURE__*/function () {
       questionElement.appendChild(keywordElement);
       questionElement_textarea.addEventListener("input", this.updateKeywords);
       questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
+    }
+  }, {
+    key: "containsExactWord",
+    value: function containsExactWord(string, word) {
+      var re = new RegExp('\\b' + word + '\\b', 'i');
+      return string.match(re);
     }
   }, {
     key: "organizeKeywords",

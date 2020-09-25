@@ -31,7 +31,7 @@ export default class Keywords {
             existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
             existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-            if (textValue.indexOf(pair.keyword) > -1) {
+            if (this.containsExactWord(textValue, pair.keyword)) {
                 if (existingItemsAsRow.length === 0) {
                     keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
                     break;
@@ -44,6 +44,11 @@ export default class Keywords {
                 }
             }
         }
+    }
+
+    containsExactWord(string, word) {
+        let re = new RegExp('\\b' + word + '\\b', 'i');
+        return string.match(re);
     }
 
     updateKeywordsWidth = () => {
