@@ -344,9 +344,10 @@ var CharacterCount = /*#__PURE__*/function () {
 
       if (this.showCharacterLimit && !!this.characterLimit) {
         ccElement.textContent += "/" + this.characterLimit;
-      }
+      } //questionElement_content.insertAdjacentElement("beforeend", ccElement);
 
-      questionElement_content.insertAdjacentElement("beforeend", ccElement);
+
+      questionElement.appendChild(ccElement);
       questionElement_textarea.addEventListener("input", this.updateCount);
     }
   }]);
