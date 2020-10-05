@@ -21,7 +21,7 @@ export default class Keywords {
     updateKeywords = () => {
         let questionElement = document.getElementById(this.keywordQuestion.id);
         let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
+        let keywordElement = questionElement.getElementsByClassName("cf-question__dynamic-keywords")[0];
         let textValue = questionElement_textarea.value.trim().toLowerCase();
         let keywordList = keywordElement.firstElementChild;
         let existingItemsAsKeyword = [];

@@ -380,7 +380,7 @@ var Keywords = /*#__PURE__*/function () {
     DynamicOpenText_keywords_defineProperty(this, "updateKeywords", function () {
       var questionElement = document.getElementById(_this.keywordQuestion.id);
       var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
+      var keywordElement = questionElement.getElementsByClassName("cf-question__dynamic-keywords")[0];
       var textValue = questionElement_textarea.value.trim().toLowerCase();
       var keywordList = keywordElement.firstElementChild;
       var existingItemsAsKeyword = [];
