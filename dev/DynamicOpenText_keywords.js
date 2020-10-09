@@ -1,3 +1,5 @@
+import KeywordPromptPair from "./DynamicOpenText_keyword-prompt-pair";
+
 export default class Keywords {
     constructor(question, keywordWords, keywordPrompts) {
         this.keywordQuestion = question;
@@ -31,7 +33,7 @@ export default class Keywords {
             existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
             existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-            if (textValue.match(pair.regExp) !== null) {
+            if (pair.matchingMethod(textValue)) {
                 if (existingItemsAsRow.length === 0) {
                     keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
                     break;
@@ -65,44 +67,13 @@ export default class Keywords {
                 for(let j = 0; j < newRowSplit.length; j++) {
                     if(newRowSplit[j].trim().length > 0) {
                         let keyword = newRowSplit[j].trim().toLowerCase();
-                        let pair = {
-                            keyword: keyword,
-                            prompt: prompts[i],
-                            rowId: i,
-                            regExp: this.createRegExp(keyword)
-                        };
+                        let pair = new KeywordPromptPair(keyword, prompts[i], i);
                         keywordPromptPairs.push(pair);
                     }
                 }
             }
         }
         return keywordPromptPairs;
-    }
-
-    createRegExp(keyword) {
-        if(this.isPunctuationOrSymbol(keyword, 0)) {
-            return new RegExp(this.escapeCharacters(keyword), "i");
-        } else {
-            return new RegExp("(?:\\s|[^-\\P{P}]|\\p{S}|^)" + this.escapeCharacters(keyword) +
-                "(?:\\s|[^-\\P{P}]|\\p{S}|$)", "iu");
-        }
-    }
-
-    isPunctuationOrSymbol(str, ind) {
-        let re = /\p{P}|\p{S}/u;
-        return str[ind].match(re) !== null;
-    }
-
-    escapeCharacters(str) {
-        let charsToEscape = ['[', '\\', '^', '$', '.', '|', '?', '*', '+', '(', ')'];
-
-        for(let char of charsToEscape) {
-            let ind = str.indexOf(char);
-            if (ind != -1) {
-                str = str.slice(0, ind) + "\\" + str.slice(ind);
-            }
-        }
-        return str;
     }
 
     createKeywordItem(rowId, keyword, prompt) {
@@ -127,5 +98,4 @@ export default class Keywords {
 
         return keywordElement;
     }
-
 }
