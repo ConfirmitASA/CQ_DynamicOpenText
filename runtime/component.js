@@ -9,12 +9,18 @@ const defaultSettings = {
     pbPosition: '1',
     pbMinValues: [1,15,30],
     pbColors: ['#c41919','#e7e706','#4a964a'],
-    pbPrompts: ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'],
+    pbPrompts: {
+        "9" : ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback']
+    },
     countEnabled: false,
     showCharacterLimit: false,
     keywordEnabled: false,
-    keywordWords: ["Hello"],
-    keywordPrompts: ["This is a new prompt"]
+    keywordWords: {
+        "9": ['Hello']
+    },
+    keywordPrompts: {
+        "9": ['This is a new prompt']
+    }
 };
 
 register(function (question, customQuestionSettings, questionViewSettings) {

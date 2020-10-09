@@ -191,9 +191,17 @@
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+            
+            let currentLanguage = '';
 
+            let pbPromptsObj = {};
+            let keywordWordsObj = {};
+            let keywordPromptsObj = {};
 
-            function setValues(settings) {
+            function setValues(settings, uiSettings) {
+
+                currentLanguage = String(uiSettings.currentLanguage);
+                if (!settings) return;
 
                 pbEnabled.checked = settings.pbEnabled;
                 countEnabled.checked = settings.countEnabled;
@@ -208,20 +216,44 @@
 
                 var pbMinValues = settings.pbMinValues;
                 var pbColors = settings.pbColors;
-                var pbPrompts = settings.pbPrompts;
+                if(settings.hasOwnProperty('pbPrompts')) {
+                    pbPromptsObj = settings.pbPrompts;
+                }
+
+                if(settings.hasOwnProperty('pbPrompts') && settings.pbPrompts[currentLanguage] !== undefined) {
+                    for(var i = 0; i < pbMinValues.length; i++) {
+                        pbPromptInputs[i].value = settings.pbPrompts[currentLanguage][i];
+                    }
+                } else {
+                    for(var i = 0; i < pbMinValues.length; i++) {
+                        pbPromptInputs[i].value = '';
+                    }
+                }
 
                 for(var i = 0; i < pbMinValues.length; i++) {
                     pbMinInputs[i].value = pbMinValues[i];
                     pbColorInputs[i].value = pbColors[i];
-                    pbPromptInputs[i].value = pbPrompts[i];
                 }
-
 
                 //characterLimit.value = settings.characterLimit;
                 showCharacterLimit.checked = settings.showCharacterLimit;
 
-                var keywordWords = settings.keywordWords;
-                var keywordPrompts = settings.keywordPrompts;
+                var keywordWords = [];
+                var keywordPrompts = [];
+
+                if(settings.hasOwnProperty('keywordWords')) {
+                    keywordWordsObj = settings.keywordWords;
+                }
+                if(settings.hasOwnProperty('keywordPrompts')) {
+                    keywordPromptsObj = settings.keywordPrompts;
+                }
+
+                if(settings.hasOwnProperty('keywordWords') && settings.keywordWords[currentLanguage] !== undefined) {
+                    keywordWords = settings.keywordWords[currentLanguage];
+                }
+                if(settings.hasOwnProperty('keywordPrompts') && settings.keywordPrompts[currentLanguage] !== undefined) {
+                    keywordPrompts = settings.keywordPrompts[currentLanguage];
+                }
 
                 if(starterKeywordWordInputs.length === 3 && keywordWords.length > starterKeywordWordInputs.length) {
                     var newRowsToAdd = keywordWords.length - starterKeywordWordInputs.length;
@@ -229,20 +261,17 @@
                         addKeywordsRow();
                     }
                 }
-
                 starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
                 starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+                for(var j = 0; j < starterKeywordWordInputs.length; j++) {
+                    starterKeywordWordInputs[j].value = '';
+                    starterKeywordPromptInputs[j].value = '';
+                }
 
                 for(var j = 0; j < keywordWords.length; j++) {
                     starterKeywordWordInputs[j].value = keywordWords[j];
                     starterKeywordPromptInputs[j].value = keywordPrompts[j];
-                }
-
-                if(keywordWords.length >= 3 && starterKeywordWordInputs.length > keywordWords.length) {
-                    for(var extra = keywordWords.length; extra < starterKeywordWordInputs.length; extra++) {
-                        starterKeywordWordInputs[extra].value = "";
-                        starterKeywordPromptInputs[extra].value = "";
-                    }
                 }
             }
 
@@ -257,6 +286,8 @@
                     pbPrompts.push(pbPromptInputs[i].value);
                 }
 
+                pbPromptsObj[currentLanguage] = pbPrompts;
+
                 var keywordWords = [];
                 var keywordPrompts = [];
 
@@ -270,18 +301,22 @@
                     }
                 }
 
+                keywordWordsObj[currentLanguage] = keywordWords;
+                keywordPromptsObj[currentLanguage] = keywordPrompts;
+
                 var settings = { pbEnabled: pbEnabled.checked,
                                  pbHeight: parseInt(pbHeightInput.value),
                                  pbPosition: pbPositionSelector.options[pbPositionSelector.selectedIndex].value,
                                  pbMinValues: pbMinValues,
                                  pbColors: pbColors,
-                                 pbPrompts: pbPrompts,
+                                 pbPrompts: pbPromptsObj,
                                  countEnabled: countEnabled.checked,
                                  //characterLimit: parseInt(characterLimit.value),
                                  showCharacterLimit: showCharacterLimit.checked,
                                  keywordEnabled: keywordEnabled.checked,
-                                 keywordWords: keywordWords,
-                                 keywordPrompts: keywordPrompts};
+                                 keywordWords: keywordWordsObj,
+                                 keywordPrompts: keywordPromptsObj
+                };
 
                 var hasError = false;
                 customQuestion.saveChanges(settings, hasError);
@@ -295,6 +330,10 @@
             }
 
             pbPositionSelector.addEventListener('change', saveChanges, true);
+            pbEnabled.addEventListener('change', saveChanges, true);
+            countEnabled.addEventListener('change', saveChanges, true);
+            showCharacterLimit.addEventListener('change', saveChanges, true);
+            keywordEnabled.addEventListener('change', saveChanges, true);
 
         </script>
     </body>

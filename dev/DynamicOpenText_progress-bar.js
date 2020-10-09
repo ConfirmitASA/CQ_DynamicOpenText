@@ -6,12 +6,14 @@ export const promptPosition = Object.freeze({
 
 export default class ProgressBar {
     constructor(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
+        this.currentLanguage = String(Confirmit.page.surveyInfo.language);
+
         this.pbQuestion = question;
         this.pbHeight = pbHeight && pbHeight > 0 ? pbHeight : 5;
         this.pbPosition = pbPosition ? pbPosition : '1';
         this.pbMinValues = pbMinValues && pbMinValues.length > 0 ? pbMinValues : [1,15,30];
         this.pbColors = pbColors && pbColors.length > 0 ? pbColors : ['#ff0000','#ffff00','#00ff00'];
-        this.pbPrompts = pbPrompts && pbPrompts.length > 0 ? pbPrompts : ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'];
+        this.pbPrompts = pbPrompts[this.currentLanguage] && pbPrompts[this.currentLanguage].length > 0 ? pbPrompts[this.currentLanguage] : ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'];
         this.pbBackgroundColor = '#F0F2F5';
         this.allValues = this.createArrayOfAllValues(this.pbMinValues, this.pbColors, this.pbPrompts);
     }

@@ -2,9 +2,11 @@ import KeywordPromptPair from "./DynamicOpenText_keyword-prompt-pair";
 
 export default class Keywords {
     constructor(question, keywordWords, keywordPrompts) {
+        this.currentLanguage = String(Confirmit.page.surveyInfo.language);
+
         this.keywordQuestion = question;
-        this.words = keywordWords ? keywordWords : [];
-        this.prompts = keywordPrompts ? keywordPrompts : [];
+        this.words = keywordWords[this.currentLanguage] ? keywordWords[this.currentLanguage] : [];
+        this.prompts = keywordPrompts[this.currentLanguage] ? keywordPrompts[this.currentLanguage] : [];
         this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
     }
 
