@@ -2,25 +2,26 @@
 import DynamicOpenText from "./DynamicOpenText";
 (function () {
     const question = Confirmit.page.questions[0];
-    const pbEnabled = false;
-    const pbHeight = 5;
-    const pbPosition = '1';
-    const pbMinValues = [1,15,30];
-    const pbColors = ['#ff0000','#ffff00','#00ff00'];
-    const pbPrompts = {
-        "9" : ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback']
-    };
-    const countEnabled = false;
-    const characterLimit = null;
-    const showCharacterLimit = false;
-    const keywordEnabled = false;
-    const keywordWords = {
-        "9": ['Hello']
-    };
-    const keywordPrompts = {
-        "9": ['This is a new prompt']
+    const defaultSettings = {
+        progressBar: {
+            isEnabled: false,
+            height: 5,
+            position: 'above',
+            minValues: [1,15,30],
+            colors: ['#ff0000','#ffff00','#00ff00'],
+            prompts: {}
+        },
+        characterCount: {
+            isEnabled: false,
+            isCharacterLimitEnabled: false
+        },
+        keywords: {
+            isEnabled: false,
+            keywords: {},
+            prompts: {}
+        }
     };
 
-    const DynamicOpenText = new DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, characterLimit, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts);
+    const DynamicOpenText = new DynamicOpenText(question, defaultSettings);
     DynamicOpenText.render();
 })();

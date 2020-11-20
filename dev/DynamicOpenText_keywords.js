@@ -1,33 +1,36 @@
 import KeywordPromptPair from "./DynamicOpenText_keyword-prompt-pair";
+import QuestionElementsGetters from "./QuestionElementsGetters";
 
 export default class Keywords {
-    constructor(question, keywordWords, keywordPrompts) {
+    constructor(question, settings) {
         this.currentLanguage = String(Confirmit.page.surveyInfo.language);
 
-        this.keywordQuestion = question;
-        this.words = keywordWords[this.currentLanguage] ? keywordWords[this.currentLanguage] : [];
-        this.prompts = keywordPrompts[this.currentLanguage] ? keywordPrompts[this.currentLanguage] : [];
+        this.question = question;
+        this.words = settings.keywords[this.currentLanguage] ? settings.keywords[this.currentLanguage] : [];
+        this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
         this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
+
+        this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+        this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
     }
 
     render() {
+        let keywordElement = this.createKeywordElement(this.questionElement_textarea.offsetWidth);
+        this.questionElement.appendChild(keywordElement);
 
-        let questionElement = document.getElementById(this.keywordQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-
-        let keywordElement = this.createKeywordElement(questionElement_textarea.offsetWidth);
-        questionElement.appendChild(keywordElement);
-
-        questionElement_textarea.addEventListener("input", this.updateKeywords);
-        questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
+        this.questionElement_textarea.addEventListener("input", this.updateKeywords);
+        this.questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
     }
 
     updateKeywords = () => {
-        let questionElement = document.getElementById(this.keywordQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let keywordElement = questionElement.getElementsByClassName("cf-question__dynamic-keywords")[0];
-        let textValue = questionElement_textarea.value.trim().toLowerCase();
+        let keywordElement = QuestionElementsGetters.getKeywordsElement(this.questionElement);
+        let enteredText = this.questionElement_textarea.value.trim().toLowerCase();
         let keywordList = keywordElement.firstElementChild;
+        //When we have one prompt for multiple keywords, we need to show the prompt only once
+        //In order to do that we use the same rowId for the keywords
+        //If we already have a keywordItem it can be
+        // a) for this exact keyword we are looking at -> existingItemsAsKeyword
+        // b) for another keyword with the same prompt (and rowId) -> existingItemsAsRow
         let existingItemsAsKeyword = [];
         let existingItemsAsRow = [];
 
@@ -35,7 +38,7 @@ export default class Keywords {
             existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
             existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-            if (pair.matchingMethod(textValue)) {
+            if (pair.isMatching(enteredText)) {
                 if (existingItemsAsRow.length === 0) {
                     keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
                     break;
@@ -51,11 +54,9 @@ export default class Keywords {
     }
 
     updateKeywordsWidth = () => {
-        let questionElement = document.getElementById(this.keywordQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
+        let keywordElement = QuestionElementsGetters.getKeywordsElement(this.questionElement);
 
-        keywordElement.style.width = questionElement_textarea.offsetWidth + "px";
+        keywordElement.style.width = this.questionElement_textarea.offsetWidth + "px";
     }
 
     organizeKeywords(words, prompts) {

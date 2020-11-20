@@ -3,7 +3,7 @@ export default class KeywordPromptPair {
         this.keyword = keyword;
         this.prompt = prompt;
         this.rowId = rowId;
-        this.matchingMethod = this.addMatchingMethod();
+        this.isMatching = this.addMatchingMethod();
     }
 
     addMatchingMethod() {

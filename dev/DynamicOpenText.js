@@ -1,45 +1,85 @@
 import ProgressBar from "./DynamicOpenText_progress-bar";
 import CharacterCount from "./DynamicOpenText_character-count";
 import Keywords from "./DynamicOpenText_keywords";
+import QuestionElementsGetters from "./QuestionElementsGetters";
 
 export default class DynamicOpenText {
 
-    constructor(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
+    constructor(question, settings) {
         this.question = question;
-        this.progressBarEnabled = pbEnabled;
-        this.characterCountEnabled = countEnabled;
-        this.keywordsEnabled = keywordEnabled;
-
-        this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-        this.characterCount = new CharacterCount(question, showCharacterLimit);
-        this.keywords = new Keywords(question, keywordWords, keywordPrompts);
-
+        this.settings = settings;
     }
 
     render() {
         let questionInput = document.getElementById(this.question.id + "_input");
         questionInput.addEventListener("input", this.setValueToQuestion);
 
-        if(this.progressBarEnabled) {
-            this.progressBar.render();
+        if(this.settings.progressBar.isEnabled) {
+            let progressBar = new ProgressBar(this.question, this.settings.progressBar);
+            progressBar.render();
         }
 
-        if(this.characterCountEnabled) {
-            this.characterCount.render();
+        if(this.settings.characterCount.isEnabled) {
+            let characterCount = new CharacterCount(this.question, this.settings.characterCount);
+            characterCount.render();
         }
 
-        if(this.keywordsEnabled) {
-            this.keywords.render();
+        if(this.settings.keywords.isEnabled) {
+            let keywords = new Keywords(this.question, this.settings.keywords);
+            keywords.render();
         }
+
+        this.setValidation();
     }
 
     setValueToQuestion = () => {
         let questionInput = document.getElementById(this.question.id + "_input");
-        this.question.setValue(questionInput.value);
+        if(questionInput) {
+            this.question.setValue(questionInput.value);
+        }
     }
 
-    onQuestionValidationComplete() {
-        console.log("validation check");
+    setValidation = () => {
+        this.question.validationEvent.on(this.showValidationResultMessages);
     }
 
+    showValidationResultMessages = (validationResult) => {
+        let questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+        let errorList;
+        try {
+            errorList = questionElement.getElementsByClassName("cf-error-list")[0];
+        }
+        catch {
+            console.log("Could not find error list element");
+            return;
+        }
+        this.clearErrorList(errorList);
+
+        let errorsCount = validationResult.errors.length;
+        if(errorsCount > 0) {
+            errorList.parentElement.classList.remove("cf-error-block--hidden");
+            validationResult.errors.forEach(error => {
+                    let errorItem = this.createErrorListItem(error.message);
+                    errorList.appendChild(errorItem);
+                }
+            );
+        }
+    }
+
+    clearErrorList(errorList) {
+        let errorLiElement = errorList.lastElementChild;
+        while (errorLiElement) {
+            errorList.removeChild(errorLiElement);
+            errorLiElement = errorList.lastElementChild;
+        }
+        errorList.parentElement.classList.add("cf-error-block--hidden");
+    }
+
+    createErrorListItem(message) {
+        let item = document.createElement('li');
+        item.className += "cf-error-list__item";
+        item.innerText = message;
+
+        return item;
+    }
 }

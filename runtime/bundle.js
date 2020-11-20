@@ -92,14 +92,87 @@
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./dev/DynamicOpenText_progress-bar.js
+// CONCATENATED MODULE: ./dev/QuestionElementsGetters.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var QuestionElementsGetters = /*#__PURE__*/function () {
+  function QuestionElementsGetters() {
+    _classCallCheck(this, QuestionElementsGetters);
+  }
+
+  _createClass(QuestionElementsGetters, null, [{
+    key: "getQuestionElement",
+    value: function getQuestionElement(questionId) {
+      try {
+        return document.getElementById(questionId);
+      } catch (e) {
+        console.log("Could not find question with id " + questionId);
+      }
+    }
+  }, {
+    key: "getQuestionElement_Content",
+    value: function getQuestionElement_Content(questionElement) {
+      try {
+        return questionElement.querySelectorAll('.cf-question__content')[0];
+      } catch (e) {
+        console.log("Could not find the cf-question__content");
+      }
+    }
+  }, {
+    key: "getQuestionElement_Textarea",
+    value: function getQuestionElement_Textarea(questionElement_content) {
+      try {
+        return questionElement_content.querySelectorAll('textarea')[0];
+      } catch (e) {
+        console.log("Could not find the textarea");
+      }
+    }
+  }, {
+    key: "getProgressBarElement",
+    value: function getProgressBarElement(questionElement) {
+      try {
+        return questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+      } catch (e) {
+        console.log("Could not find the progress bar element");
+      }
+    }
+  }, {
+    key: "getProgressBarPromptElement",
+    value: function getProgressBarPromptElement(questionElement) {
+      try {
+        return questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+      } catch (e) {
+        console.log("Could not find the progress bar prompt element");
+      }
+    }
+  }, {
+    key: "getKeywordsElement",
+    value: function getKeywordsElement(questionElement) {
+      try {
+        return questionElement.getElementsByClassName('cf-question__dynamic-keywords')[0];
+      } catch (e) {
+        console.log("Could not find the progress bar prompt element");
+      }
+    }
+  }]);
+
+  return QuestionElementsGetters;
+}();
+
+
+// CONCATENATED MODULE: ./dev/DynamicOpenText_progress-bar.js
+function DynamicOpenText_progress_bar_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function DynamicOpenText_progress_bar_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function DynamicOpenText_progress_bar_createClass(Constructor, protoProps, staticProps) { if (protoProps) DynamicOpenText_progress_bar_defineProperties(Constructor.prototype, protoProps); if (staticProps) DynamicOpenText_progress_bar_defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var promptPosition = Object.freeze({
   "above": "1",
@@ -107,27 +180,25 @@ var promptPosition = Object.freeze({
   "below": "3"
 });
 
-var ProgressBar = /*#__PURE__*/function () {
-  function ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
+var DynamicOpenText_progress_bar_ProgressBar = /*#__PURE__*/function () {
+  function ProgressBar(question, settings) {
     var _this = this;
 
-    _classCallCheck(this, ProgressBar);
+    DynamicOpenText_progress_bar_classCallCheck(this, ProgressBar);
 
     _defineProperty(this, "updatePrompt", function () {
-      var questionElement = document.getElementById(_this.pbQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var promptElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
-      var textLength = questionElement_textarea.value.length;
+      var promptElement = QuestionElementsGetters.getProgressBarPromptElement(_this.questionElement);
+      var answerTextLength = _this.questionElement_textarea.value.length;
 
-      if (textLength >= _this.allValues[_this.allValues.length - 1].value) {
-        promptElement.innerHTML = _this.allValues[_this.allValues.length - 1].prompt;
+      if (answerTextLength >= _this.promptsSettings[_this.promptsSettings.length - 1].value) {
+        promptElement.innerHTML = _this.promptsSettings[_this.promptsSettings.length - 1].prompt;
       } else {
-        if (textLength < _this.allValues[0].value) {
+        if (answerTextLength < _this.promptsSettings[0].value) {
           promptElement.innerHTML = "";
         } else {
-          for (var i = 0; i < _this.allValues.length - 1; i++) {
-            if (textLength >= _this.allValues[i].value && textLength < _this.allValues[i + 1].value) {
-              promptElement.innerHTML = _this.allValues[i].prompt;
+          for (var i = 0; i < _this.promptsSettings.length - 1; i++) {
+            if (answerTextLength >= _this.promptsSettings[i].value && answerTextLength < _this.promptsSettings[i + 1].value) {
+              promptElement.innerHTML = _this.promptsSettings[i].prompt;
             }
           }
         }
@@ -135,28 +206,27 @@ var ProgressBar = /*#__PURE__*/function () {
     });
 
     _defineProperty(this, "updateBarColor", function () {
-      var questionElement = document.getElementById(_this.pbQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
-      var textLength = questionElement_textarea.value.length;
-      var pbElementContent = pbElement.lastElementChild;
+      var barElement = QuestionElementsGetters.getProgressBarElement(_this.questionElement);
+      var answerTextLength = _this.questionElement_textarea.value.length;
+      var barElementContent = barElement.lastElementChild;
 
-      if (textLength >= _this.allValues[_this.allValues.length - 1].value) {
-        pbElementContent.style.backgroundColor = _this.allValues[_this.allValues.length - 1].color;
+      if (answerTextLength >= _this.promptsSettings[_this.promptsSettings.length - 1].value) {
+        barElementContent.style.backgroundColor = _this.promptsSettings[_this.promptsSettings.length - 1].color;
 
-        _this.setWidth(pbElementContent, 100, "%");
+        _this.setWidth(barElementContent, 100, "%");
       } else {
-        if (textLength < _this.allValues[0].value) {
-          pbElementContent.style.backgroundColor = "transparent";
+        if (answerTextLength < _this.promptsSettings[0].value) {
+          barElementContent.style.backgroundColor = "transparent";
 
-          _this.setWidth(pbElementContent, 100, "%");
+          _this.setWidth(barElementContent, 0, "%");
         } else {
-          for (var i = 0; i < _this.allValues.length - 1; i++) {
-            if (textLength >= _this.allValues[i].value && textLength < _this.allValues[i + 1].value) {
-              var newWidth = 100 / _this.allValues.length * (i + 1);
-              pbElementContent.style.backgroundColor = _this.allValues[i].color;
+          for (var i = 0; i < _this.promptsSettings.length - 1; i++) {
+            if (answerTextLength >= _this.promptsSettings[i].value && answerTextLength < _this.promptsSettings[i + 1].value) {
+              var newWidth = 100 / _this.promptsSettings.length * (i + 1);
 
-              _this.setWidth(pbElementContent, newWidth, "%");
+              _this.setWidth(barElementContent, newWidth, "%");
+
+              barElementContent.style.backgroundColor = _this.promptsSettings[i].color;
             }
           }
         }
@@ -164,80 +234,81 @@ var ProgressBar = /*#__PURE__*/function () {
     });
 
     _defineProperty(this, "updateBarWidth", function () {
-      var questionElement = document.getElementById(_this.pbQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
-      pbElement.style.width = questionElement_textarea.offsetWidth + 'px';
+      var barElement = QuestionElementsGetters.getProgressBarElement(_this.questionElement);
+      barElement.style.width = _this.questionElement_textarea.offsetWidth + 'px';
     });
 
     _defineProperty(this, "adjustPromptPositionIfInsideBar", function () {
-      var questionElement = document.getElementById(_this.pbQuestion.id);
-      var pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
-      var pbPrompt = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
-      var barWidth = questionElement.querySelectorAll('textarea')[0].offsetWidth;
-      var promptWidth = pbPrompt.scrollWidth;
+      var barElement = QuestionElementsGetters.getProgressBarElement(_this.questionElement);
+      var promptElement = QuestionElementsGetters.getProgressBarPromptElement(_this.questionElement);
 
-      if (pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth < promptWidth) {
-        questionElement.insertBefore(pbPrompt, pbElement);
-        pbPrompt.classList.remove("cf-question__dynamic-progress-prompt--inside");
+      var barWidth = _this.questionElement.querySelectorAll('textarea')[0].offsetWidth;
+
+      var promptWidth = promptElement.scrollWidth;
+      var promptInsideClass = "cf-question__dynamic-progress-prompt--inside";
+
+      if (promptElement.classList.contains(promptInsideClass) && barWidth < promptWidth) {
+        _this.questionElement.insertBefore(promptElement, barElement);
+
+        promptElement.classList.remove(promptInsideClass);
       }
 
-      if (!pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside") && barWidth > promptWidth) {
-        pbElement.lastElementChild.appendChild(pbPrompt);
-        pbPrompt.classList.add("cf-question__dynamic-progress-prompt--inside");
+      if (!promptElement.classList.contains(promptInsideClass) && barWidth > promptWidth) {
+        barElement.lastElementChild.appendChild(promptElement);
+        promptElement.classList.add(promptInsideClass);
       }
     });
 
     this.currentLanguage = String(Confirmit.page.surveyInfo.language);
-    this.pbQuestion = question;
-    this.pbHeight = pbHeight && pbHeight > 0 ? pbHeight : 5;
-    this.pbPosition = pbPosition ? pbPosition : '1';
-    this.pbMinValues = pbMinValues && pbMinValues.length > 0 ? pbMinValues : [1, 15, 30];
-    this.pbColors = pbColors && pbColors.length > 0 ? pbColors : ['#ff0000', '#ffff00', '#00ff00'];
-    this.pbPrompts = pbPrompts[this.currentLanguage] && pbPrompts[this.currentLanguage].length > 0 ? pbPrompts[this.currentLanguage] : ['Good start', 'A little more information would be appreciated', 'Fantastic! Many thanks for your feedback'];
-    this.pbBackgroundColor = '#F0F2F5';
-    this.allValues = this.createArrayOfAllValues(this.pbMinValues, this.pbColors, this.pbPrompts);
+    this.question = question;
+    this.height = settings.height && settings.height > 0 ? settings.height : 5;
+    this.position = settings.position ? settings.position : promptPosition.above;
+    this.minValues = settings.minValues && settings.minValues.length > 0 ? settings.minValues : [1, 15, 30];
+    this.colors = settings.colors && settings.colors.length > 0 ? settings.colors : ['#ff0000', '#ffff00', '#00ff00'];
+    this.prompts = settings.prompts[this.currentLanguage] && settings.prompts[this.currentLanguage].length > 0 ? settings.prompts[this.currentLanguage] : ["", "", ""];
+    this.backgroundColor = '#F0F2F5';
+    this.promptsSettings = this.createArrayOfPromptsSettings(this.minValues, this.colors, this.prompts);
+    this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+    this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
   }
 
-  _createClass(ProgressBar, [{
+  DynamicOpenText_progress_bar_createClass(ProgressBar, [{
     key: "render",
     value: function render() {
-      if (this.allValues.length > 0) {
-        var questionElement = document.getElementById(this.pbQuestion.id);
-        var questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-        var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        var pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
-        questionElement.insertBefore(pbElement, questionElement_content);
+      if (this.promptsSettings.length > 0) {
+        var questionElement_content = QuestionElementsGetters.getQuestionElement_Content(this.questionElement);
+        var barElement = this.createBarElement(this.height, this.questionElement_textarea.offsetWidth, this.backgroundColor);
+        this.questionElement.insertBefore(barElement, questionElement_content);
         var promptElement = this.createPromptElement();
 
-        switch (this.pbPosition) {
+        switch (this.position) {
           case promptPosition.above:
-            questionElement.insertBefore(promptElement, pbElement);
+            this.questionElement.insertBefore(promptElement, barElement);
             break;
 
           case promptPosition.inside:
-            if (this.pbHeight < 15) {
-              questionElement.insertBefore(promptElement, pbElement);
+            if (this.height < 15) {
+              this.questionElement.insertBefore(promptElement, barElement);
             } else {
-              pbElement.lastElementChild.appendChild(promptElement);
+              barElement.lastElementChild.appendChild(promptElement);
             }
 
             break;
 
           case promptPosition.below:
-            questionElement.insertBefore(promptElement, pbElement.nextSibling);
+            this.questionElement.insertBefore(promptElement, barElement.nextSibling);
             break;
         }
 
-        questionElement_textarea.addEventListener("input", this.updatePrompt);
-        questionElement_textarea.addEventListener("keyup", this.updateBarColor);
-        questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+        this.questionElement_textarea.addEventListener("input", this.updatePrompt);
+        this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+        this.questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
 
-        if (this.pbPosition === promptPosition.inside && this.pbHeight >= 15) {
+        if (this.position === promptPosition.inside && this.height >= 15) {
           promptElement.classList.add("cf-question__dynamic-progress-prompt--inside");
           this.adjustPromptPositionIfInsideBar();
-          questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
-          questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
+          this.questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
+          this.questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
           window.addEventListener("resize", this.adjustPromptPositionIfInsideBar);
         }
       }
@@ -245,15 +316,15 @@ var ProgressBar = /*#__PURE__*/function () {
   }, {
     key: "createBarElement",
     value: function createBarElement(height, width, backgroundColor) {
-      var pbElement = document.createElement('div');
-      pbElement.className += 'cf-question__dynamic-progress-bar';
-      pbElement.style.height = height + 'px';
-      pbElement.style.width = width + 'px';
-      pbElement.style.backgroundColor = backgroundColor;
-      var pbElementContent = document.createElement('div');
-      pbElementContent.className = "dynamic-progress-bar__content";
-      pbElement.appendChild(pbElementContent);
-      return pbElement;
+      var barElement = document.createElement('div');
+      barElement.className += 'cf-question__dynamic-progress-bar';
+      barElement.style.height = height + 'px';
+      barElement.style.width = width + 'px';
+      barElement.style.backgroundColor = backgroundColor;
+      var barElementContent = document.createElement('div');
+      barElementContent.className = "dynamic-progress-bar__content";
+      barElement.appendChild(barElementContent);
+      return barElement;
     }
   }, {
     key: "createPromptElement",
@@ -263,8 +334,8 @@ var ProgressBar = /*#__PURE__*/function () {
       return promptElement;
     }
   }, {
-    key: "createArrayOfAllValues",
-    value: function createArrayOfAllValues(minValues, colors, prompts) {
+    key: "createArrayOfPromptsSettings",
+    value: function createArrayOfPromptsSettings(minValues, colors, prompts) {
       var values = [];
 
       for (var i = 0; i < minValues.length; i++) {
@@ -290,8 +361,8 @@ var ProgressBar = /*#__PURE__*/function () {
     }
   }, {
     key: "setWidth",
-    value: function setWidth(pbElement, width, widthType) {
-      pbElement.style.width = width + widthType;
+    value: function setWidth(barElement, width, widthType) {
+      barElement.style.width = width + widthType;
     }
   }]);
 
@@ -308,48 +379,47 @@ function DynamicOpenText_character_count_createClass(Constructor, protoProps, st
 
 function DynamicOpenText_character_count_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var CharacterCount = /*#__PURE__*/function () {
-  function CharacterCount(question, showCharacterLimit) {
+
+var characterCounterClass = "cf-question__dynamic-character-counter";
+
+var DynamicOpenText_character_count_CharacterCount = /*#__PURE__*/function () {
+  function CharacterCount(question, settings) {
     var _this = this;
 
     DynamicOpenText_character_count_classCallCheck(this, CharacterCount);
 
     DynamicOpenText_character_count_defineProperty(this, "updateCount", function () {
-      var questionElement = document.getElementById(_this.ccQuestion.id);
-      var questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-      var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
-      var currentCharacterCount = questionElement_textarea.value.length;
-      var countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
+      var currentCharacterCount = _this.questionElement_textarea.value.length;
+
+      var countElement = _this.questionElement.querySelectorAll('.' + characterCounterClass)[0];
+
       countElement.textContent = currentCharacterCount;
 
-      if (_this.showCharacterLimit && !!_this.characterLimit) {
+      if (_this.isCharacterLimitEnabled && !!_this.characterLimit) {
         countElement.textContent += "/" + _this.characterLimit;
-      } //countElement.style.color = '#000000';
-
+      }
     });
 
-    this.ccQuestion = question;
-    this.characterLimit = this.ccQuestion.maxLength;
-    this.showCharacterLimit = showCharacterLimit;
+    this.question = question;
+    this.characterLimit = this.question.maxLength;
+    this.isCharacterLimitEnabled = settings.isCharacterLimitEnabled;
+    this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+    this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
   }
 
   DynamicOpenText_character_count_createClass(CharacterCount, [{
     key: "render",
     value: function render() {
-      var questionElement = document.getElementById(this.ccQuestion.id);
-      var questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-      var questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
-      var ccElement = document.createElement('div');
-      ccElement.className += 'cf-question__dynamic-character-counter';
-      ccElement.textContent = "0";
+      var element = document.createElement('div');
+      element.className += characterCounterClass;
+      element.textContent = "0";
 
-      if (this.showCharacterLimit && !!this.characterLimit) {
-        ccElement.textContent += "/" + this.characterLimit;
-      } //questionElement_content.insertAdjacentElement("beforeend", ccElement);
+      if (this.isCharacterLimitEnabled && !!this.characterLimit) {
+        element.textContent += "/" + this.characterLimit;
+      }
 
-
-      questionElement.appendChild(ccElement);
-      questionElement_textarea.addEventListener("input", this.updateCount);
+      this.questionElement.appendChild(element);
+      this.questionElement_textarea.addEventListener("input", this.updateCount);
     }
   }]);
 
@@ -371,7 +441,7 @@ var KeywordPromptPair = /*#__PURE__*/function () {
     this.keyword = keyword;
     this.prompt = prompt;
     this.rowId = rowId;
-    this.matchingMethod = this.addMatchingMethod();
+    this.isMatching = this.addMatchingMethod();
   }
 
   DynamicOpenText_keyword_prompt_pair_createClass(KeywordPromptPair, [{
@@ -460,18 +530,24 @@ function DynamicOpenText_keywords_defineProperty(obj, key, value) { if (key in o
 
 
 
+
 var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
-  function Keywords(question, keywordWords, keywordPrompts) {
+  function Keywords(question, settings) {
     var _this = this;
 
     DynamicOpenText_keywords_classCallCheck(this, Keywords);
 
     DynamicOpenText_keywords_defineProperty(this, "updateKeywords", function () {
-      var questionElement = document.getElementById(_this.keywordQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var keywordElement = questionElement.getElementsByClassName("cf-question__dynamic-keywords")[0];
-      var textValue = questionElement_textarea.value.trim().toLowerCase();
-      var keywordList = keywordElement.firstElementChild;
+      var keywordElement = QuestionElementsGetters.getKeywordsElement(_this.questionElement);
+
+      var enteredText = _this.questionElement_textarea.value.trim().toLowerCase();
+
+      var keywordList = keywordElement.firstElementChild; //When we have one prompt for multiple keywords, we need to show the prompt only once
+      //In order to do that we use the same rowId for the keywords
+      //If we already have a keywordItem it can be
+      // a) for this exact keyword we are looking at -> existingItemsAsKeyword
+      // b) for another keyword with the same prompt (and rowId) -> existingItemsAsRow
+
       var existingItemsAsKeyword = [];
       var existingItemsAsRow = [];
 
@@ -484,7 +560,7 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
           existingItemsAsKeyword = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[keyword="' + pair.keyword + '"]'));
           existingItemsAsRow = Array.prototype.slice.call(keywordElement.querySelectorAll('.dynamic-keywords__item[row-id="row-id' + pair.rowId + '"]'));
 
-          if (pair.matchingMethod(textValue)) {
+          if (pair.isMatching(enteredText)) {
             if (existingItemsAsRow.length === 0) {
               keywordElement.firstElementChild.appendChild(_this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
               break;
@@ -505,28 +581,26 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
     });
 
     DynamicOpenText_keywords_defineProperty(this, "updateKeywordsWidth", function () {
-      var questionElement = document.getElementById(_this.keywordQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var keywordElement = document.getElementsByClassName("cf-question__dynamic-keywords")[0];
-      keywordElement.style.width = questionElement_textarea.offsetWidth + "px";
+      var keywordElement = QuestionElementsGetters.getKeywordsElement(_this.questionElement);
+      keywordElement.style.width = _this.questionElement_textarea.offsetWidth + "px";
     });
 
     this.currentLanguage = String(Confirmit.page.surveyInfo.language);
-    this.keywordQuestion = question;
-    this.words = keywordWords[this.currentLanguage] ? keywordWords[this.currentLanguage] : [];
-    this.prompts = keywordPrompts[this.currentLanguage] ? keywordPrompts[this.currentLanguage] : [];
+    this.question = question;
+    this.words = settings.keywords[this.currentLanguage] ? settings.keywords[this.currentLanguage] : [];
+    this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
     this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
+    this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+    this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
   }
 
   DynamicOpenText_keywords_createClass(Keywords, [{
     key: "render",
     value: function render() {
-      var questionElement = document.getElementById(this.keywordQuestion.id);
-      var questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-      var keywordElement = this.createKeywordElement(questionElement_textarea.offsetWidth);
-      questionElement.appendChild(keywordElement);
-      questionElement_textarea.addEventListener("input", this.updateKeywords);
-      questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
+      var keywordElement = this.createKeywordElement(this.questionElement_textarea.offsetWidth);
+      this.questionElement.appendChild(keywordElement);
+      this.questionElement_textarea.addEventListener("input", this.updateKeywords);
+      this.questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
     }
   }, {
     key: "organizeKeywords",
@@ -591,8 +665,9 @@ function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Obj
 
 
 
+
 var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
-  function DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts) {
+  function DynamicOpenText(question, settings) {
     var _this = this;
 
     DynamicOpenText_classCallCheck(this, DynamicOpenText);
@@ -600,16 +675,42 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     DynamicOpenText_defineProperty(this, "setValueToQuestion", function () {
       var questionInput = document.getElementById(_this.question.id + "_input");
 
-      _this.question.setValue(questionInput.value);
+      if (questionInput) {
+        _this.question.setValue(questionInput.value);
+      }
+    });
+
+    DynamicOpenText_defineProperty(this, "setValidation", function () {
+      _this.question.validationEvent.on(_this.showValidationResultMessages);
+    });
+
+    DynamicOpenText_defineProperty(this, "showValidationResultMessages", function (validationResult) {
+      var questionElement = QuestionElementsGetters.getQuestionElement(_this.question.id);
+      var errorList;
+
+      try {
+        errorList = questionElement.getElementsByClassName("cf-error-list")[0];
+      } catch (_unused) {
+        console.log("Could not find error list element");
+        return;
+      }
+
+      _this.clearErrorList(errorList);
+
+      var errorsCount = validationResult.errors.length;
+
+      if (errorsCount > 0) {
+        errorList.parentElement.classList.remove("cf-error-block--hidden");
+        validationResult.errors.forEach(function (error) {
+          var errorItem = _this.createErrorListItem(error.message);
+
+          errorList.appendChild(errorItem);
+        });
+      }
     });
 
     this.question = question;
-    this.progressBarEnabled = pbEnabled;
-    this.characterCountEnabled = countEnabled;
-    this.keywordsEnabled = keywordEnabled;
-    this.progressBar = new ProgressBar(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts);
-    this.characterCount = new CharacterCount(question, showCharacterLimit);
-    this.keywords = new DynamicOpenText_keywords_Keywords(question, keywordWords, keywordPrompts);
+    this.settings = settings;
   }
 
   DynamicOpenText_createClass(DynamicOpenText, [{
@@ -618,22 +719,42 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
       var questionInput = document.getElementById(this.question.id + "_input");
       questionInput.addEventListener("input", this.setValueToQuestion);
 
-      if (this.progressBarEnabled) {
-        this.progressBar.render();
+      if (this.settings.progressBar.isEnabled) {
+        var progressBar = new DynamicOpenText_progress_bar_ProgressBar(this.question, this.settings.progressBar);
+        progressBar.render();
       }
 
-      if (this.characterCountEnabled) {
-        this.characterCount.render();
+      if (this.settings.characterCount.isEnabled) {
+        var characterCount = new DynamicOpenText_character_count_CharacterCount(this.question, this.settings.characterCount);
+        characterCount.render();
       }
 
-      if (this.keywordsEnabled) {
-        this.keywords.render();
+      if (this.settings.keywords.isEnabled) {
+        var keywords = new DynamicOpenText_keywords_Keywords(this.question, this.settings.keywords);
+        keywords.render();
       }
+
+      this.setValidation();
     }
   }, {
-    key: "onQuestionValidationComplete",
-    value: function onQuestionValidationComplete() {
-      console.log("validation check");
+    key: "clearErrorList",
+    value: function clearErrorList(errorList) {
+      var errorLiElement = errorList.lastElementChild;
+
+      while (errorLiElement) {
+        errorList.removeChild(errorLiElement);
+        errorLiElement = errorList.lastElementChild;
+      }
+
+      errorList.parentElement.classList.add("cf-error-block--hidden");
+    }
+  }, {
+    key: "createErrorListItem",
+    value: function createErrorListItem(message) {
+      var item = document.createElement('li');
+      item.className += "cf-error-list__item";
+      item.innerText = message;
+      return item;
     }
   }]);
 

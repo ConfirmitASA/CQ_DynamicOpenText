@@ -22,8 +22,8 @@
                 <div class="comd-panel__collapse-area node-property__content node-property__content--progress">
                     <div class="setting-row">
                         <div class="co-toggle co-toggle--checkbox">
-                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="pbEnabled"/>
-                            <label for="pbEnabled" class="node-property__label node-property__label--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="progressBarEnabled"/>
+                            <label for="progressBarEnabled" class="node-property__label node-property__label--checkbox">
                                 <div class="icon icon-checkbox co-icon">
                                 </div>
                                 <span>Enabled</span>
@@ -33,15 +33,15 @@
                     <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-row">
                             <div class="setting-col progress__height">
-                                <label class="node-property__label" for="pbHeight">Height</label>
+                                <label class="node-property__label" for="progressBarHeight">Height</label>
                                 <div class="setting-row">
-                                    <input class="form-control input-sm form-input" type="text" id="pbHeight" value="5"/>
-                                    <span class="node-property__after node-property__after--progress" for="pbHeight">px</span>
+                                    <input class="form-control input-sm form-input" type="text" id="progressBarHeight" value="5"/>
+                                    <span class="node-property__after node-property__after--progress" for="progressBarHeight">px</span>
                                 </div>
                             </div>
                             <div class="setting-col progress__prompt">
-                                <label class="node-property__label" for="pbPosition">Prompt position <div class="sd-tooltip-help" data-tooltip-text="Display the encouragement texts above, within or below the bar. Note that the text will only be displayed within the bar if the bar height is 15px or larger."></div></label>
-                                <select class="form-control form-input" id="pbPosition" name="pbPosition">
+                                <label class="node-property__label" for="progressBarPosition">Prompt position <div class="sd-tooltip-help" data-tooltip-text="Display the encouragement texts above, within or below the bar. Note that the text will only be displayed within the bar if the bar height is 15px or larger."></div></label>
+                                <select class="form-control form-input" id="progressBarPosition" name="progressBarPosition">
                                     <option value="1" selected="selected">Above the bar</option>
                                     <option value="2">Inside the bar</option>
                                     <option value="3">Below the bar</option>
@@ -55,19 +55,19 @@
                                 <label class="node-property__label value__option-header value__option-header--text">Encouragement text <div class="sd-tooltip-help" data-tooltip-text="The text to be displayed to the respondent once the minimum value is reached."></div></label>
                             </div>
                             <div class="setting-row value__option-table">
-                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="1" /></div>
-                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#ff0000"/></div>
-                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="Good start"/></div>
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="progressBarStartValue" type="number" value="1" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="progressBarColor" value="#ff0000"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="progressBarPrompt" type="text"/></div>
                             </div>
                             <div class="setting-row value__option-table">
-                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="15" /></div>
-                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#ffff00"/></div>
-                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="A little more information would be appreciated"/></div>
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="progressBarStartValue" type="number" value="15" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="progressBarColor" value="#ffff00"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="progressBarPrompt" type="text"/></div>
                             </div>
                             <div class="setting-row value__option-table">
-                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="pbStartValue" type="number" value="30" /></div>
-                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="pbColor" value="#00ff00"/></div>
-                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="pbPrompt" type="text" value="Fantastic! Many thanks for your feedback"/></div>
+                                <div class="value__option-input value__option-input--min"><input class="form-control form-input" name="progressBarStartValue" type="number" value="30" /></div>
+                                <div class="value__option-input value__option-input--color"><input class="form-control form-input form-input--color" type="color" name="progressBarColor" value="#00ff00"/></div>
+                                <div class="value__option-input value__option-input--text"><input class="form-control form-input" name="progressBarPrompt" type="text"/></div>
                             </div>
                         </div>
                     </div>
@@ -97,8 +97,8 @@
                     <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-row">
                             <div class="co-toggle co-toggle--checkbox">
-                                <input class="co-toggle__input node-property__checkbox" type="checkbox" id="showCharacterLimit"/>
-                                <label for="showCharacterLimit" class="node-property__label node-property__label--checkbox">
+                                <input class="co-toggle__input node-property__checkbox" type="checkbox" id="isCharacterLimitEnabled"/>
+                                <label for="isCharacterLimitEnabled" class="node-property__label node-property__label--checkbox">
                                     <div class="icon icon-checkbox co-icon">
                                     </div>
                                     <span>Show character limit beside the counter (if it is set)</span>
@@ -170,16 +170,15 @@
             <div class="comd-tooltip__inner"></div>
         </div>
         <script>
-            var pbEnabled = document.getElementById('pbEnabled');
-            var pbHeightInput = document.getElementById('pbHeight');
-            var pbPositionSelector = document.getElementById('pbPosition');
-            var pbMinInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--min input'));
-            var pbColorInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--color input'));
-            var pbPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
+            var progressBarEnabled = document.getElementById('progressBarEnabled');
+            var progressBarHeightInput = document.getElementById('progressBarHeight');
+            var progressBarPositionSelector = document.getElementById('progressBarPosition');
+            var progressBarMinInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--min input'));
+            var progressBarColorInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--color input'));
+            var progressBarPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
 
             var countEnabled = document.getElementById('countEnabled');
-            //var characterLimit = document.getElementById('characterLimit');
-            var showCharacterLimit = document.getElementById('showCharacterLimit');
+            var isCharacterLimitEnabled = document.getElementById('isCharacterLimitEnabled');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
@@ -187,7 +186,7 @@
             
             let currentLanguage = '';
 
-            let pbPromptsObj = {};
+            let progressBarPromptsObj = {};
             let keywordWordsObj = {};
             let keywordPromptsObj = {};
 
@@ -196,56 +195,55 @@
                 currentLanguage = String(uiSettings.currentLanguage);
                 if (!settings) return;
 
-                pbEnabled.checked = settings.pbEnabled;
-                countEnabled.checked = settings.countEnabled;
-                keywordEnabled.checked = settings.keywordEnabled;
+                progressBarEnabled.checked = settings.progressBar.isEnabled;
+                countEnabled.checked = settings.characterCount.isEnabled;
+                keywordEnabled.checked = settings.keywords.isEnabled;
 
-                hideSubsectionAfterBoxChecked(pbEnabled);
+                hideSubsectionAfterBoxChecked(progressBarEnabled);
                 hideSubsectionAfterBoxChecked(countEnabled);
                 hideSubsectionAfterBoxChecked(keywordEnabled);
 
-                pbHeightInput.value = settings.pbHeight;
-                pbPositionSelector.value = settings.pbPosition;
+                progressBarHeightInput.value = settings.progressBar.height;
+                progressBarPositionSelector.value = settings.progressBar.position;
 
-                var pbMinValues = settings.pbMinValues;
-                var pbColors = settings.pbColors;
-                if(settings.hasOwnProperty('pbPrompts')) {
-                    pbPromptsObj = settings.pbPrompts;
+                var progressBarMinValues = settings.progressBar.minValues;
+                var progressBarColors = settings.progressBar.colors;
+                if(settings.progressBar.hasOwnProperty('prompts')) {
+                    progressBarPromptsObj = settings.progressBar.prompts;
                 }
 
-                if(settings.hasOwnProperty('pbPrompts') && settings.pbPrompts[currentLanguage] !== undefined) {
-                    for(var i = 0; i < pbMinValues.length; i++) {
-                        pbPromptInputs[i].value = settings.pbPrompts[currentLanguage][i];
+                if(settings.progressBar.hasOwnProperty('prompts') && settings.progressBar.prompts[currentLanguage] !== undefined) {
+                    for(var i = 0; i < progressBarMinValues.length; i++) {
+                        progressBarPromptInputs[i].value = settings.progressBar.prompts[currentLanguage][i];
                     }
                 } else {
-                    for(var i = 0; i < pbMinValues.length; i++) {
-                        pbPromptInputs[i].value = '';
+                    for(var i = 0; i < progressBarMinValues.length; i++) {
+                        progressBarPromptInputs[i].value = '';
                     }
                 }
 
-                for(var i = 0; i < pbMinValues.length; i++) {
-                    pbMinInputs[i].value = pbMinValues[i];
-                    pbColorInputs[i].value = pbColors[i];
+                for(var i = 0; i < progressBarMinValues.length; i++) {
+                    progressBarMinInputs[i].value = progressBarMinValues[i];
+                    progressBarColorInputs[i].value = progressBarColors[i];
                 }
 
-                //characterLimit.value = settings.characterLimit;
-                showCharacterLimit.checked = settings.showCharacterLimit;
+                isCharacterLimitEnabled.checked = settings.characterCount.isCharacterLimitEnabled;
 
                 var keywordWords = [];
                 var keywordPrompts = [];
 
-                if(settings.hasOwnProperty('keywordWords')) {
-                    keywordWordsObj = settings.keywordWords;
+                if(settings.keywords.hasOwnProperty('keywords')) {
+                    keywordWordsObj = settings.keywords.keywords;
                 }
-                if(settings.hasOwnProperty('keywordPrompts')) {
-                    keywordPromptsObj = settings.keywordPrompts;
+                if(settings.keywords.hasOwnProperty('prompts')) {
+                    keywordPromptsObj = settings.keywords.prompts;
                 }
 
-                if(settings.hasOwnProperty('keywordWords') && settings.keywordWords[currentLanguage] !== undefined) {
-                    keywordWords = settings.keywordWords[currentLanguage];
+                if(settings.keywords.hasOwnProperty('keywords') && settings.keywords.keywords[currentLanguage] !== undefined) {
+                    keywordWords = settings.keywords.keywords[currentLanguage];
                 }
-                if(settings.hasOwnProperty('keywordPrompts') && settings.keywordPrompts[currentLanguage] !== undefined) {
-                    keywordPrompts = settings.keywordPrompts[currentLanguage];
+                if(settings.keywords.hasOwnProperty('prompts') && settings.keywords.prompts[currentLanguage] !== undefined) {
+                    keywordPrompts = settings.keywords.prompts[currentLanguage];
                 }
 
                 if(starterKeywordWordInputs.length === 3 && keywordWords.length > starterKeywordWordInputs.length) {
@@ -269,17 +267,17 @@
             }
 
             function saveChanges() {
-                var pbMinValues = [];
-                var pbColors = [];
-                var pbPrompts = [];
+                var progressBarMinValues = [];
+                var progressBarColors = [];
+                var progressBarPrompts = [];
 
-                for(var i = 0; i < pbMinInputs.length; i++) {
-                    pbMinValues.push(parseInt(pbMinInputs[i].value));
-                    pbColors.push(pbColorInputs[i].value);
-                    pbPrompts.push(pbPromptInputs[i].value);
+                for(var i = 0; i < progressBarMinInputs.length; i++) {
+                    progressBarMinValues.push(parseInt(progressBarMinInputs[i].value));
+                    progressBarColors.push(progressBarColorInputs[i].value);
+                    progressBarPrompts.push(progressBarPromptInputs[i].value);
                 }
 
-                pbPromptsObj[currentLanguage] = pbPrompts;
+                progressBarPromptsObj[currentLanguage] = progressBarPrompts;
 
                 var keywordWords = [];
                 var keywordPrompts = [];
@@ -297,18 +295,24 @@
                 keywordWordsObj[currentLanguage] = keywordWords;
                 keywordPromptsObj[currentLanguage] = keywordPrompts;
 
-                var settings = { pbEnabled: pbEnabled.checked,
-                                 pbHeight: parseInt(pbHeightInput.value),
-                                 pbPosition: pbPositionSelector.options[pbPositionSelector.selectedIndex].value,
-                                 pbMinValues: pbMinValues,
-                                 pbColors: pbColors,
-                                 pbPrompts: pbPromptsObj,
-                                 countEnabled: countEnabled.checked,
-                                 //characterLimit: parseInt(characterLimit.value),
-                                 showCharacterLimit: showCharacterLimit.checked,
-                                 keywordEnabled: keywordEnabled.checked,
-                                 keywordWords: keywordWordsObj,
-                                 keywordPrompts: keywordPromptsObj
+                var settings = {
+                    progressBar: {
+                        isEnabled: progressBarEnabled.checked,
+                        height: parseInt(progressBarHeightInput.value),
+                        position: progressBarPositionSelector.options[progressBarPositionSelector.selectedIndex].value,
+                        minValues: progressBarMinValues,
+                        colors: progressBarColors,
+                        prompts: progressBarPromptsObj
+                    },
+                    characterCount: {
+                        isEnabled: countEnabled.checked,
+                        isCharacterLimitEnabled: isCharacterLimitEnabled.checked
+                    },
+                    keywords: {
+                        isEnabled: keywordEnabled.checked,
+                        keywords: keywordWordsObj,
+                        prompts: keywordPromptsObj
+                    }
                 };
 
                 var hasError = false;
@@ -322,10 +326,10 @@
                 containers[c].addEventListener('input', saveChanges, true);
             }
 
-            pbPositionSelector.addEventListener('change', saveChanges, true);
-            pbEnabled.addEventListener('change', saveChanges, true);
+            progressBarPositionSelector.addEventListener('change', saveChanges, true);
+            progressBarEnabled.addEventListener('change', saveChanges, true);
             countEnabled.addEventListener('change', saveChanges, true);
-            showCharacterLimit.addEventListener('change', saveChanges, true);
+            isCharacterLimitEnabled.addEventListener('change', saveChanges, true);
             keywordEnabled.addEventListener('change', saveChanges, true);
 
         </script>
