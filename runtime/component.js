@@ -18,7 +18,7 @@ const defaultSettings = {
     },
     keywords: {
         isEnabled: false,
-        keywords: {},
+        words: {},
         prompts: {}
     }
 };
@@ -33,9 +33,6 @@ function setDefaultSettingsIfNeeded(settings) {
                 settings[prop] = defaultSettings[prop];
             }
             for (var innerProp in defaultSettings[prop]) {
-                if(innerProp === "prompts" || innerProp === "keywords") {
-                    break;
-                }
                 if (!settings[prop].hasOwnProperty(innerProp) || (settings[prop].hasOwnProperty(innerProp) && settings[prop][innerProp] == "")) {
                     settings[prop][innerProp] = defaultSettings[prop][innerProp];
                 }
@@ -47,15 +44,45 @@ function setDefaultSettingsIfNeeded(settings) {
     if (!settings.progressBar.prompts.hasOwnProperty(currentLanguage) || (settings.progressBar.prompts.hasOwnProperty(currentLanguage) && settings.progressBar.prompts[currentLanguage] == "")) {
         settings.progressBar.prompts[currentLanguage] = ['','',''];
     }
-    if (!settings.keywords.keywords.hasOwnProperty(currentLanguage) || (settings.keywords.keywords.hasOwnProperty(currentLanguage) && settings.keywords.keywords[currentLanguage] == "")) {
-        settings.keywords.keywords[currentLanguage] = [];
+    if (!settings.keywords.words.hasOwnProperty(currentLanguage) || (settings.keywords.words.hasOwnProperty(currentLanguage) && settings.keywords.words[currentLanguage] == "")) {
+        settings.keywords.words[currentLanguage] = [];
     }
     if (!settings.keywords.prompts.hasOwnProperty(currentLanguage) || (settings.keywords.prompts.hasOwnProperty(currentLanguage) && settings.keywords.prompts[currentLanguage] == "")) {
         settings.keywords.prompts[currentLanguage] = [];
     }
 }
 
+function getNewStructuredSettings(settings) {
+    let newSettings = {
+        progressBar: {},
+        characterCount: {},
+        keywords: {}
+    };
+    newSettings.progressBar.isEnabled = settings.pbEnabled;
+    newSettings.progressBar.height = settings.pbHeight;
+    newSettings.progressBar.position = settings.pbPosition;
+    newSettings.progressBar.minValues = settings.pbMinValues;
+    newSettings.progressBar.colors = settings.pbColors;
+    newSettings.progressBar.prompts = settings.pbPrompts;
+
+    newSettings.characterCount.isEnabled = settings.countEnabled;
+    newSettings.characterCount.isCharacterLimitEnabled = settings.showCharacterLimit;
+
+    newSettings.keywords.isEnabled = settings.keywordEnabled;
+    newSettings.keywords.words = settings.keywordWords;
+    newSettings.keywords.prompts = settings.keywordPrompts;
+
+    return newSettings;
+}
+
 register(function (question, customQuestionSettings, questionViewSettings) {
+
+    //The new structure of settings was created during the first code refactoring
+    //which unlike previous one has subsections for progressBar, counter and keywords settings.
+    //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
+    if(customQuestionSettings.hasOwnProperty("pbEnabled")) {
+        customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
+    }
 
     setDefaultSettingsIfNeeded(customQuestionSettings);
 

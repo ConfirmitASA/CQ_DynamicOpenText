@@ -6,7 +6,7 @@ export default class Keywords {
         this.currentLanguage = String(Confirmit.page.surveyInfo.language);
 
         this.question = question;
-        this.words = settings.keywords[this.currentLanguage] ? settings.keywords[this.currentLanguage] : [];
+        this.words = settings.words[this.currentLanguage] ? settings.words[this.currentLanguage] : [];
         this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
         this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
 

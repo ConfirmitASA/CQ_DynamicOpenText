@@ -17,7 +17,7 @@ import DynamicOpenText from "./DynamicOpenText";
         },
         keywords: {
             isEnabled: false,
-            keywords: {},
+            words: {},
             prompts: {}
         }
     };
