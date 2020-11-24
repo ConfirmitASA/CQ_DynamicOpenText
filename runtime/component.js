@@ -23,15 +23,17 @@ const defaultSettings = {
     }
 };
 
-function setDefaultSettingsIfNeeded(settings) {
+function getDefaultSettingsIfNeeded(existingSettings) {
+    var settings = existingSettings;
+
     if(!settings) {
         settings = defaultSettings;
-    }
-    else {
+    } else {
         for (var prop in defaultSettings) {
             if (!settings.hasOwnProperty(prop)) {
                 settings[prop] = defaultSettings[prop];
             }
+
             for (var innerProp in defaultSettings[prop]) {
                 if (!settings[prop].hasOwnProperty(innerProp) || (settings[prop].hasOwnProperty(innerProp) && settings[prop][innerProp] == "")) {
                     settings[prop][innerProp] = defaultSettings[prop][innerProp];
@@ -40,24 +42,30 @@ function setDefaultSettingsIfNeeded(settings) {
         }
     }
 
-    let currentLanguage = String(Confirmit.page.surveyInfo.language);
+    var currentLanguage = String(Confirmit.page.surveyInfo.language);
+
     if (!settings.progressBar.prompts.hasOwnProperty(currentLanguage) || (settings.progressBar.prompts.hasOwnProperty(currentLanguage) && settings.progressBar.prompts[currentLanguage] == "")) {
         settings.progressBar.prompts[currentLanguage] = ['','',''];
     }
+
     if (!settings.keywords.words.hasOwnProperty(currentLanguage) || (settings.keywords.words.hasOwnProperty(currentLanguage) && settings.keywords.words[currentLanguage] == "")) {
         settings.keywords.words[currentLanguage] = [];
     }
+
     if (!settings.keywords.prompts.hasOwnProperty(currentLanguage) || (settings.keywords.prompts.hasOwnProperty(currentLanguage) && settings.keywords.prompts[currentLanguage] == "")) {
         settings.keywords.prompts[currentLanguage] = [];
     }
+
+    return settings;
 }
 
 function getNewStructuredSettings(settings) {
-    let newSettings = {
+    var newSettings = {
         progressBar: {},
         characterCount: {},
         keywords: {}
     };
+
     newSettings.progressBar.isEnabled = settings.pbEnabled;
     newSettings.progressBar.height = settings.pbHeight;
     newSettings.progressBar.position = settings.pbPosition;
@@ -80,11 +88,11 @@ register(function (question, customQuestionSettings, questionViewSettings) {
     //The new structure of settings was created during the first code refactoring
     //which unlike previous one has subsections for progressBar, counter and keywords settings.
     //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
-    if(customQuestionSettings.hasOwnProperty("pbEnabled")) {
+    if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
         customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
     }
 
-    setDefaultSettingsIfNeeded(customQuestionSettings);
+    customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
 
     const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
     dynamicOpenText.render();
