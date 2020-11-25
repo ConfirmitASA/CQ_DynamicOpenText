@@ -18,6 +18,9 @@ export default class Keywords {
         let keywordElement = this.createKeywordElement(this.questionElement_textarea.offsetWidth);
         this.questionElement.appendChild(keywordElement);
 
+        this.updateKeywords();
+        this.updateKeywordsWidth();
+
         this.questionElement_textarea.addEventListener("input", this.updateKeywords);
         this.questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
     }

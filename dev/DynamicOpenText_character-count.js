@@ -15,11 +15,15 @@ export default class CharacterCount {
         let element = document.createElement('div');
         element.className += characterCounterClass;
         element.textContent = "0";
+
         if (this.isCharacterLimitEnabled && !!this.characterLimit) {
             element.textContent += "/" + this.characterLimit;
         }
 
         this.questionElement.appendChild(element);
+
+        this.updateCount();
+
         this.questionElement_textarea.addEventListener("input", this.updateCount);
     }
 

@@ -300,6 +300,9 @@ var DynamicOpenText_progress_bar_ProgressBar = /*#__PURE__*/function () {
             break;
         }
 
+        this.updatePrompt();
+        this.updateBarColor();
+        this.updateBarWidth();
         this.questionElement_textarea.addEventListener("input", this.updatePrompt);
         this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
         this.questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
@@ -419,6 +422,7 @@ var DynamicOpenText_character_count_CharacterCount = /*#__PURE__*/function () {
       }
 
       this.questionElement.appendChild(element);
+      this.updateCount();
       this.questionElement_textarea.addEventListener("input", this.updateCount);
     }
   }]);
@@ -599,6 +603,8 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
     value: function render() {
       var keywordElement = this.createKeywordElement(this.questionElement_textarea.offsetWidth);
       this.questionElement.appendChild(keywordElement);
+      this.updateKeywords();
+      this.updateKeywordsWidth();
       this.questionElement_textarea.addEventListener("input", this.updateKeywords);
       this.questionElement_textarea.addEventListener("mouseup", this.updateKeywordsWidth);
     }

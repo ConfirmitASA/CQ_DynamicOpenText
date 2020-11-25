@@ -48,6 +48,10 @@ export default class ProgressBar {
                     break;
             }
 
+            this.updatePrompt();
+            this.updateBarColor();
+            this.updateBarWidth();
+
             this.questionElement_textarea.addEventListener("input", this.updatePrompt);
             this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
             this.questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
