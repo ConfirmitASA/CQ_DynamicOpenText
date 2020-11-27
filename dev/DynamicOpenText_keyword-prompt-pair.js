@@ -7,6 +7,15 @@ export default class KeywordPromptPair {
     }
 
     addMatchingMethod() {
+        if (this.keyword[0] === "^" && this.keyword.length > 1) {
+            this.keyword = this.keyword.substr(1);
+            return this.hasPrefix;
+        }
+        if (this.keyword[0] === "$" && this.keyword.length > 1) {
+            this.keyword = this.keyword.substr(1);
+            return this.hasSuffix;
+        }
+
         if (this.isPunctuationOrSymbol(this.keyword, 0)) {
             return this.hasOccurrence;
         } else {
@@ -15,7 +24,7 @@ export default class KeywordPromptPair {
     }
 
     isPunctuationOrSymbol(str, ind) {
-        let re = /\p{Punctuation}|\p{Math_Symbol}|\p{Currency_Symbol}/u;
+        let re = /\p{Punctuation}|\p{Math_Symbol}|\p{Currency_Symbol}|^/u;
         return str[ind].match(re) !== null;
     }
 
@@ -54,16 +63,58 @@ export default class KeywordPromptPair {
     }
 
     isRightWordBorder(str, ind) {
+        if(str.length === ind) {
+            return true;
+        }
         let re = /\p{Z}|\p{Math_Symbol}|\p{Currency_Symbol}|\p{Punctuation}/u;
         return str[ind].match(re) !== null;
     }
 
     isLeftWordBorder(str, ind) {
+        if(ind === -1) {
+            return true;
+        }
         let re = /\p{Z}|\p{Math_Symbol}|\p{Currency_Symbol}|\p{Punctuation}/u;
         return str[ind].match(re) !== null;
     }
 
     hasOccurrence(text) {
         return text.indexOf(this.keyword) !== -1;
+    }
+
+    hasSuffix(text) {
+        let hasMatch = false;
+        let foundIndex = text.indexOf(this.keyword);
+
+        while (foundIndex !== -1) {
+            let rightBoundaryIndex = foundIndex + this.keyword.length;
+            hasMatch = this.isRightWordBorder(text, rightBoundaryIndex);
+
+            if (!hasMatch) {
+                foundIndex = text.indexOf(this.keyword, foundIndex + 1);
+            } else {
+                break;
+            }
+        }
+
+        return hasMatch;
+    }
+
+    hasPrefix(text) {
+        let hasMatch = false;
+        let foundIndex = text.indexOf(this.keyword);
+
+        while (foundIndex !== -1) {
+            let leftBoundaryIndex = foundIndex - 1;
+            hasMatch = this.isLeftWordBorder(text, leftBoundaryIndex);
+
+            if (!hasMatch) {
+                foundIndex = text.indexOf(this.keyword, foundIndex + 1);
+            } else {
+                break;
+            }
+        }
+
+        return hasMatch;
     }
 }
