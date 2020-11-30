@@ -44,7 +44,6 @@ export default class Keywords {
             if (pair.isMatching(enteredText)) {
                 if (existingItemsAsRow.length === 0) {
                     keywordElement.firstElementChild.appendChild(this.createKeywordItem("row-id" + pair.rowId, pair.keyword, pair.prompt));
-                    break;
                 }
             } else {
                 if (existingItemsAsKeyword.length > 0) {
