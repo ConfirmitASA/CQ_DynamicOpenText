@@ -24,7 +24,7 @@ export default class KeywordPromptPair {
     }
 
     isPunctuationOrSymbol(str, ind) {
-        let re = /\p{Punctuation}|\p{Math_Symbol}|\p{Currency_Symbol}|^/u;
+        let re = /\p{Punctuation}|\p{Math_Symbol}|\p{Currency_Symbol}|\^/u;
         return str[ind].match(re) !== null;
     }
 
