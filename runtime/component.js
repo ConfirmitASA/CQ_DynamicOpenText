@@ -4,37 +4,96 @@
 //Confirmit DEV question id f8278f96-a12c-434f-91fa-fc1a9aef1b6e
 
 const defaultSettings = {
-    pbEnabled: false,
-    pbHeight: 5,
-    pbPosition: '1',
-    pbMinValues: [1,15,30],
-    pbColors: ['#c41919','#e7e706','#4a964a'],
-    pbPrompts: ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'],
-    countEnabled: false,
-    showCharacterLimit: false,
-    keywordEnabled: false,
-    keywordWords: ["Hello"],
-    keywordPrompts: ["This is a new prompt"]
+    progressBar: {
+        isEnabled: false,
+        height: 5,
+        position: 'above',
+        minValues: [1,15,30],
+        colors: ['#ff0000','#ffff00','#00ff00'],
+        prompts: {}
+    },
+    characterCount: {
+        isEnabled: false,
+        isCharacterLimitEnabled: false
+    },
+    keywords: {
+        isEnabled: false,
+        words: {},
+        prompts: {}
+    }
 };
+
+function getDefaultSettingsIfNeeded(existingSettings) {
+    var settings = existingSettings;
+
+    if(!settings) {
+        settings = defaultSettings;
+    } else {
+        for (var prop in defaultSettings) {
+            if (!settings.hasOwnProperty(prop)) {
+                settings[prop] = defaultSettings[prop];
+            }
+
+            for (var innerProp in defaultSettings[prop]) {
+                if (!settings[prop].hasOwnProperty(innerProp) || (settings[prop].hasOwnProperty(innerProp) && settings[prop][innerProp] == "")) {
+                    settings[prop][innerProp] = defaultSettings[prop][innerProp];
+                }
+            }
+        }
+    }
+
+    var currentLanguage = String(Confirmit.page.surveyInfo.language);
+
+    if (!settings.progressBar.prompts.hasOwnProperty(currentLanguage) || (settings.progressBar.prompts.hasOwnProperty(currentLanguage) && settings.progressBar.prompts[currentLanguage] == "")) {
+        settings.progressBar.prompts[currentLanguage] = ['','',''];
+    }
+
+    if (!settings.keywords.words.hasOwnProperty(currentLanguage) || (settings.keywords.words.hasOwnProperty(currentLanguage) && settings.keywords.words[currentLanguage] == "")) {
+        settings.keywords.words[currentLanguage] = [];
+    }
+
+    if (!settings.keywords.prompts.hasOwnProperty(currentLanguage) || (settings.keywords.prompts.hasOwnProperty(currentLanguage) && settings.keywords.prompts[currentLanguage] == "")) {
+        settings.keywords.prompts[currentLanguage] = [];
+    }
+
+    return settings;
+}
+
+function getNewStructuredSettings(settings) {
+    var newSettings = {
+        progressBar: {},
+        characterCount: {},
+        keywords: {}
+    };
+
+    newSettings.progressBar.isEnabled = settings.pbEnabled;
+    newSettings.progressBar.height = settings.pbHeight;
+    newSettings.progressBar.position = settings.pbPosition;
+    newSettings.progressBar.minValues = settings.pbMinValues;
+    newSettings.progressBar.colors = settings.pbColors;
+    newSettings.progressBar.prompts = settings.pbPrompts;
+
+    newSettings.characterCount.isEnabled = settings.countEnabled;
+    newSettings.characterCount.isCharacterLimitEnabled = settings.showCharacterLimit;
+
+    newSettings.keywords.isEnabled = settings.keywordEnabled;
+    newSettings.keywords.words = settings.keywordWords;
+    newSettings.keywords.prompts = settings.keywordPrompts;
+
+    return newSettings;
+}
 
 register(function (question, customQuestionSettings, questionViewSettings) {
 
-    let activeSettings = customQuestionSettings || defaultSettings;
+    //The new structure of settings was created during the first code refactoring
+    //which unlike previous one has subsections for progressBar, counter and keywords settings.
+    //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
+    if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
+        customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
+    }
 
-    let pbEnabled = activeSettings.pbEnabled;
-    let pbHeight = parseInt(activeSettings.pbHeight);
-    let pbPosition = activeSettings.pbPosition;
-    let pbMinValues = activeSettings.pbMinValues;
-    let pbColors = activeSettings.pbColors;
-    let pbPrompts = activeSettings.pbPrompts;
+    customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
 
-    let countEnabled = activeSettings.countEnabled;
-    let showCharacterLimit = activeSettings.showCharacterLimit;
-
-    let keywordEnabled = activeSettings.keywordEnabled;
-    let keywordWords = activeSettings.keywordWords;
-    let keywordPrompts = activeSettings.keywordPrompts;
-
-    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, pbEnabled, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts, countEnabled, showCharacterLimit, keywordEnabled, keywordWords, keywordPrompts);
+    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
     dynamicOpenText.render();
 });

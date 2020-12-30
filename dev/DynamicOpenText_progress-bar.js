@@ -1,81 +1,86 @@
+import QuestionElementsGetters from "./QuestionElementsGetters";
+
 export const promptPosition = Object.freeze({
     "above": "1",
     "inside": "2",
     "below": "3"
-})
+});
 
 export default class ProgressBar {
-    constructor(question, pbHeight, pbPosition, pbMinValues, pbColors, pbPrompts) {
-        this.pbQuestion = question;
-        this.pbHeight = pbHeight && pbHeight > 0 ? pbHeight : 5;
-        this.pbPosition = pbPosition ? pbPosition : '1';
-        this.pbMinValues = pbMinValues && pbMinValues.length > 0 ? pbMinValues : [1,15,30];
-        this.pbColors = pbColors && pbColors.length > 0 ? pbColors : ['#ff0000','#ffff00','#00ff00'];
-        this.pbPrompts = pbPrompts && pbPrompts.length > 0 ? pbPrompts : ['Good start','A little more information would be appreciated','Fantastic! Many thanks for your feedback'];
-        this.pbBackgroundColor = '#F0F2F5';
-        this.allValues = this.createArrayOfAllValues(this.pbMinValues, this.pbColors, this.pbPrompts);
+    constructor(question, settings) {
+        this.currentLanguage = String(Confirmit.page.surveyInfo.language);
+
+        this.question = question;
+        this.height = settings.height && settings.height > 0 ? settings.height : 5;
+        this.position = settings.position ? settings.position : promptPosition.above;
+        this.minValues = settings.minValues && settings.minValues.length > 0 ? settings.minValues : [1,15,30];
+        this.colors = settings.colors && settings.colors.length > 0 ? settings.colors : ['#ff0000','#ffff00','#00ff00'];
+        this.prompts = settings.prompts[this.currentLanguage] && settings.prompts[this.currentLanguage].length > 0 ? settings.prompts[this.currentLanguage] : ["", "", ""];
+        this.backgroundColor = '#F0F2F5';
+        this.promptsSettings = this.createArrayOfPromptsSettings(this.minValues, this.colors, this.prompts);
+
+        this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+        this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
     }
 
     render() {
-        if(this.allValues.length > 0) {
-            let questionElement = document.getElementById(this.pbQuestion.id);
+        if(this.promptsSettings.length > 0) {
+            let questionElement_content = QuestionElementsGetters.getQuestionElement_Content(this.questionElement);
 
-            let questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-            let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-
-            let pbElement = this.createBarElement(this.pbHeight, questionElement_textarea.offsetWidth, this.pbBackgroundColor);
-            questionElement.insertBefore(pbElement, questionElement_content);
+            let barElement = this.createBarElement(this.height, this.questionElement_textarea.offsetWidth, this.backgroundColor);
+            this.questionElement.insertBefore(barElement, questionElement_content);
 
             let promptElement = this.createPromptElement();
 
-            switch (this.pbPosition) {
+            switch (this.position) {
                 case promptPosition.above:
-                    questionElement.insertBefore(promptElement, pbElement);
+                    this.questionElement.insertBefore(promptElement, barElement);
                     break;
                 case promptPosition.inside:
-                    if (this.pbHeight < 15) {
-                        questionElement.insertBefore(promptElement, pbElement);
+                    if (this.height < 15) {
+                        this.questionElement.insertBefore(promptElement, barElement);
                     } else {
-                        pbElement.lastElementChild.appendChild(promptElement);
+                        barElement.lastElementChild.appendChild(promptElement);
                     }
                     break;
                 case promptPosition.below:
-                    questionElement.insertBefore(promptElement, pbElement.nextSibling);
+                    this.questionElement.insertBefore(promptElement, barElement.nextSibling);
                     break;
             }
 
-            questionElement_textarea.addEventListener("input", this.updatePrompt);
-            questionElement_textarea.addEventListener("keyup", this.updateBarColor);
-            questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+            this.updatePrompt();
+            this.updateBarColor();
+            this.updateBarWidth();
 
-            if(this.pbPosition === promptPosition.inside && this.pbHeight >= 15) {
+            this.questionElement_textarea.addEventListener("input", this.updatePrompt);
+            this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
+            this.questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
+
+            if(this.position === promptPosition.inside && this.height >= 15) {
                 promptElement.classList.add("cf-question__dynamic-progress-prompt--inside");
                 this.adjustPromptPositionIfInsideBar();
 
-                questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
-                questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
+                this.questionElement_textarea.addEventListener("mouseup", this.adjustPromptPositionIfInsideBar);
+                this.questionElement_textarea.addEventListener("input", this.adjustPromptPositionIfInsideBar);
                 window.addEventListener("resize", this.adjustPromptPositionIfInsideBar);
             }
         }
     }
 
     updatePrompt = () => {
-        let questionElement = document.getElementById(this.pbQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let promptElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+        let promptElement = QuestionElementsGetters.getProgressBarPromptElement(this.questionElement);
 
-        let textLength = questionElement_textarea.value.length;
+        let answerTextLength = this.questionElement_textarea.value.length;
 
-
-        if(textLength >= this.allValues[this.allValues.length - 1].value) {
-            promptElement.innerHTML = this.allValues[this.allValues.length - 1].prompt;
+        if(answerTextLength >= this.promptsSettings[this.promptsSettings.length - 1].value) {
+            promptElement.innerHTML = this.promptsSettings[this.promptsSettings.length - 1].prompt;
         } else {
-            if(textLength < this.allValues[0].value) {
+            if(answerTextLength < this.promptsSettings[0].value) {
                 promptElement.innerHTML = "";
             } else {
-                for(let i = 0; i < this.allValues.length - 1; i++) {
-                    if(textLength >= this.allValues[i].value && textLength < this.allValues[i + 1].value) {
-                        promptElement.innerHTML = this.allValues[i].prompt;
+                for(let i = 0; i < this.promptsSettings.length - 1; i++) {
+                    if(answerTextLength >= this.promptsSettings[i].value && answerTextLength < this.promptsSettings[i + 1].value) {
+                        promptElement.innerHTML = this.promptsSettings[i].prompt;
                     }
                 }
 
@@ -84,26 +89,25 @@ export default class ProgressBar {
     }
 
     updateBarColor = () => {
-        let questionElement = document.getElementById(this.pbQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+        let barElement = QuestionElementsGetters.getProgressBarElement(this.questionElement);
 
-        let textLength = questionElement_textarea.value.length;
-        let pbElementContent = pbElement.lastElementChild;
+        let answerTextLength = this.questionElement_textarea.value.length;
+        let barElementContent = barElement.lastElementChild;
 
-        if(textLength >= this.allValues[this.allValues.length - 1].value) {
-            pbElementContent.style.backgroundColor = this.allValues[this.allValues.length - 1].color;
-            this.setWidth(pbElementContent, 100, "%");
+        if(answerTextLength >= this.promptsSettings[this.promptsSettings.length - 1].value) {
+            barElementContent.style.backgroundColor = this.promptsSettings[this.promptsSettings.length - 1].color;
+            this.setWidth(barElementContent, 100, "%");
         } else {
-            if(textLength < this.allValues[0].value) {
-                pbElementContent.style.backgroundColor = "transparent";
-                this.setWidth(pbElementContent, 100, "%");
+            if(answerTextLength < this.promptsSettings[0].value) {
+                barElementContent.style.backgroundColor = "transparent";
+                this.setWidth(barElementContent, 0, "%");
             } else {
-                for(let i = 0; i < this.allValues.length - 1; i++) {
-                    if(textLength >= this.allValues[i].value && textLength < this.allValues[i + 1].value) {
-                        let newWidth = 100/this.allValues.length * (i+1);
-                        pbElementContent.style.backgroundColor = this.allValues[i].color;
-                        this.setWidth(pbElementContent, newWidth, "%");
+                for(let i = 0; i < this.promptsSettings.length - 1; i++) {
+                    if(answerTextLength >= this.promptsSettings[i].value && answerTextLength < this.promptsSettings[i + 1].value) {
+                        let newWidth = 100/this.promptsSettings.length * (i+1);
+                        this.setWidth(barElementContent, newWidth, "%");
+
+                        barElementContent.style.backgroundColor = this.promptsSettings[i].color;
                     }
                 }
 
@@ -112,46 +116,45 @@ export default class ProgressBar {
     }
 
     updateBarWidth = () => {
-        let questionElement = document.getElementById(this.pbQuestion.id);
-        let questionElement_textarea = questionElement.querySelectorAll('textarea')[0];
-        let pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
+        let barElement = QuestionElementsGetters.getProgressBarElement(this.questionElement);
 
-        pbElement.style.width = questionElement_textarea.offsetWidth + 'px';
+        barElement.style.width = this.questionElement_textarea.offsetWidth + 'px';
     }
 
     adjustPromptPositionIfInsideBar = () => {
-        let questionElement = document.getElementById(this.pbQuestion.id);
-        let pbElement = questionElement.getElementsByClassName('cf-question__dynamic-progress-bar')[0];
-        let pbPrompt = questionElement.getElementsByClassName('cf-question__dynamic-progress-prompt')[0];
+        let barElement = QuestionElementsGetters.getProgressBarElement(this.questionElement);
+        let promptElement = QuestionElementsGetters.getProgressBarPromptElement(this.questionElement);
 
-        let barWidth = questionElement.querySelectorAll('textarea')[0].offsetWidth;
-        let promptWidth = pbPrompt.scrollWidth;
+        let barWidth = this.questionElement.querySelectorAll('textarea')[0].offsetWidth;
+        let promptWidth = promptElement.scrollWidth;
 
-        if(pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside")
+        const promptInsideClass = "cf-question__dynamic-progress-prompt--inside";
+
+        if(promptElement.classList.contains(promptInsideClass)
             && barWidth < promptWidth) {
-                questionElement.insertBefore(pbPrompt, pbElement);
-                pbPrompt.classList.remove("cf-question__dynamic-progress-prompt--inside");
+                this.questionElement.insertBefore(promptElement, barElement);
+                promptElement.classList.remove(promptInsideClass);
         }
 
-        if(!pbPrompt.classList.contains("cf-question__dynamic-progress-prompt--inside")
+        if(!promptElement.classList.contains(promptInsideClass)
             && barWidth > promptWidth) {
-            pbElement.lastElementChild.appendChild(pbPrompt);
-            pbPrompt.classList.add("cf-question__dynamic-progress-prompt--inside");
+            barElement.lastElementChild.appendChild(promptElement);
+            promptElement.classList.add(promptInsideClass);
         }
     }
 
     createBarElement(height, width, backgroundColor) {
-        let pbElement = document.createElement('div');
-        pbElement.className += 'cf-question__dynamic-progress-bar';
-        pbElement.style.height = height + 'px';
-        pbElement.style.width = width + 'px';
-        pbElement.style.backgroundColor = backgroundColor;
+        let barElement = document.createElement('div');
+        barElement.className += 'cf-question__dynamic-progress-bar';
+        barElement.style.height = height + 'px';
+        barElement.style.width = width + 'px';
+        barElement.style.backgroundColor = backgroundColor;
 
-        let pbElementContent = document.createElement('div');
-        pbElementContent.className = "dynamic-progress-bar__content";
-        pbElement.appendChild(pbElementContent);
+        let barElementContent = document.createElement('div');
+        barElementContent.className = "dynamic-progress-bar__content";
+        barElement.appendChild(barElementContent);
 
-        return pbElement;
+        return barElement;
     }
 
     createPromptElement() {
@@ -161,7 +164,7 @@ export default class ProgressBar {
         return promptElement;
     }
 
-    createArrayOfAllValues(minValues, colors, prompts) {
+    createArrayOfPromptsSettings(minValues, colors, prompts) {
         let values = [];
         for(let i = 0; i < minValues.length; i++) {
             if(!!minValues[i]) {
@@ -185,7 +188,7 @@ export default class ProgressBar {
         if (a.value < b.value) return -1;
     }
 
-    setWidth(pbElement, width, widthType) {
-        pbElement.style.width = width + widthType;
+    setWidth(barElement, width, widthType) {
+        barElement.style.width = width + widthType;
     }
 }

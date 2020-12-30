@@ -1,38 +1,39 @@
+import QuestionElementsGetters from "./QuestionElementsGetters";
+
+const characterCounterClass = "cf-question__dynamic-character-counter";
 export default class CharacterCount {
-    constructor(question, showCharacterLimit) {
-        this.ccQuestion = question;
-        this.characterLimit = this.ccQuestion.maxLength;
-        this.showCharacterLimit = showCharacterLimit;
+    constructor(question, settings) {
+        this.question = question;
+        this.characterLimit = this.question.maxLength;
+        this.isCharacterLimitEnabled = settings.isCharacterLimitEnabled;
+
+        this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+        this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
     }
 
     render() {
-        let questionElement = document.getElementById(this.ccQuestion.id);
-        let questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-        let questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
+        let element = document.createElement('div');
+        element.className += characterCounterClass;
+        element.textContent = "0";
 
-        let ccElement = document.createElement('div');
-        ccElement.className += 'cf-question__dynamic-character-counter';
-        ccElement.textContent = "0"
-        if (this.showCharacterLimit && !!this.characterLimit) {
-            ccElement.textContent += "/" + this.characterLimit;
+        if (this.isCharacterLimitEnabled && !!this.characterLimit) {
+            element.textContent += "/" + this.characterLimit;
         }
 
-        questionElement.appendChild(ccElement);
-        questionElement_textarea.addEventListener("input", this.updateCount);
+        this.questionElement.appendChild(element);
+
+        this.updateCount();
+
+        this.questionElement_textarea.addEventListener("input", this.updateCount);
     }
 
     updateCount = () => {
-        let questionElement = document.getElementById(this.ccQuestion.id);
-        let questionElement_content = questionElement.querySelectorAll('.cf-question__content')[0];
-        let questionElement_textarea = questionElement_content.querySelectorAll('textarea')[0];
-
-        let currentCharacterCount = questionElement_textarea.value.length;
-        let countElement = questionElement.getElementsByClassName("cf-question__dynamic-character-counter")[0];
+        let currentCharacterCount = this.questionElement_textarea.value.length;
+        let countElement = this.questionElement.querySelectorAll('.' + characterCounterClass)[0];
 
         countElement.textContent = currentCharacterCount;
-        if(this.showCharacterLimit && !!this.characterLimit) {
+        if(this.isCharacterLimitEnabled && !!this.characterLimit) {
             countElement.textContent += "/" + this.characterLimit;
         }
-        //countElement.style.color = '#000000';
     }
 }
