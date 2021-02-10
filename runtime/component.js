@@ -83,7 +83,10 @@ function getNewStructuredSettings(settings) {
     return newSettings;
 }
 
-register(function (question, customQuestionSettings, questionViewSettings) {
+(function () {
+    Confirmit.pageView.registerCustomQuestion(
+        "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
+        function (question, customQuestionSettings, questionViewSettings) {
 
     //The new structure of settings was created during the first code refactoring
     //which unlike previous one has subsections for progressBar, counter and keywords settings.
@@ -96,4 +99,6 @@ register(function (question, customQuestionSettings, questionViewSettings) {
 
     const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
     dynamicOpenText.render();
-});
+        }
+    );
+})();
