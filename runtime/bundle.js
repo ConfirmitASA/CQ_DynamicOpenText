@@ -302,7 +302,15 @@ var DynamicOpenText_progress_bar_ProgressBar = /*#__PURE__*/function () {
 
         this.updatePrompt();
         this.updateBarColor();
-        this.updateBarWidth();
+
+        if (this.questionElement_textarea.offsetWidth > 0) {
+          this.updateBarWidth();
+        } else {
+          var _barElement = QuestionElementsGetters.getProgressBarElement(this.questionElement);
+
+          _barElement.style.width = '480px';
+        }
+
         this.questionElement_textarea.addEventListener("input", this.updatePrompt);
         this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
         this.questionElement_textarea.addEventListener("mouseup", this.updateBarWidth);
