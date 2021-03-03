@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="styles.css"/>
         <link rel="stylesheet" href="design-page-styles.css"/>
         <script src="custom-question.js"></script>
-        <script src="click-handlers.js"></script>
+        <script src="click-handlers.js?version=1"></script>
         <script type="text/javascript" src="design-page-components.js"></script>
     </head>
     <body>
@@ -76,8 +76,8 @@
             <div class="comd-panel node-property node-properties-key-fields node-property--count">
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
-                        <h4 class="co-text-size-normal">Character count</h4>
-                        <div class="sd-tooltip-help" data-tooltip-text="Show the number of characters entered by your respondent. You can also show Character limit beside counter."></div>
+                        <h4 class="co-text-size-normal">Character/word count</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Show the number of characters/words entered by your respondent. For characters you can also show Character limit beside counter."></div>
                     </div>
                     <div class="co-flex co-flex--center">
                         <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
@@ -96,7 +96,15 @@
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-row">
-                            <div class="co-toggle co-toggle--checkbox">
+                            <div class="setting-col">
+                                <select class="form-control form-input" id="countType" name="countTypeSelector">
+                                    <option value="character" selected="selected">Characters</option>
+                                    <option value="word">Words</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="co-toggle">
                                 <input class="co-toggle__input node-property__checkbox" type="checkbox" id="isCharacterLimitEnabled"/>
                                 <label for="isCharacterLimitEnabled" class="node-property__label node-property__label--checkbox">
                                     <div class="icon icon-checkbox co-icon">
@@ -178,6 +186,7 @@
             var progressBarPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
 
             var countEnabled = document.getElementById('countEnabled');
+            var countTypeSelector = document.getElementById('countType');
             var isCharacterLimitEnabled = document.getElementById('isCharacterLimitEnabled');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
@@ -235,6 +244,8 @@
                     progressBarColorInputs[i].value = progressBarColors[i];
                 }
 
+                countTypeSelector.value = settings.characterCount.type;
+                toggleCharacterLimitSubsection(countTypeSelector);
                 isCharacterLimitEnabled.checked = settings.characterCount.isCharacterLimitEnabled;
 
                 var keywordWords = [];
@@ -337,6 +348,7 @@
                     },
                     characterCount: {
                         isEnabled: countEnabled.checked,
+                        type: countTypeSelector.options[countTypeSelector.selectedIndex].value,
                         isCharacterLimitEnabled: isCharacterLimitEnabled.checked
                     },
                     keywords: {
@@ -360,9 +372,9 @@
             progressBarPositionSelector.addEventListener('change', saveChanges, true);
             progressBarEnabled.addEventListener('change', saveChanges, true);
             countEnabled.addEventListener('change', saveChanges, true);
+            countTypeSelector.addEventListener('change', saveChanges, true);
             isCharacterLimitEnabled.addEventListener('change', saveChanges, true);
             keywordEnabled.addEventListener('change', saveChanges, true);
-
         </script>
     </body>
 </html>

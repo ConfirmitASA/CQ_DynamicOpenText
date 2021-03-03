@@ -2,6 +2,7 @@ import ProgressBar from "./DynamicOpenText_progress-bar";
 import CharacterCount from "./DynamicOpenText_character-count";
 import Keywords from "./DynamicOpenText_keywords";
 import QuestionElementsGetters from "./QuestionElementsGetters";
+import WordCount from "./DynamicOpenText_word-count";
 
 export default class DynamicOpenText {
 
@@ -20,8 +21,15 @@ export default class DynamicOpenText {
         }
 
         if(this.settings.characterCount.isEnabled) {
-            let characterCount = new CharacterCount(this.question, this.settings.characterCount);
-            characterCount.render();
+            let counter;
+            switch(this.settings.characterCount.type) {
+                case "character":
+                    counter = new CharacterCount(this.question, this.settings.characterCount);
+                    break;
+                case "word":
+                    counter = new WordCount(this.question);
+            }
+            counter.render();
         }
 
         if(this.settings.keywords.isEnabled) {

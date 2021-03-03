@@ -78,3 +78,35 @@ function addKeywordsRow() {
 
     keywordsTable.appendChild(newRow);
 }
+
+document.addEventListener('DOMContentLoaded', subscribeCountTypeSelect);
+
+function subscribeCountTypeSelect() {
+    let selectElement = document.querySelector("#countType");
+    if(!selectElement) {
+        console.log("Could not find select with id = countType");
+        return;
+    }
+
+    selectElement.addEventListener("change", function () {
+        toggleCharacterLimitSubsection(selectElement);
+    });
+}
+
+function toggleCharacterLimitSubsection(selectElement) {
+    let subsection;
+    try{
+        subsection = document.querySelectorAll("#isCharacterLimitEnabled")[0];
+        subsection = findParentOfClass(subsection, "co-toggle");
+    }
+    catch {
+        console.log("Could not find character limit subsection");
+        return;
+    }
+
+    if (selectElement.value === "character") {
+        subsection.classList.remove("hidden");
+    } else {
+        subsection.classList.add("hidden");
+    }
+}

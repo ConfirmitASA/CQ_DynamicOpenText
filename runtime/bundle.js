@@ -721,6 +721,66 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
 }();
 
 
+// CONCATENATED MODULE: ./dev/DynamicOpenText_word-count.js
+function DynamicOpenText_word_count_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function DynamicOpenText_word_count_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function DynamicOpenText_word_count_createClass(Constructor, protoProps, staticProps) { if (protoProps) DynamicOpenText_word_count_defineProperties(Constructor.prototype, protoProps); if (staticProps) DynamicOpenText_word_count_defineProperties(Constructor, staticProps); return Constructor; }
+
+function DynamicOpenText_word_count_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var wordCountClass = "cf-question__dynamic-word-count";
+
+var DynamicOpenText_word_count_WordCount = /*#__PURE__*/function () {
+  function WordCount(question) {
+    var _this = this;
+
+    DynamicOpenText_word_count_classCallCheck(this, WordCount);
+
+    DynamicOpenText_word_count_defineProperty(this, "updateCount", function () {
+      var currentWordCount = _this.countWords();
+
+      var countElement = _this.questionElement.querySelectorAll('.' + wordCountClass)[0];
+
+      countElement.textContent = currentWordCount;
+    });
+
+    DynamicOpenText_word_count_defineProperty(this, "countWords", function () {
+      var text = _this.questionElement_textarea.value;
+      if (text.length === 0) return 0;
+      return _this.getStringWithSingleSpacedWords(text).split(' ').length;
+    });
+
+    DynamicOpenText_word_count_defineProperty(this, "getStringWithSingleSpacedWords", function (str) {
+      str = str.replace(/(^\s*)|(\s*$)/gi, "");
+      str = str.replace(/[ ]{2,}/gi, " ");
+      str = str.replace(/\n /, "\n");
+      return str;
+    });
+
+    this.question = question;
+    this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+    this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
+  }
+
+  DynamicOpenText_word_count_createClass(WordCount, [{
+    key: "render",
+    value: function render() {
+      var element = document.createElement('div');
+      element.className += wordCountClass;
+      element.textContent = "0";
+      this.questionElement.appendChild(element);
+      this.updateCount();
+      this.questionElement_textarea.addEventListener("input", this.updateCount);
+    }
+  }]);
+
+  return WordCount;
+}();
+
+
 // CONCATENATED MODULE: ./dev/DynamicOpenText.js
 function DynamicOpenText_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -729,6 +789,7 @@ function DynamicOpenText_defineProperties(target, props) { for (var i = 0; i < p
 function DynamicOpenText_createClass(Constructor, protoProps, staticProps) { if (protoProps) DynamicOpenText_defineProperties(Constructor.prototype, protoProps); if (staticProps) DynamicOpenText_defineProperties(Constructor, staticProps); return Constructor; }
 
 function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -794,8 +855,18 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
       }
 
       if (this.settings.characterCount.isEnabled) {
-        var characterCount = new DynamicOpenText_character_count_CharacterCount(this.question, this.settings.characterCount);
-        characterCount.render();
+        var counter;
+
+        switch (this.settings.characterCount.type) {
+          case "character":
+            counter = new DynamicOpenText_character_count_CharacterCount(this.question, this.settings.characterCount);
+            break;
+
+          case "word":
+            counter = new DynamicOpenText_word_count_WordCount(this.question);
+        }
+
+        counter.render();
       }
 
       if (this.settings.keywords.isEnabled) {

@@ -13,6 +13,7 @@ import DynamicOpenText from "./DynamicOpenText";
         },
         characterCount: {
             isEnabled: false,
+            type: 'character',
             isCharacterLimitEnabled: false
         },
         keywords: {

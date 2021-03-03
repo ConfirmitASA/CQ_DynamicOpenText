@@ -15,6 +15,7 @@ var defaultSettings = {
     },
     characterCount: {
         isEnabled: false,
+        type: 'character',
         isCharacterLimitEnabled: false
     },
     keywords: {
