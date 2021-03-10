@@ -20,6 +20,7 @@ var defaultSettings = {
     },
     keywords: {
         isEnabled: false,
+        stopPromptThreshold: 0,
         words: {},
         prompts: {}
     }

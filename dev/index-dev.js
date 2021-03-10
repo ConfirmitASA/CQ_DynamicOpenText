@@ -18,6 +18,7 @@ import DynamicOpenText from "./DynamicOpenText";
         },
         keywords: {
             isEnabled: false,
+            stopPromptThreshold: 0,
             words: {},
             prompts: {}
         }

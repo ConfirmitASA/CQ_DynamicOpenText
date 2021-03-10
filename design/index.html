@@ -139,6 +139,13 @@
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-col">
+                            <div class="setting-row keyword__stop-prompt">
+                                <div class="value__stop-prompt value__stop-prompt--threshold">
+                                    <label for="stopPromptThreshold" class="node-property__label node-property__label--checkbox">Prompt threshold <div class="sd-tooltip-help" data-tooltip-text="When the length of the response reaches given number of characters new prompts will not be shown. Leave blank or type zero to disable the functionality."></div></label>
+                                    <input class="form-control form-input" id="stopPromptThreshold" name="stopPromptThreshold" type="number" value="0" />
+                                    <span class="node-property__after node-property__after--stop-prompt-threshold" for="stopPromptThreshold">characters</span>
+                                </div>
+                            </div>
                             <div class="setting-row keyword__option-table">
                                 <div class="node-property__label value__option-header keyword__option-header--word">Keywords<div class="sd-tooltip-help" data-tooltip-text="Enter a comma-separated list of keywords which, if used by the respondent, will trigger the prompt text."></div></div>
                                 <div class="node-property__label value__option-header keyword__option-header--text">Prompt text<div class="sd-tooltip-help" data-tooltip-text="Add text which will be displayed when a trigger word is entered, to encourage the respondent to include more detail in their response."></div></div>
@@ -190,6 +197,7 @@
             var isCharacterLimitEnabled = document.getElementById('isCharacterLimitEnabled');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
+            var stopPromptThreshold = document.getElementById('stopPromptThreshold');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
             
@@ -247,6 +255,8 @@
                 countTypeSelector.value = settings.characterCount.type;
                 toggleCharacterLimitSubsection(countTypeSelector);
                 isCharacterLimitEnabled.checked = settings.characterCount.isCharacterLimitEnabled;
+
+                stopPromptThreshold.value = settings.keywords.stopPromptThreshold;
 
                 var keywordWords = [];
                 var keywordPrompts = [];
@@ -353,6 +363,7 @@
                     },
                     keywords: {
                         isEnabled: keywordEnabled.checked,
+                        stopPromptThreshold: stopPromptThreshold.value === '' ? 0 : stopPromptThreshold.value,
                         words: keywordWordsObj,
                         prompts: keywordPromptsObj
                     }

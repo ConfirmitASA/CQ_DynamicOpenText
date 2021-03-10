@@ -606,10 +606,15 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
     DynamicOpenText_keywords_classCallCheck(this, Keywords);
 
     DynamicOpenText_keywords_defineProperty(this, "updateKeywords", function () {
-      var keywordElement = QuestionElementsGetters.getKeywordsElement(_this.questionElement);
-
       var enteredText = _this.questionElement_textarea.value.trim().toLowerCase();
 
+      if (_this.stopPromptThreshold !== 0 && _this.stopPromptThreshold < enteredText.length) {
+        var outermostSpace = enteredText.substr(0, _this.stopPromptThreshold).lastIndexOf(' ');
+        enteredText = enteredText.substr(0, outermostSpace);
+      }
+
+      ;
+      var keywordElement = QuestionElementsGetters.getKeywordsElement(_this.questionElement);
       var keywordList = keywordElement.firstElementChild; //When we have one prompt for multiple keywords, we need to show the prompt only once
       //In order to do that we use the same rowId for the keywords
       //If we already have a keywordItem it can be
@@ -654,6 +659,7 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
 
     this.currentLanguage = String(Confirmit.page.surveyInfo.language);
     this.question = question;
+    this.stopPromptThreshold = settings.stopPromptThreshold;
     this.words = settings.words[this.currentLanguage] ? settings.words[this.currentLanguage] : [];
     this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
     this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
