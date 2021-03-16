@@ -4,7 +4,7 @@ function subscribeKeywordButtonAddRowOnclick() {
     let keywordButtonInput;
     try {
         keywordButtonInput = document.querySelectorAll(".keyword__button--add button")[0];
-    } catch {
+    } catch (e) {
         console.log("Could not find button element for adding new keyword rows");
         return;
     }
@@ -36,7 +36,7 @@ function hideSubsectionAfterBoxChecked(checkboxElement) {
     try{
         subsection = section.querySelectorAll(".node-property__sub-content")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find section sub-content (.node-property__sub-content)");
         return;
     }
@@ -63,7 +63,7 @@ function addKeywordsRow() {
     try {
         keywordsTable = document.getElementsByClassName("keyword__options")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find keyword table (.keyword__options)");
         return;
     }
