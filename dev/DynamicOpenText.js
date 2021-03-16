@@ -3,6 +3,7 @@ import CharacterCount from "./DynamicOpenText_character-count";
 import Keywords from "./DynamicOpenText_keywords";
 import QuestionElementsGetters from "./QuestionElementsGetters";
 import WordCount from "./DynamicOpenText_word-count";
+import SoftWarning from "./DynamicOpenText_soft-warning";
 
 export default class DynamicOpenText {
 
@@ -35,6 +36,11 @@ export default class DynamicOpenText {
         if(this.settings.keywords.isEnabled) {
             let keywords = new Keywords(this.question, this.settings.keywords);
             keywords.render();
+        }
+
+        if(this.settings.softWarning.isEnabled) {
+            let softWarning = new SoftWarning(this.question, this.settings.softWarning);
+            softWarning.render();
         }
 
         this.setValidation();

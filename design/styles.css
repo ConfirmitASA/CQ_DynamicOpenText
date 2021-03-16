@@ -106,7 +106,8 @@ input#keywordEnabled {
 .count__option-input {
     width: 20%;
 }
-.value__stop-prompt input {
+.value__stop-prompt input,
+.value__soft-warning--threshold input{
     width: 80px;
 }
 .keyword__option-header--word, .keyword__option-input--word {
@@ -148,6 +149,10 @@ input#keywordEnabled {
     -o-transition-duration: 200ms;
     transition-duration: 200ms;
     outline: none;
+}
+.value__soft-warning--prompt,
+.value__soft-warning--prompt input {
+    width: 100%;
 }
 .co-toggle {
     margin-top: 5px;

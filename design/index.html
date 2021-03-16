@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="styles.css?version=2"/>
         <link rel="stylesheet" href="design-page-styles.css"/>
         <script src="custom-question.js"></script>
-        <script src="click-handlers.js?version=1"></script>
+        <script src="click-handlers.js?version=4"></script>
         <script type="text/javascript" src="design-page-components.js"></script>
     </head>
     <body>
@@ -138,11 +138,10 @@
                         </div>
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
-                        <div class="setting-col">
                             <div class="setting-row keyword__stop-prompt">
                                 <div class="value__stop-prompt value__stop-prompt--threshold">
-                                    <label for="stopPromptThreshold" class="node-property__label node-property__label--checkbox">Prompt threshold <div class="sd-tooltip-help" data-tooltip-text="When the length of the response reaches given number of characters new prompts will not be shown. Leave blank or type zero to disable the functionality."></div></label>
-                                    <input class="form-control form-input" id="stopPromptThreshold" name="stopPromptThreshold" type="number" value="0" />
+                                    <label for="stopPromptThreshold" class="node-property__label">Prompt threshold <div class="sd-tooltip-help" data-tooltip-text="When the length of the response reaches given number of characters new prompts will not be shown. Set to zero to disable the functionality."></div></label>
+                                    <input class="form-control form-input" id="stopPromptThreshold" name="stopPromptThreshold" type="number" value="0" min="0" />
                                     <span class="node-property__after node-property__after--stop-prompt-threshold" for="stopPromptThreshold">characters</span>
                                 </div>
                             </div>
@@ -165,15 +164,55 @@
                                 </div>
                             </div>
                             <div class="setting-row">
-                                <div class="node-property button-block keyword__button--add">
-                                    <div class="button-block">
+                                <div class="button-block keyword__button--add">
                                         <button class="comd-button comd-button--secondary-neutral">
                                             <span class="comd-button__content">
                                                 <div class="comd-portal-trigger">+ Add row</div>
                                             </span>
                                         </button>
-                                    </div>
                                 </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comd-panel node-property node-properties-key-fields node-property--soft-warning">
+                <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
+                    <div class="node-properties__toggle co-flex co-flex--center">
+                        <h4 class="co-text-size-normal">Soft warning</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Prompt the respondent to give more information in a form of warning with an option to leave the response as is and continue the survey."></div>
+                    </div>
+                    <div class="co-flex co-flex--center">
+                        <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
+                    </div>
+                </header>
+                <div class="comd-panel__collapse-area node-property__content node-property__content--soft-warning">
+                    <div class="setting-row">
+                        <div class="co-toggle co-toggle--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="softWarningEnabled"/>
+                            <label for="softWarningEnabled" class="node-property__label node-property__label--checkbox">
+                                <div class="icon icon-checkbox co-icon">
+                                </div>
+                                <span>Enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="setting-col node-property__sub-content hidden">
+                        <div class="comd-alert comd-alert--info info info--soft-warning">
+                            <div class="comd-alert__text">
+                                If you make the question Required or set Character Limit in the question Properties normal validation errors will be shown. Soft warnings are displayed only when there are no validation errors.
+                            </div>
+                        </div>
+                        <div class="setting-row soft-warning--threshold">
+                            <div class="value__threshold value__soft-warning--threshold">
+                                <label for="softWarningThreshold" class="node-property__label">Threshold <div class="sd-tooltip-help" data-tooltip-text="If the number of characters in the response is less (or equal) than this value a warning will be shown."></div></label>
+                                <input class="form-control form-input" id="softWarningThreshold" name="softWarningThreshold" type="number" value="0" min="0" />
+                                <span class="node-property__after node-property__after--stop-prompt-threshold" for="stopPromptThreshold">characters</span>
+                            </div>
+                        </div>
+                        <div class="setting-row soft-warning__prompt">
+                            <div class="value__prompt value__soft-warning--prompt">
+                                <label for="softWarningPrompt" class="node-property__label">Prompt text </label>
+                                <input class="form-control form-input" id="softWarningPrompt" name="softWarningPrompt" type="text" />
                             </div>
                         </div>
                     </div>
@@ -200,12 +239,17 @@
             var stopPromptThreshold = document.getElementById('stopPromptThreshold');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+            var softWarningEnabled = document.getElementById('softWarningEnabled');
+            var softWarningThreshold = document.getElementById('softWarningThreshold');
+            var softWarningPrompt = document.getElementById('softWarningPrompt');
             
             let currentLanguage = '';
 
             let progressBarPromptsObj = {};
             let keywordWordsObj = {};
             let keywordPromptsObj = {};
+            let softWarningPromptObj = {};
 
             function setValues(settings, uiSettings) {
 
@@ -223,10 +267,12 @@
                 progressBarEnabled.checked = settings.progressBar.isEnabled;
                 countEnabled.checked = settings.characterCount.isEnabled;
                 keywordEnabled.checked = settings.keywords.isEnabled;
+                softWarningEnabled.checked = settings.softWarning.isEnabled;
 
                 hideSubsectionAfterBoxChecked(progressBarEnabled);
                 hideSubsectionAfterBoxChecked(countEnabled);
                 hideSubsectionAfterBoxChecked(keywordEnabled);
+                hideSubsectionAfterBoxChecked(softWarningEnabled);
 
                 progressBarHeightInput.value = settings.progressBar.height;
                 progressBarPositionSelector.value = settings.progressBar.position;
@@ -293,6 +339,15 @@
                     starterKeywordWordInputs[j].value = keywordWords[j];
                     starterKeywordPromptInputs[j].value = keywordPrompts[j];
                 }
+
+                softWarningThreshold.value = settings.softWarning.threshold;
+
+                if(settings.softWarning.hasOwnProperty('prompt')) {
+                    softWarningPromptObj = settings.softWarning.prompt;
+                }
+                if(settings.softWarning.hasOwnProperty('prompt') && settings.softWarning.prompt[currentLanguage] !== undefined) {
+                    softWarningPrompt.value = settings.softWarning.prompt[currentLanguage];
+                }
             }
 
             function getNewStructuredSettings(settings) {
@@ -347,6 +402,8 @@
                 keywordWordsObj[currentLanguage] = keywordWords;
                 keywordPromptsObj[currentLanguage] = keywordPrompts;
 
+                softWarningPromptObj[currentLanguage] = softWarningPrompt.value;
+
                 var settings = {
                     progressBar: {
                         isEnabled: progressBarEnabled.checked,
@@ -363,9 +420,14 @@
                     },
                     keywords: {
                         isEnabled: keywordEnabled.checked,
-                        stopPromptThreshold: stopPromptThreshold.value === '' ? 0 : stopPromptThreshold.value,
+                        stopPromptThreshold: stopPromptThreshold.value === '' ? "0" : stopPromptThreshold.value,
                         words: keywordWordsObj,
                         prompts: keywordPromptsObj
+                    },
+                    softWarning: {
+                        isEnabled: softWarningEnabled.checked,
+                        threshold: softWarningThreshold.value,
+                        prompt: softWarningPromptObj,
                     }
                 };
 

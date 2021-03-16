@@ -608,7 +608,7 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
     DynamicOpenText_keywords_defineProperty(this, "updateKeywords", function () {
       var enteredText = _this.questionElement_textarea.value.trim().toLowerCase();
 
-      if (_this.stopPromptThreshold !== 0 && _this.stopPromptThreshold < enteredText.length) {
+      if (_this.stopPromptThreshold !== "0" && _this.stopPromptThreshold < enteredText.length) {
         var outermostSpace = enteredText.substr(0, _this.stopPromptThreshold).lastIndexOf(' ');
         enteredText = enteredText.substr(0, outermostSpace);
       }
@@ -787,6 +787,119 @@ var DynamicOpenText_word_count_WordCount = /*#__PURE__*/function () {
 }();
 
 
+// CONCATENATED MODULE: ./dev/DynamicOpenText_soft-warning.js
+function DynamicOpenText_soft_warning_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function DynamicOpenText_soft_warning_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var DynamicOpenText_soft_warning_SoftWarning = function SoftWarning(question, settings) {
+  var _this = this;
+
+  DynamicOpenText_soft_warning_classCallCheck(this, SoftWarning);
+
+  DynamicOpenText_soft_warning_defineProperty(this, "render", function () {
+    window.Confirmit.page.beforeNavigateEvent.on(_this.toggleSoftWarning);
+
+    _this.question.validationCompleteEvent.on(function (validationResults) {
+      _this.question.validationEvent.off(_this.pushError);
+
+      _this.toggleToastError(validationResults);
+
+      _this.toggleWarningBlock();
+    });
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "pushError", function (validationResult) {
+    var error = {
+      message: '',
+      data: 'softWarning'
+    };
+    validationResult.errors.push(error);
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "toggleToastError", function (validationResults) {
+    var toastError;
+
+    try {
+      toastError = document.getElementsByClassName("cf-toast--error")[0];
+    } catch (_unused) {
+      console.log("Could not find error block element");
+      return;
+    }
+
+    if (validationResults.errors.find(function (e) {
+      return e.data === "softWarning";
+    })) {
+      toastError.classList.add('hidden');
+    } else if (validationResults.errors.length !== 0) {
+      toastError.classList.remove('hidden');
+    }
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "toggleSoftWarning", function (way) {
+    if (!way.next) return;
+
+    _this.toggleWarningBlock();
+
+    if (_this.question.allowValidateOnChange) {
+      _this.questionElement_textarea.addEventListener("input", _this.toggleWarningBlock);
+    }
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "toggleWarningBlock", function () {
+    var responseLength = _this.questionElement_textarea.value.length;
+
+    var warningBlocks = _this.questionElement.querySelectorAll('.cf-question__soft-warning');
+
+    var haveQuestionErrors = _this.questionElement.querySelectorAll('.cf-error-list__item').length !== 0;
+
+    if (warningBlocks.length > 0 && (responseLength > _this.threshold || haveQuestionErrors)) {
+      warningBlocks[0].remove();
+    } else if (warningBlocks.length === 0 && responseLength <= _this.threshold && !haveQuestionErrors) {
+      if (!_this.haveShownWarning) {
+        _this.renderWarningBlock(_this.prompt);
+
+        _this.question.validationEvent.on(_this.pushError);
+
+        _this.haveShownWarning = true;
+      }
+    }
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "renderWarningBlock", function () {
+    var warningBlock = _this.createSoftWarningBlock();
+
+    var errorBlock;
+
+    try {
+      errorBlock = _this.questionElement.getElementsByClassName("cf-error-block")[0];
+    } catch (_unused2) {
+      console.log("Could not find error block element");
+      return;
+    }
+
+    errorBlock.insertAdjacentElement('afterend', warningBlock);
+  });
+
+  DynamicOpenText_soft_warning_defineProperty(this, "createSoftWarningBlock", function () {
+    var block = document.createElement('div');
+    block.className += "cf-question__soft-warning";
+    block.innerText = _this.prompt;
+    return block;
+  });
+
+  this.currentLanguage = String(Confirmit.page.surveyInfo.language);
+  this.question = question;
+  this.threshold = settings.threshold;
+  this.prompt = settings.prompt[this.currentLanguage];
+  this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
+  this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
+  this.haveShownWarning = false;
+};
+
+
 // CONCATENATED MODULE: ./dev/DynamicOpenText.js
 function DynamicOpenText_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -795,6 +908,7 @@ function DynamicOpenText_defineProperties(target, props) { for (var i = 0; i < p
 function DynamicOpenText_createClass(Constructor, protoProps, staticProps) { if (protoProps) DynamicOpenText_defineProperties(Constructor.prototype, protoProps); if (staticProps) DynamicOpenText_defineProperties(Constructor, staticProps); return Constructor; }
 
 function DynamicOpenText_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -878,6 +992,11 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
       if (this.settings.keywords.isEnabled) {
         var keywords = new DynamicOpenText_keywords_Keywords(this.question, this.settings.keywords);
         keywords.render();
+      }
+
+      if (this.settings.softWarning.isEnabled) {
+        var softWarning = new DynamicOpenText_soft_warning_SoftWarning(this.question, this.settings.softWarning);
+        softWarning.render();
       }
 
       this.setValidation();

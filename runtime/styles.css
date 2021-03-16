@@ -39,3 +39,16 @@
 .cf-question__dynamic-character-counter {
     font-size: 15px;
 }
+.hidden {
+    display: none;
+}
+.cf-question__soft-warning {
+    color: #856404;
+    background-color: #fff3cd;
+
+    border-color: #ffeeba;
+    border-radius: 5px;
+
+    padding: 0.5em;
+    margin-bottom: 1em;
+}

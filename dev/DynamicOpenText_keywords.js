@@ -28,7 +28,7 @@ export default class Keywords {
 
     updateKeywords = () => {
         let enteredText = this.questionElement_textarea.value.trim().toLowerCase();
-        if(this.stopPromptThreshold !== 0 && this.stopPromptThreshold < enteredText.length) {
+        if(this.stopPromptThreshold !== "0" && this.stopPromptThreshold < enteredText.length) {
             let outermostSpace = enteredText.substr(0, this.stopPromptThreshold).lastIndexOf(' ');
             enteredText = enteredText.substr(0, outermostSpace);
         };

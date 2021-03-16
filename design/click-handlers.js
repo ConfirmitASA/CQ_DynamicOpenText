@@ -4,7 +4,7 @@ function subscribeKeywordButtonAddRowOnclick() {
     let keywordButtonInput;
     try {
         keywordButtonInput = document.querySelectorAll(".keyword__button--add button")[0];
-    } catch {
+    } catch (e) {
         console.log("Could not find button element for adding new keyword rows");
         return;
     }
@@ -18,8 +18,9 @@ function subscribeCheckboxesHideSubsectionOnchange() {
     let progressBarCheckbox = document.getElementById("progressBarEnabled");
     let countCheckbox = document.getElementById("countEnabled");
     let keywordCheckbox = document.getElementById("keywordEnabled");
+    let softWarningCheckbox = document.getElementById("softWarningEnabled");
 
-    let checkboxes = [progressBarCheckbox, countCheckbox, keywordCheckbox];
+    let checkboxes = [progressBarCheckbox, countCheckbox, keywordCheckbox, softWarningCheckbox];
 
     checkboxes.forEach(function (box) {
         if(box) {
@@ -36,7 +37,7 @@ function hideSubsectionAfterBoxChecked(checkboxElement) {
     try{
         subsection = section.querySelectorAll(".node-property__sub-content")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find section sub-content (.node-property__sub-content)");
         return;
     }
@@ -63,7 +64,7 @@ function addKeywordsRow() {
     try {
         keywordsTable = document.getElementsByClassName("keyword__options")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find keyword table (.keyword__options)");
         return;
     }
@@ -99,7 +100,7 @@ function toggleCharacterLimitSubsection(selectElement) {
         subsection = document.querySelectorAll("#isCharacterLimitEnabled")[0];
         subsection = findParentOfClass(subsection, "co-toggle");
     }
-    catch {
+    catch (e) {
         console.log("Could not find character limit subsection");
         return;
     }

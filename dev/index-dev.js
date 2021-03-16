@@ -21,6 +21,11 @@ import DynamicOpenText from "./DynamicOpenText";
             stopPromptThreshold: 0,
             words: {},
             prompts: {}
+        },
+        softWarning: {
+            isEnabled: false,
+            threshold: 0,
+            prompt: {}
         }
     };
 
