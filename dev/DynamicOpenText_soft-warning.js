@@ -11,8 +11,6 @@ export default class SoftWarning {
 
         this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
         this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
-
-        this.haveShownWarning = false;
     }
 
     render = () => {
@@ -60,18 +58,23 @@ export default class SoftWarning {
     toggleWarningBlock = () => {
         let responseLength = this.questionElement_textarea.value.length;
         let warningBlocks = this.questionElement.querySelectorAll('.cf-question__soft-warning');
-        let haveQuestionErrors = this.questionElement.querySelectorAll('.cf-error-list__item').length !== 0;
+
+        let questionValidationResults = this.question.validate(false);
+        //let haveQuestionErrors = this.questionElement.querySelectorAll('.cf-error-list__item').length !== 0;
+        let haveQuestionErrors;
+
+        if(questionValidationResults.errors.find(e => e.data === "softWarning")) {
+            haveQuestionErrors = false;
+        } else if(questionValidationResults.errors.length !== 0) {
+            haveQuestionErrors = true;
+        }
 
         if(warningBlocks.length > 0 && (responseLength > this.threshold || haveQuestionErrors)) {
             warningBlocks[0].remove();
         }
         else if(warningBlocks.length === 0 && responseLength <= this.threshold && !haveQuestionErrors) {
-
-            if(!this.haveShownWarning) {
-                this.renderWarningBlock(this.prompt);
-                this.question.validationEvent.on(this.pushError);
-                this.haveShownWarning = true;
-            }
+            this.renderWarningBlock(this.prompt);
+            this.question.validationEvent.on(this.pushError);
         }
     }
 
