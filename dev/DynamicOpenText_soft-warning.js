@@ -19,7 +19,6 @@ export default class SoftWarning {
         this.question.validationCompleteEvent.on((validationResults) => {
              this.question.validationEvent.off(this.pushError);
              this.toggleToastError(validationResults);
-             this.toggleWarningBlock();
         });
     }
 
