@@ -40,7 +40,7 @@ export default class WordCount {
         str = str.replace(/(^\s*)|(\s*$)/gi,""); //remove the start and end spaces
         str = str.replace(/[ ]{2,}/gi," "); //reduce multiple spaces to a single space
         str = str.replace(/ \n|\n | \n /g,"\n"); //exclude spaces near newlines
-        str = str.replace(/\n|\r/g, " "); //replace newlines and carriage returns with spaces
+        str = str.replace(/[\n\r]/g, " "); //replace newlines and carriage returns with spaces
 
         return str;
     }
