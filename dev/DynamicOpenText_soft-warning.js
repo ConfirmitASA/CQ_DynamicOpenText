@@ -1,5 +1,8 @@
 import QuestionElementsGetters from "./QuestionElementsGetters";
 
+const softWarningClassName = "cf-question__soft-warning";
+const errorData = "softWarning";
+
 export default class SoftWarning {
 
     constructor(question, settings) {
@@ -14,37 +17,15 @@ export default class SoftWarning {
     }
 
     render = () => {
-        window.Confirmit.page.beforeNavigateEvent.on(this.toggleSoftWarning);
+        window.Confirmit.page.beforeNavigateEvent.on(this.toggleWarning);
 
-        this.question.validationCompleteEvent.on((validationResults) => {
+        this.question.validationCompleteEvent.on((questionValidationResult) => {
              this.question.validationEvent.off(this.pushError);
-             this.toggleToastError(validationResults);
+             this.toggleToastError(questionValidationResult);
         });
     }
 
-    pushError = (validationResult) => {
-        var error = {message: '', data: 'softWarning'};
-        validationResult.errors.push(error);
-    }
-
-    toggleToastError = (validationResults) => {
-        let toastError;
-        try {
-            toastError = document.getElementsByClassName("cf-toast--error")[0];
-        }
-        catch {
-            console.log("Could not find error block element");
-            return;
-        }
-
-        if(validationResults.errors.find(e => e.data === "softWarning")) {
-            toastError.classList.add('hidden');
-        } else if(validationResults.errors.length !== 0) {
-            toastError.classList.remove('hidden');
-        }
-    }
-
-    toggleSoftWarning = (way) => {
+    toggleWarning = (way) => {
         if(!way.next) return;
 
         this.toggleWarningBlock();
@@ -56,38 +37,36 @@ export default class SoftWarning {
 
     toggleWarningBlock = () => {
         let responseLength = this.questionElement_textarea.value.length;
-        let warningBlocks = this.questionElement.querySelectorAll('.cf-question__soft-warning');
+        let warningBlocks = this.questionElement.querySelectorAll('.' + softWarningClassName);
 
-        let questionValidationResults = this.question.validate(false);
-        //let haveQuestionErrors = this.questionElement.querySelectorAll('.cf-error-list__item').length !== 0;
-        let haveQuestionErrors;
+        let questionValidationResult = this.question.validate(false); //raiseValidationCompleteEvent: false
+        let hasErrors = this.hasQuestionErrors(questionValidationResult);
 
-        if(questionValidationResults.errors.find(e => e.data === "softWarning")) {
-            haveQuestionErrors = false;
-        } else if(questionValidationResults.errors.length !== 0) {
-            haveQuestionErrors = true;
-        }
-
-        if(warningBlocks.length > 0 && (responseLength > this.threshold || haveQuestionErrors)) {
+        if(warningBlocks.length > 0 && (responseLength > this.threshold || hasErrors)) {
             warningBlocks[0].remove();
         }
-        else if(warningBlocks.length === 0 && responseLength <= this.threshold && !haveQuestionErrors) {
-            this.renderWarningBlock(this.prompt);
+        else if(warningBlocks.length === 0 && responseLength <= this.threshold && !hasErrors) {
+            this.renderWarningBlock(this.text);
             this.question.validationEvent.on(this.pushError);
         }
     }
 
+    pushError = (validationResult) => {
+        let error = {message: '', data: errorData};
+        validationResult.errors.push(error);
+    }
+
     renderWarningBlock = () => {
-        let warningBlock = this.createSoftWarningBlock();
         let errorBlock;
         try {
-            errorBlock = this.questionElement.getElementsByClassName("cf-error-block")[0];
+            errorBlock = this.questionElement.querySelectorAll(".cf-question__error")[0];
         }
         catch {
             console.log("Could not find error block element");
             return;
         }
 
+        let warningBlock = this.createSoftWarningBlock();
         errorBlock.insertAdjacentElement('afterend', warningBlock);
     }
 
@@ -98,5 +77,32 @@ export default class SoftWarning {
         block.innerHTML = this.text;
 
         return block;
+    }
+
+    toggleToastError = (questionValidationResult) => {
+        let toastError;
+        try {
+            toastError = document.getElementsByClassName("cf-toast--error")[0];
+        }
+        catch {
+            console.log("Could not find error block element");
+            return;
+        }
+        
+        let hasErrors = this.hasQuestionErrors(questionValidationResult);
+
+        if(hasErrors) {
+            toastError.classList.remove('hidden');
+        } else {
+            toastError.classList.add('hidden');
+        }
+    }
+
+    hasQuestionErrors = (questionValidationResult) => {
+        if(questionValidationResult.errors.length === 1 && questionValidationResult.errors.find(e => e.data === errorData)) {
+            return false;
+        } else if(questionValidationResult.errors.length !== 0) {
+            return true;
+        }
     }
 }
