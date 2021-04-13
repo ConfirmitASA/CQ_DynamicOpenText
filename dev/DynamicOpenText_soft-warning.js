@@ -93,7 +93,8 @@ export default class SoftWarning {
 
     createSoftWarningBlock = () => {
         let block = document.createElement('div');
-        block.className += "cf-question__soft-warning";
+        block.className += softWarningClassName;
+        block.className += " cf-error-block cf-error-block--bottom";
         block.innerHTML = this.prompt;
 
         return block;
