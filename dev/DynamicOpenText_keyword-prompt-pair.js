@@ -37,20 +37,12 @@ export default class KeywordPromptPair {
             let rightBoundaryIndex = foundIndex + this.keyword.length;
 
             let isInTheBeginning = leftBoundaryIndex < 0;
-            let isInTheEnd = rightBoundaryIndex > text.length - 1;
+            let isInTheEnd = rightBoundaryIndex > (text.length - 1);
 
-            if(!isInTheBeginning && !isInTheEnd) {
-                hasMatch = this.isLeftWordBorder(text, leftBoundaryIndex) &&
-                    this.isRightWordBorder(text, rightBoundaryIndex);
-            }
-            else if(!isInTheBeginning) {
-                hasMatch = this.isLeftWordBorder(text, leftBoundaryIndex);
-            }
-            else if(!isInTheEnd) {
-                hasMatch = this.isRightWordBorder(text, rightBoundaryIndex);
-            } else {
-                hasMatch = true;
-            }
+            let hasLeftWordBorder = isInTheBeginning ? true : this.isWordBorder(text, leftBoundaryIndex);
+            let hasRightWordBorder = isInTheEnd ? true : this.isWordBorder(text, rightBoundaryIndex);
+
+            hasMatch = hasLeftWordBorder && hasRightWordBorder;
 
             if (!hasMatch) {
                 foundIndex = text.indexOf(this.keyword, foundIndex + 1);
@@ -62,19 +54,8 @@ export default class KeywordPromptPair {
         return hasMatch;
     }
 
-    isRightWordBorder(str, ind) {
-        if(str.length === ind) {
-            return true;
-        }
-        let re = /\p{Z}|\p{Math_Symbol}|\p{Currency_Symbol}|\p{Punctuation}/u;
-        return str[ind].match(re) !== null;
-    }
-
-    isLeftWordBorder(str, ind) {
-        if(ind === -1) {
-            return true;
-        }
-        let re = /\p{Z}|\p{Math_Symbol}|\p{Currency_Symbol}|\p{Punctuation}/u;
+    isWordBorder(str, ind) {
+        let re = /\p{Separator}|\p{Other}|\p{Math_Symbol}|\p{Currency_Symbol}|\p{Punctuation}/u;
         return str[ind].match(re) !== null;
     }
 
@@ -88,7 +69,8 @@ export default class KeywordPromptPair {
 
         while (foundIndex !== -1) {
             let rightBoundaryIndex = foundIndex + this.keyword.length;
-            hasMatch = this.isRightWordBorder(text, rightBoundaryIndex);
+            let isInTheEnd = rightBoundaryIndex > (text.length - 1);
+            hasMatch = isInTheEnd ? true : this.isWordBorder(text, rightBoundaryIndex);
 
             if (!hasMatch) {
                 foundIndex = text.indexOf(this.keyword, foundIndex + 1);
@@ -106,7 +88,9 @@ export default class KeywordPromptPair {
 
         while (foundIndex !== -1) {
             let leftBoundaryIndex = foundIndex - 1;
-            hasMatch = this.isLeftWordBorder(text, leftBoundaryIndex);
+            let isInTheBeginning = leftBoundaryIndex < 0;
+
+            hasMatch = isInTheBeginning ? true : this.isWordBorder(text, leftBoundaryIndex);
 
             if (!hasMatch) {
                 foundIndex = text.indexOf(this.keyword, foundIndex + 1);
