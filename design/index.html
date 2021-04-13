@@ -210,9 +210,9 @@
                             </div>
                         </div>
                         <div class="setting-row soft-warning__prompt">
-                            <div class="value__prompt value__soft-warning--prompt">
-                                <label for="softWarningPrompt" class="node-property__label">Prompt text </label>
-                                <input class="form-control form-input" id="softWarningPrompt" name="softWarningPrompt" type="text" />
+                            <div class="value__soft-warning--text">
+                                <label for="softWarningText" class="node-property__label">Warning text </label>
+                                <input class="form-control form-input" id="softWarningText" name="softWarningText" type="text" />
                             </div>
                         </div>
                     </div>
@@ -242,14 +242,14 @@
 
             var softWarningEnabled = document.getElementById('softWarningEnabled');
             var softWarningThreshold = document.getElementById('softWarningThreshold');
-            var softWarningPrompt = document.getElementById('softWarningPrompt');
+            var softWarningText = document.getElementById('softWarningText');
             
             let currentLanguage = '';
 
             let progressBarPromptsObj = {};
             let keywordWordsObj = {};
             let keywordPromptsObj = {};
-            let softWarningPromptObj = {};
+            let softWarningTextObj = {};
 
             function setValues(settings, uiSettings) {
 
@@ -342,11 +342,11 @@
 
                 softWarningThreshold.value = settings.softWarning.threshold;
 
-                if(settings.softWarning.hasOwnProperty('prompt')) {
-                    softWarningPromptObj = settings.softWarning.prompt;
+                if(settings.softWarning.hasOwnProperty('text')) {
+                    softWarningTextObj = settings.softWarning.text;
                 }
-                if(settings.softWarning.hasOwnProperty('prompt') && settings.softWarning.prompt[currentLanguage] !== undefined) {
-                    softWarningPrompt.value = settings.softWarning.prompt[currentLanguage];
+                if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text[currentLanguage] !== undefined) {
+                    softWarningText.value = settings.softWarning.text[currentLanguage];
                 }
             }
 
@@ -402,7 +402,7 @@
                 keywordWordsObj[currentLanguage] = keywordWords;
                 keywordPromptsObj[currentLanguage] = keywordPrompts;
 
-                softWarningPromptObj[currentLanguage] = softWarningPrompt.value;
+                softWarningTextObj[currentLanguage] = softWarningText.value;
 
                 var settings = {
                     progressBar: {
@@ -427,7 +427,7 @@
                     softWarning: {
                         isEnabled: softWarningEnabled.checked,
                         threshold: softWarningThreshold.value,
-                        prompt: softWarningPromptObj,
+                        prompt: softWarningTextObj,
                     }
                 };
 

@@ -7,7 +7,7 @@ export default class SoftWarning {
 
         this.question = question;
         this.threshold = settings.threshold;
-        this.prompt = settings.prompt[this.currentLanguage];
+        this.text = settings.text[this.currentLanguage];
 
         this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
         this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
@@ -95,7 +95,7 @@ export default class SoftWarning {
         let block = document.createElement('div');
         block.className += softWarningClassName;
         block.className += " cf-error-block cf-error-block--bottom";
-        block.innerHTML = this.prompt;
+        block.innerHTML = this.text;
 
         return block;
     }

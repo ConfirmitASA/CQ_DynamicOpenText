@@ -27,7 +27,7 @@ var defaultSettings = {
     softWarning: {
         isEnabled: false,
         threshold: 0,
-        prompt: {}
+        text: {}
     }
 };
 
