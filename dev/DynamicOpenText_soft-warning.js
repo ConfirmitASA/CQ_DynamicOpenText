@@ -16,6 +16,13 @@ export default class SoftWarning {
         this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
     }
 
+    /**
+     * The starting point. Respondent clicks on a next/back button -> beforeNavigateEvent
+     * (if direction == next) -> toggleWarning -> (if warning needs to be shown) subscribe to navigateEvent
+     * a function pushing an error to validationResult.error - this way we can prevent navigation.
+     * NavigateEvent -> error is pushed ->
+     * validationCompleteEvent -> unsubscribe from navigateEvent so we won't push the error again.
+     */
     render = () => {
         window.Confirmit.page.beforeNavigateEvent.on(this.toggleWarning);
 
@@ -25,6 +32,11 @@ export default class SoftWarning {
         });
     }
 
+    /**
+     * Check the way of navigation and toggle a warning block. If validation on change is allowed
+     * subscribe to the input event of the textarea in order to perform revalidation.
+     * @param way - a way of navigation; we only want to show a soft warning when moving forward
+     */
     toggleWarning = (way) => {
         if(!way.next) return;
 
@@ -35,6 +47,10 @@ export default class SoftWarning {
         }
     }
 
+    /**
+     * Renders or hides a warning block. Question validation is performed because we don't want to show
+     * the warning if we have validation errors.
+     */
     toggleWarningBlock = () => {
         let responseLength = this.questionElement_textarea.value.length;
         let warningBlocks = this.questionElement.querySelectorAll('.' + softWarningClassName);
@@ -51,6 +67,11 @@ export default class SoftWarning {
         }
     }
 
+    /**
+     * Pushes an error to validationResult to prevent navigation when having a warning.
+     * To distinguish between this "warning" error and other validation errors, errorData is used.
+     * @param validationResult - result of the question validation
+     */
     pushError = (validationResult) => {
         let error = {message: '', data: errorData};
         validationResult.errors.push(error);
