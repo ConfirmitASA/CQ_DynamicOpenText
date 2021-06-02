@@ -93,7 +93,7 @@ function getNewStructuredSettings(settings) {
 
 (function () {
     Confirmit.pageView.registerCustomQuestion(
-        "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
+        "f8278f96-a12c-434f-91fa-fc1a9aef1b6e",
         function (question, customQuestionSettings, questionViewSettings) {
 
     //The new structure of settings was created during the first code refactoring

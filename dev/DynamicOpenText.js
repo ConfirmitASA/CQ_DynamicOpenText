@@ -13,6 +13,8 @@ export default class DynamicOpenText {
     }
 
     render() {
+        this.renderStandardQuestionMarkup();
+
         let questionInput = document.getElementById(this.question.id + "_input");
         questionInput.addEventListener("input", this.setValueToQuestion);
 
@@ -44,6 +46,16 @@ export default class DynamicOpenText {
         }
 
         this.setValidation();
+    }
+
+    renderStandardQuestionMarkup = () => {
+        document.getElementById(this.question.id).innerHTML = '<div class="cf-question__text" id="' + this.question.id + '_text">' + this.question.text + '</div>' +
+            '<div class="cf-question__instruction" id="' + this.question.id + '_instruction">' + this.question.instruction + '</div>' +
+            '<div class="cf-question__error cf-error-block cf-error-block--bottom cf-error-block--hidden" id="' + this.question.id + '_error" role="alert" aria-labelledby="' + this.question.id + '_error_list">' +
+            '<ul class="cf-error-list" id="' + this.question.id + '_error_list"></ul></div>' +
+            '<div class="cf-question__content cf-question__content--no-padding"><div class="cf-open-answer">' +
+            '<textarea class="cf-open-answer__input cf-text-area  " id="' + this.question.id + '_input" aria-labelledby="' + this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + this.question.id + '_error"></textarea>' +
+            '</div></div>';
     }
 
     setValueToQuestion = () => {

@@ -1,10 +1,10 @@
 {
-  "id": "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
+  "id": "f8278f96-a12c-434f-91fa-fc1a9aef1b6e",
   "schemaVersion": 2,
-  "name": "Dynamic Open Text",
-  "description": "Ready for release - Dynamic Open text question including answer prompts, keywords and character counter",
+  "name": "(DEV) Dynamic Open Text",
+  "description": "custom rendering test",
   "baseQuestionType": "OpenForm",
-  "disableDefaultRendering": false,
+  "disableDefaultRendering": true,
   "iconUrl": "design/icon.svg",
   "designEntryPoint": "design/index.html",
   "runtimeEntryPoint": {
