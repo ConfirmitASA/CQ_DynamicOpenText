@@ -96,17 +96,16 @@ function getNewStructuredSettings(settings) {
         "f8278f96-a12c-434f-91fa-fc1a9aef1b6e",
         function (question, customQuestionSettings, questionViewSettings) {
 
-    //The new structure of settings was created during the first code refactoring
-    //which unlike previous one has subsections for progressBar, counter and keywords settings.
-    //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
-    if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
-        customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
-    }
+            //The new structure of settings was created during the first code refactoring
+            //which unlike previous one has subsections for progressBar, counter and keywords settings.
+            //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
+            if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
+                customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
+            }
 
-    customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
-
-    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
-    dynamicOpenText.render();
+            customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
+            const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
+            dynamicOpenText.render();
         }
     );
 })();
