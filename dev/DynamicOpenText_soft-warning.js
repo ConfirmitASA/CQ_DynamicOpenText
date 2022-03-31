@@ -9,7 +9,7 @@ export default class SoftWarning {
         this.currentLanguage = String(Confirmit.page.surveyInfo.language);
 
         this.question = question;
-        this.threshold = settings.threshold;
+        this.threshold = parseInt(settings.threshold);
         this.text = settings.text[this.currentLanguage];
 
         this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
