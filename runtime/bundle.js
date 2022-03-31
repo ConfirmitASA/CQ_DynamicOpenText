@@ -107,11 +107,9 @@ var QuestionElementsGetters = /*#__PURE__*/function () {
   _createClass(QuestionElementsGetters, null, [{
     key: "getQuestionElement",
     value: function getQuestionElement(questionId) {
-      try {
-        return document.getElementById(questionId);
-      } catch (e) {
-        console.log("Could not find question with id " + questionId);
-      }
+      var _document$getElementB;
+
+      return (_document$getElementB = document.getElementById(questionId)) !== null && _document$getElementB !== void 0 ? _document$getElementB : "Could not find question with id " + questionId;
     }
   }, {
     key: "getQuestionElement_Content",
@@ -589,9 +587,9 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
     DynamicOpenText_keywords_defineProperty(this, "updateKeywords", function () {
       var enteredText = _this.questionElement_textarea.value.trim().toLowerCase();
 
-      if (_this.stopPromptThreshold !== "0" && _this.stopPromptThreshold < enteredText.length) {
-        var outermostSpace = enteredText.substr(0, _this.stopPromptThreshold).lastIndexOf(' ');
-        enteredText = enteredText.substr(0, outermostSpace);
+      if (_this.stopPromptThreshold !== 0 && _this.stopPromptThreshold < enteredText.length) {
+        var outermostSpace = enteredText.substring(0, _this.stopPromptThreshold).lastIndexOf(' ');
+        enteredText = enteredText.substring(0, outermostSpace);
       }
 
       ;
@@ -640,7 +638,7 @@ var DynamicOpenText_keywords_Keywords = /*#__PURE__*/function () {
 
     this.currentLanguage = String(Confirmit.page.surveyInfo.language);
     this.question = question;
-    this.stopPromptThreshold = settings.stopPromptThreshold;
+    this.stopPromptThreshold = parseInt(settings.stopPromptThreshold);
     this.words = settings.words[this.currentLanguage] ? settings.words[this.currentLanguage] : [];
     this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
     this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
@@ -888,7 +886,7 @@ var DynamicOpenText_soft_warning_SoftWarning = function SoftWarning(question, se
 
   this.currentLanguage = String(Confirmit.page.surveyInfo.language);
   this.question = question;
-  this.threshold = settings.threshold;
+  this.threshold = parseInt(settings.threshold);
   this.text = settings.text[this.currentLanguage];
   this.questionElement = QuestionElementsGetters.getQuestionElement(this.question.id);
   this.questionElement_textarea = QuestionElementsGetters.getQuestionElement_Textarea(this.questionElement);
@@ -974,8 +972,13 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       this.renderStandardQuestionMarkup();
-      var questionInput = document.getElementById(this.question.id + "_input");
-      questionInput.addEventListener("input", this.setValueToQuestion);
+      var questionInputTextarea = document.getElementById(this.question.id + "_input");
+
+      if (!!questionInputTextarea) {
+        questionInputTextarea.addEventListener("input", this.setValueToQuestion);
+      } else {
+        console.log('Could not find DOT textarea');
+      }
 
       if (this.settings.progressBar.isEnabled) {
         var progressBar = new DynamicOpenText_progress_bar_ProgressBar(this.question, this.settings.progressBar);
