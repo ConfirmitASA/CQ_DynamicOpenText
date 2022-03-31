@@ -14,9 +14,13 @@ export default class DynamicOpenText {
 
     render() {
         this.renderStandardQuestionMarkup();
-
-        let questionInput = document.getElementById(this.question.id + "_input");
-        questionInput.addEventListener("input", this.setValueToQuestion);
+        const questionInputTextarea = document.getElementById(this.question.id + "_input");
+        if(!!questionInputTextarea) {
+            questionInputTextarea.addEventListener("input", this.setValueToQuestion);
+        }
+        else {
+            console.log('Could not find DOT textarea');
+        }
 
         if(this.settings.progressBar.isEnabled) {
             let progressBar = new ProgressBar(this.question, this.settings.progressBar);
