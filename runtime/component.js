@@ -64,6 +64,10 @@ function getDefaultSettingsIfNeeded(existingSettings) {
         settings.keywords.prompts[currentLanguage] = [];
     }
 
+    if (!settings.softWarning.text.hasOwnProperty(currentLanguage) || (settings.softWarning.text.hasOwnProperty(currentLanguage) && settings.softWarning.text[currentLanguage] == "")) {
+        settings.softWarning.text[currentLanguage] = [];
+    }
+
     return settings;
 }
 

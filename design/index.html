@@ -267,7 +267,20 @@
                 progressBarEnabled.checked = settings.progressBar.isEnabled;
                 countEnabled.checked = settings.characterCount.isEnabled;
                 keywordEnabled.checked = settings.keywords.isEnabled;
-                softWarningEnabled.checked = settings.softWarning.isEnabled;
+                if(settings.hasOwnProperty('softWarning') && settings.softWarning !== undefined) {
+                    if(settings.softWarning.hasOwnProperty('isEnabled') && settings.softWarning.isEnabled !== undefined) {
+                        softWarningEnabled.checked = settings.softWarning.isEnabled;
+                    }
+                    if(settings.softWarning.hasOwnProperty('threshold') && settings.softWarning.threshold !== undefined) {
+                        softWarningThreshold.value = settings.softWarning.threshold;
+                    }
+                    if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text !== undefined) {
+                        softWarningTextObj = settings.softWarning.text;
+                    }
+                    if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text[currentLanguage] !== undefined) {
+                        softWarningText.value = settings.softWarning.text[currentLanguage];
+                    }
+                }
 
                 hideSubsectionAfterBoxChecked(progressBarEnabled);
                 hideSubsectionAfterBoxChecked(countEnabled);
@@ -298,11 +311,16 @@
                     progressBarColorInputs[i].value = progressBarColors[i];
                 }
 
-                countTypeSelector.value = settings.characterCount.type;
+                if(settings.characterCount.hasOwnProperty('type') && settings.characterCount.type !== undefined) {
+                    countTypeSelector.value = settings.characterCount.type;
+                }
+
                 toggleCharacterLimitSubsection(countTypeSelector);
                 isCharacterLimitEnabled.checked = settings.characterCount.isCharacterLimitEnabled;
 
-                stopPromptThreshold.value = settings.keywords.stopPromptThreshold;
+                if(settings.keywords.hasOwnProperty('stopPromptThreshold') && settings.keywords.stopPromptThreshold !== undefined) {
+                    stopPromptThreshold.value = settings.keywords.stopPromptThreshold;
+                }
 
                 var keywordWords = [];
                 var keywordPrompts = [];
@@ -338,15 +356,6 @@
                 for(var j = 0; j < keywordWords.length; j++) {
                     starterKeywordWordInputs[j].value = keywordWords[j];
                     starterKeywordPromptInputs[j].value = keywordPrompts[j];
-                }
-
-                softWarningThreshold.value = settings.softWarning.threshold;
-
-                if(settings.softWarning.hasOwnProperty('text')) {
-                    softWarningTextObj = settings.softWarning.text;
-                }
-                if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text[currentLanguage] !== undefined) {
-                    softWarningText.value = settings.softWarning.text[currentLanguage];
                 }
             }
 
