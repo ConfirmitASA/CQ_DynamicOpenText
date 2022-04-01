@@ -924,13 +924,16 @@ var DynamicOpenText_DynamicOpenText = /*#__PURE__*/function () {
     DynamicOpenText_classCallCheck(this, DynamicOpenText);
 
     DynamicOpenText_defineProperty(this, "renderStandardQuestionMarkup", function () {
-      document.getElementById(_this.question.id).innerHTML = '<div class="cf-question__text" id="' + _this.question.id + '_text">' + _this.question.text + '</div>' + '<div class="cf-question__instruction" id="' + _this.question.id + '_instruction">' + _this.question.instruction + '</div>' + '<div class="cf-question__error cf-error-block cf-error-block--bottom cf-error-block--hidden" id="' + _this.question.id + '_error" role="alert" aria-labelledby="' + _this.question.id + '_error_list">' + '<ul class="cf-error-list" id="' + _this.question.id + '_error_list"></ul></div>' + '<div class="cf-question__content cf-question__content--no-padding"><div class="cf-open-answer">' + '<textarea class="cf-open-answer__input cf-text-area  " id="' + _this.question.id + '_input" aria-labelledby="' + _this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + _this.question.id + '_error"></textarea>' + '</div></div>';
+      var _this$question$value;
+
+      var currentValue = (_this$question$value = _this.question.value) !== null && _this$question$value !== void 0 ? _this$question$value : '';
+      document.getElementById(_this.question.id).innerHTML = '<div class="cf-question__text" id="' + _this.question.id + '_text">' + _this.question.text + '</div>' + '<div class="cf-question__instruction" id="' + _this.question.id + '_instruction">' + _this.question.instruction + '</div>' + '<div class="cf-question__error cf-error-block cf-error-block--bottom cf-error-block--hidden" id="' + _this.question.id + '_error" role="alert" aria-labelledby="' + _this.question.id + '_error_list">' + '<ul class="cf-error-list" id="' + _this.question.id + '_error_list"></ul></div>' + '<div class="cf-question__content cf-question__content--no-padding"><div class="cf-open-answer">' + '<textarea class="cf-open-answer__input cf-text-area  " id="' + _this.question.id + '_input" aria-labelledby="' + _this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + _this.question.id + '_error">' + currentValue + '</textarea>' + '</div></div>';
     });
 
     DynamicOpenText_defineProperty(this, "setValueToQuestion", function () {
       var questionInput = document.getElementById(_this.question.id + "_input");
 
-      if (questionInput) {
+      if (!!questionInput) {
         _this.question.setValue(questionInput.value);
       }
     });

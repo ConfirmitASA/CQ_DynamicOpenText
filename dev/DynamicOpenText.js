@@ -53,18 +53,19 @@ export default class DynamicOpenText {
     }
 
     renderStandardQuestionMarkup = () => {
+        const currentValue = this.question.value ?? '';
         document.getElementById(this.question.id).innerHTML = '<div class="cf-question__text" id="' + this.question.id + '_text">' + this.question.text + '</div>' +
             '<div class="cf-question__instruction" id="' + this.question.id + '_instruction">' + this.question.instruction + '</div>' +
             '<div class="cf-question__error cf-error-block cf-error-block--bottom cf-error-block--hidden" id="' + this.question.id + '_error" role="alert" aria-labelledby="' + this.question.id + '_error_list">' +
             '<ul class="cf-error-list" id="' + this.question.id + '_error_list"></ul></div>' +
             '<div class="cf-question__content cf-question__content--no-padding"><div class="cf-open-answer">' +
-            '<textarea class="cf-open-answer__input cf-text-area  " id="' + this.question.id + '_input" aria-labelledby="' + this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + this.question.id + '_error"></textarea>' +
+            '<textarea class="cf-open-answer__input cf-text-area  " id="' + this.question.id + '_input" aria-labelledby="' + this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + this.question.id + '_error">' + currentValue + '</textarea>' +
             '</div></div>';
     }
 
     setValueToQuestion = () => {
         let questionInput = document.getElementById(this.question.id + "_input");
-        if(questionInput) {
+        if(!!questionInput) {
             this.question.setValue(questionInput.value);
         }
     }
