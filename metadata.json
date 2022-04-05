@@ -1,8 +1,8 @@
 {
-  "id": "f8278f96-a12c-434f-91fa-fc1a9aef1b6e",
+  "id": "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
   "schemaVersion": 2,
-  "name": "(DEV) Dynamic Open Text",
-  "description": "Development version - Dynamic Open text question including answer prompts, keywords and character counter",
+  "name": "Dynamic Open Text",
+  "description": "Ready for release - Dynamic Open text question including answer prompts, keywords, soft warning and character counter",
   "baseQuestionType": "OpenForm",
   "disableDefaultRendering": true,
   "iconUrl": "design/icon.svg",
