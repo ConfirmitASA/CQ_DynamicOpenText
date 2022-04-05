@@ -4,7 +4,7 @@ function subscribeKeywordButtonAddRowOnclick() {
     let keywordButtonInput;
     try {
         keywordButtonInput = document.querySelectorAll(".keyword__button--add button")[0];
-    } catch {
+    } catch (e) {
         console.log("Could not find button element for adding new keyword rows");
         return;
     }
@@ -18,8 +18,9 @@ function subscribeCheckboxesHideSubsectionOnchange() {
     let progressBarCheckbox = document.getElementById("progressBarEnabled");
     let countCheckbox = document.getElementById("countEnabled");
     let keywordCheckbox = document.getElementById("keywordEnabled");
+    let softWarningCheckbox = document.getElementById("softWarningEnabled");
 
-    let checkboxes = [progressBarCheckbox, countCheckbox, keywordCheckbox];
+    let checkboxes = [progressBarCheckbox, countCheckbox, keywordCheckbox, softWarningCheckbox];
 
     checkboxes.forEach(function (box) {
         if(box) {
@@ -36,7 +37,7 @@ function hideSubsectionAfterBoxChecked(checkboxElement) {
     try{
         subsection = section.querySelectorAll(".node-property__sub-content")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find section sub-content (.node-property__sub-content)");
         return;
     }
@@ -63,7 +64,7 @@ function addKeywordsRow() {
     try {
         keywordsTable = document.getElementsByClassName("keyword__options")[0];
     }
-    catch {
+    catch (e) {
         console.log("Could not find keyword table (.keyword__options)");
         return;
     }
@@ -77,4 +78,36 @@ function addKeywordsRow() {
     });
 
     keywordsTable.appendChild(newRow);
+}
+
+document.addEventListener('DOMContentLoaded', subscribeCountTypeSelect);
+
+function subscribeCountTypeSelect() {
+    let selectElement = document.querySelector("#countType");
+    if(!selectElement) {
+        console.log("Could not find select with id = countType");
+        return;
+    }
+
+    selectElement.addEventListener("change", function () {
+        toggleCharacterLimitSubsection(selectElement);
+    });
+}
+
+function toggleCharacterLimitSubsection(selectElement) {
+    let subsection;
+    try{
+        subsection = document.querySelectorAll("#isCharacterLimitEnabled")[0];
+        subsection = findParentOfClass(subsection, "co-toggle");
+    }
+    catch (e) {
+        console.log("Could not find character limit subsection");
+        return;
+    }
+
+    if (selectElement.value === "character") {
+        subsection.classList.remove("hidden");
+    } else {
+        subsection.classList.add("hidden");
+    }
 }

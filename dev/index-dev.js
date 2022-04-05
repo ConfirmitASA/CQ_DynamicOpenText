@@ -13,12 +13,19 @@ import DynamicOpenText from "./DynamicOpenText";
         },
         characterCount: {
             isEnabled: false,
+            type: 'character',
             isCharacterLimitEnabled: false
         },
         keywords: {
             isEnabled: false,
+            stopPromptThreshold: 0,
             words: {},
             prompts: {}
+        },
+        softWarning: {
+            isEnabled: false,
+            threshold: 0,
+            text: {}
         }
     };
 

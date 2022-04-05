@@ -2,6 +2,8 @@ import ProgressBar from "./DynamicOpenText_progress-bar";
 import CharacterCount from "./DynamicOpenText_character-count";
 import Keywords from "./DynamicOpenText_keywords";
 import QuestionElementsGetters from "./QuestionElementsGetters";
+import WordCount from "./DynamicOpenText_word-count";
+import SoftWarning from "./DynamicOpenText_soft-warning";
 
 export default class DynamicOpenText {
 
@@ -11,8 +13,14 @@ export default class DynamicOpenText {
     }
 
     render() {
-        let questionInput = document.getElementById(this.question.id + "_input");
-        questionInput.addEventListener("input", this.setValueToQuestion);
+        this.renderStandardQuestionMarkup();
+        const questionInputTextarea = document.getElementById(this.question.id + "_input");
+        if(!!questionInputTextarea) {
+            questionInputTextarea.addEventListener("input", this.setValueToQuestion);
+        }
+        else {
+            console.log('Could not find DOT textarea');
+        }
 
         if(this.settings.progressBar.isEnabled) {
             let progressBar = new ProgressBar(this.question, this.settings.progressBar);
@@ -20,8 +28,15 @@ export default class DynamicOpenText {
         }
 
         if(this.settings.characterCount.isEnabled) {
-            let characterCount = new CharacterCount(this.question, this.settings.characterCount);
-            characterCount.render();
+            let counter;
+            switch(this.settings.characterCount.type) {
+                case "character":
+                    counter = new CharacterCount(this.question, this.settings.characterCount);
+                    break;
+                case "word":
+                    counter = new WordCount(this.question);
+            }
+            counter.render();
         }
 
         if(this.settings.keywords.isEnabled) {
@@ -29,12 +44,28 @@ export default class DynamicOpenText {
             keywords.render();
         }
 
+        if(this.settings.softWarning.isEnabled) {
+            let softWarning = new SoftWarning(this.question, this.settings.softWarning);
+            softWarning.render();
+        }
+
         this.setValidation();
+    }
+
+    renderStandardQuestionMarkup = () => {
+        const currentValue = this.question.value ?? '';
+        document.getElementById(this.question.id).innerHTML = '<div class="cf-question__text" id="' + this.question.id + '_text">' + this.question.text + '</div>' +
+            '<div class="cf-question__instruction" id="' + this.question.id + '_instruction">' + this.question.instruction + '</div>' +
+            '<div class="cf-question__error cf-error-block cf-error-block--bottom cf-error-block--hidden" id="' + this.question.id + '_error" role="alert" aria-labelledby="' + this.question.id + '_error_list">' +
+            '<ul class="cf-error-list" id="' + this.question.id + '_error_list"></ul></div>' +
+            '<div class="cf-question__content cf-question__content--no-padding"><div class="cf-open-answer">' +
+            '<textarea class="cf-open-answer__input cf-text-area  " id="' + this.question.id + '_input" aria-labelledby="' + this.question.id + '_text" aria-required="true" aria-invalid="false" aria-errormessage="' + this.question.id + '_error">' + currentValue + '</textarea>' +
+            '</div></div>';
     }
 
     setValueToQuestion = () => {
         let questionInput = document.getElementById(this.question.id + "_input");
-        if(questionInput) {
+        if(!!questionInput) {
             this.question.setValue(questionInput.value);
         }
     }

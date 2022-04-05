@@ -1,10 +1,6 @@
 export default class QuestionElementsGetters {
     static getQuestionElement(questionId) {
-        try {
-            return document.getElementById(questionId);
-        } catch (e) {
-            console.log("Could not find question with id " + questionId);
-        }
+        return document.getElementById(questionId) ?? "Could not find question with id " + questionId;
     }
 
     static getQuestionElement_Content(questionElement) {

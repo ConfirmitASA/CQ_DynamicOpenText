@@ -39,3 +39,6 @@
 .cf-question__dynamic-character-counter {
     font-size: 15px;
 }
+.hidden {
+    display: none;
+}

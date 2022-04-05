@@ -6,6 +6,7 @@ export default class Keywords {
         this.currentLanguage = String(Confirmit.page.surveyInfo.language);
 
         this.question = question;
+        this.stopPromptThreshold = parseInt(settings.stopPromptThreshold);
         this.words = settings.words[this.currentLanguage] ? settings.words[this.currentLanguage] : [];
         this.prompts = settings.prompts[this.currentLanguage] ? settings.prompts[this.currentLanguage] : [];
         this.keywordPromptPairs = this.organizeKeywords(this.words, this.prompts);
@@ -26,8 +27,13 @@ export default class Keywords {
     }
 
     updateKeywords = () => {
-        let keywordElement = QuestionElementsGetters.getKeywordsElement(this.questionElement);
         let enteredText = this.questionElement_textarea.value.trim().toLowerCase();
+        if(this.stopPromptThreshold !== 0 && this.stopPromptThreshold < enteredText.length) {
+            let outermostSpace = enteredText.substring(0, this.stopPromptThreshold).lastIndexOf(' ');
+            enteredText = enteredText.substring(0, outermostSpace);
+        };
+
+        let keywordElement = QuestionElementsGetters.getKeywordsElement(this.questionElement);
         let keywordList = keywordElement.firstElementChild;
         //When we have one prompt for multiple keywords, we need to show the prompt only once
         //In order to do that we use the same rowId for the keywords

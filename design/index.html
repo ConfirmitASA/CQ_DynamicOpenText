@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="styles.css"/>
+        <link rel="stylesheet" href="styles.css?version=2"/>
         <link rel="stylesheet" href="design-page-styles.css"/>
         <script src="custom-question.js"></script>
-        <script src="click-handlers.js"></script>
+        <script src="click-handlers.js?version=4"></script>
         <script type="text/javascript" src="design-page-components.js"></script>
     </head>
     <body>
@@ -76,8 +76,8 @@
             <div class="comd-panel node-property node-properties-key-fields node-property--count">
                 <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
                     <div class="node-properties__toggle co-flex co-flex--center">
-                        <h4 class="co-text-size-normal">Character count</h4>
-                        <div class="sd-tooltip-help" data-tooltip-text="Show the number of characters entered by your respondent. You can also show Character limit beside counter."></div>
+                        <h4 class="co-text-size-normal">Character/word count</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Show the number of characters/words entered by your respondent. For characters you can also show Character limit beside counter."></div>
                     </div>
                     <div class="co-flex co-flex--center">
                         <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
@@ -96,7 +96,15 @@
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
                         <div class="setting-row">
-                            <div class="co-toggle co-toggle--checkbox">
+                            <div class="setting-col">
+                                <select class="form-control form-input" id="countType" name="countTypeSelector">
+                                    <option value="character" selected="selected">Characters</option>
+                                    <option value="word">Words</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="co-toggle">
                                 <input class="co-toggle__input node-property__checkbox" type="checkbox" id="isCharacterLimitEnabled"/>
                                 <label for="isCharacterLimitEnabled" class="node-property__label node-property__label--checkbox">
                                     <div class="icon icon-checkbox co-icon">
@@ -130,7 +138,13 @@
                         </div>
                     </div>
                     <div class="setting-col node-property__sub-content hidden">
-                        <div class="setting-col">
+                            <div class="setting-row keyword__stop-prompt">
+                                <div class="value__stop-prompt value__stop-prompt--threshold">
+                                    <label for="stopPromptThreshold" class="node-property__label">Prompt threshold <div class="sd-tooltip-help" data-tooltip-text="When the length of the response reaches given number of characters new prompts will not be shown. Set to zero to disable the functionality."></div></label>
+                                    <input class="form-control form-input" id="stopPromptThreshold" name="stopPromptThreshold" type="number" value="0" min="0" />
+                                    <span class="node-property__after node-property__after--stop-prompt-threshold" for="stopPromptThreshold">characters</span>
+                                </div>
+                            </div>
                             <div class="setting-row keyword__option-table">
                                 <div class="node-property__label value__option-header keyword__option-header--word">Keywords<div class="sd-tooltip-help" data-tooltip-text="Enter a comma-separated list of keywords which, if used by the respondent, will trigger the prompt text."></div></div>
                                 <div class="node-property__label value__option-header keyword__option-header--text">Prompt text<div class="sd-tooltip-help" data-tooltip-text="Add text which will be displayed when a trigger word is entered, to encourage the respondent to include more detail in their response."></div></div>
@@ -150,15 +164,55 @@
                                 </div>
                             </div>
                             <div class="setting-row">
-                                <div class="node-property button-block keyword__button--add">
-                                    <div class="button-block">
+                                <div class="button-block keyword__button--add">
                                         <button class="comd-button comd-button--secondary-neutral">
                                             <span class="comd-button__content">
                                                 <div class="comd-portal-trigger">+ Add row</div>
                                             </span>
                                         </button>
-                                    </div>
                                 </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comd-panel node-property node-properties-key-fields node-property--soft-warning">
+                <header class="node-properties__header co-flex co-flex--justify-between co-flex--center">
+                    <div class="node-properties__toggle co-flex co-flex--center">
+                        <h4 class="co-text-size-normal">Soft warning</h4>
+                        <div class="sd-tooltip-help" data-tooltip-text="Prompt the respondent to give more information in a form of warning with an option to leave the response as is and continue the survey."></div>
+                    </div>
+                    <div class="co-flex co-flex--center">
+                        <button class="collapse-button comd-icon-button comd-panel__toggle--icon-button"></button>
+                    </div>
+                </header>
+                <div class="comd-panel__collapse-area node-property__content node-property__content--soft-warning">
+                    <div class="setting-row">
+                        <div class="co-toggle co-toggle--checkbox">
+                            <input class="co-toggle__input node-property__checkbox" type="checkbox" id="softWarningEnabled"/>
+                            <label for="softWarningEnabled" class="node-property__label node-property__label--checkbox">
+                                <div class="icon icon-checkbox co-icon">
+                                </div>
+                                <span>Enabled</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="setting-col node-property__sub-content hidden">
+                        <div class="comd-alert comd-alert--info info info--soft-warning">
+                            <div class="comd-alert__text">
+                                If you make the question Required or set Character Limit in the question Properties normal validation errors will be shown. Soft warnings are displayed only when there are no validation errors.
+                            </div>
+                        </div>
+                        <div class="setting-row soft-warning--threshold">
+                            <div class="value__threshold value__soft-warning--threshold">
+                                <label for="softWarningThreshold" class="node-property__label">Threshold <div class="sd-tooltip-help" data-tooltip-text="If the number of characters in the response is less (or equal) than this value a warning will be shown."></div></label>
+                                <input class="form-control form-input" id="softWarningThreshold" name="softWarningThreshold" type="number" value="0" min="0" />
+                                <span class="node-property__after node-property__after--stop-prompt-threshold" for="stopPromptThreshold">characters</span>
+                            </div>
+                        </div>
+                        <div class="setting-row soft-warning__text">
+                            <div class="value__soft-warning--text">
+                                <label for="softWarningText" class="node-property__label">Warning text </label>
+                                <input class="form-control form-input" id="softWarningText" name="softWarningText" type="text" />
                             </div>
                         </div>
                     </div>
@@ -178,17 +232,24 @@
             var progressBarPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.value__option-input--text input'));
 
             var countEnabled = document.getElementById('countEnabled');
+            var countTypeSelector = document.getElementById('countType');
             var isCharacterLimitEnabled = document.getElementById('isCharacterLimitEnabled');
 
             var keywordEnabled = document.getElementById('keywordEnabled');
+            var stopPromptThreshold = document.getElementById('stopPromptThreshold');
             var starterKeywordWordInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--word input'));
             var starterKeywordPromptInputs = Array.prototype.slice.call(document.querySelectorAll('.keyword__option-input--text input'));
+
+            var softWarningEnabled = document.getElementById('softWarningEnabled');
+            var softWarningThreshold = document.getElementById('softWarningThreshold');
+            var softWarningText = document.getElementById('softWarningText');
             
             let currentLanguage = '';
 
             let progressBarPromptsObj = {};
             let keywordWordsObj = {};
             let keywordPromptsObj = {};
+            let softWarningTextObj = {};
 
             function setValues(settings, uiSettings) {
 
@@ -206,10 +267,25 @@
                 progressBarEnabled.checked = settings.progressBar.isEnabled;
                 countEnabled.checked = settings.characterCount.isEnabled;
                 keywordEnabled.checked = settings.keywords.isEnabled;
+                if(settings.hasOwnProperty('softWarning') && settings.softWarning !== undefined) {
+                    if(settings.softWarning.hasOwnProperty('isEnabled') && settings.softWarning.isEnabled !== undefined) {
+                        softWarningEnabled.checked = settings.softWarning.isEnabled;
+                    }
+                    if(settings.softWarning.hasOwnProperty('threshold') && settings.softWarning.threshold !== undefined) {
+                        softWarningThreshold.value = settings.softWarning.threshold;
+                    }
+                    if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text !== undefined) {
+                        softWarningTextObj = settings.softWarning.text;
+                    }
+                    if(settings.softWarning.hasOwnProperty('text') && settings.softWarning.text[currentLanguage] !== undefined) {
+                        softWarningText.value = settings.softWarning.text[currentLanguage];
+                    }
+                }
 
                 hideSubsectionAfterBoxChecked(progressBarEnabled);
                 hideSubsectionAfterBoxChecked(countEnabled);
                 hideSubsectionAfterBoxChecked(keywordEnabled);
+                hideSubsectionAfterBoxChecked(softWarningEnabled);
 
                 progressBarHeightInput.value = settings.progressBar.height;
                 progressBarPositionSelector.value = settings.progressBar.position;
@@ -235,7 +311,16 @@
                     progressBarColorInputs[i].value = progressBarColors[i];
                 }
 
+                if(settings.characterCount.hasOwnProperty('type') && settings.characterCount.type !== undefined) {
+                    countTypeSelector.value = settings.characterCount.type;
+                }
+
+                toggleCharacterLimitSubsection(countTypeSelector);
                 isCharacterLimitEnabled.checked = settings.characterCount.isCharacterLimitEnabled;
+
+                if(settings.keywords.hasOwnProperty('stopPromptThreshold') && settings.keywords.stopPromptThreshold !== undefined) {
+                    stopPromptThreshold.value = settings.keywords.stopPromptThreshold;
+                }
 
                 var keywordWords = [];
                 var keywordPrompts = [];
@@ -326,6 +411,8 @@
                 keywordWordsObj[currentLanguage] = keywordWords;
                 keywordPromptsObj[currentLanguage] = keywordPrompts;
 
+                softWarningTextObj[currentLanguage] = softWarningText.value;
+
                 var settings = {
                     progressBar: {
                         isEnabled: progressBarEnabled.checked,
@@ -337,12 +424,19 @@
                     },
                     characterCount: {
                         isEnabled: countEnabled.checked,
+                        type: countTypeSelector.options[countTypeSelector.selectedIndex].value,
                         isCharacterLimitEnabled: isCharacterLimitEnabled.checked
                     },
                     keywords: {
                         isEnabled: keywordEnabled.checked,
+                        stopPromptThreshold: stopPromptThreshold.value === '' ? 0 : stopPromptThreshold.value,
                         words: keywordWordsObj,
                         prompts: keywordPromptsObj
+                    },
+                    softWarning: {
+                        isEnabled: softWarningEnabled.checked,
+                        threshold: softWarningThreshold.value,
+                        text: softWarningTextObj,
                     }
                 };
 
@@ -360,9 +454,9 @@
             progressBarPositionSelector.addEventListener('change', saveChanges, true);
             progressBarEnabled.addEventListener('change', saveChanges, true);
             countEnabled.addEventListener('change', saveChanges, true);
+            countTypeSelector.addEventListener('change', saveChanges, true);
             isCharacterLimitEnabled.addEventListener('change', saveChanges, true);
             keywordEnabled.addEventListener('change', saveChanges, true);
-
         </script>
     </body>
 </html>

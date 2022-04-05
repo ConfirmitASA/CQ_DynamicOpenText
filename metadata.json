@@ -1,9 +1,10 @@
 {
   "id": "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
-  "name": "Confirmit Dynamic Open text",
-  "description": "Ready for release - Dynamic Open text question including answer prompts, keywords and character counter",
+  "schemaVersion": 2,
+  "name": "Dynamic Open Text",
+  "description": "Ready for release - Dynamic Open text question including answer prompts, keywords, soft warning and character counter",
   "baseQuestionType": "OpenForm",
-  "disableDefaultRendering": false,
+  "disableDefaultRendering": true,
   "iconUrl": "design/icon.svg",
   "designEntryPoint": "design/index.html",
   "runtimeEntryPoint": {

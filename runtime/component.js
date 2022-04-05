@@ -3,7 +3,8 @@
 //Confirmit DEMO question id bb9f993d-0c63-49bf-afb7-aebc01e2bf74
 //Confirmit DEV question id f8278f96-a12c-434f-91fa-fc1a9aef1b6e
 
-const defaultSettings = {
+//not const because otherwise getting "Identifier 'defaultSettings' has already been declared" error
+var defaultSettings = {
     progressBar: {
         isEnabled: false,
         height: 5,
@@ -14,12 +15,19 @@ const defaultSettings = {
     },
     characterCount: {
         isEnabled: false,
+        type: 'character',
         isCharacterLimitEnabled: false
     },
     keywords: {
         isEnabled: false,
+        stopPromptThreshold: 0,
         words: {},
         prompts: {}
+    },
+    softWarning: {
+        isEnabled: false,
+        threshold: 0,
+        text: {}
     }
 };
 
@@ -56,6 +64,10 @@ function getDefaultSettingsIfNeeded(existingSettings) {
         settings.keywords.prompts[currentLanguage] = [];
     }
 
+    if (!settings.softWarning.text.hasOwnProperty(currentLanguage) || (settings.softWarning.text.hasOwnProperty(currentLanguage) && settings.softWarning.text[currentLanguage] == "")) {
+        settings.softWarning.text[currentLanguage] = [];
+    }
+
     return settings;
 }
 
@@ -83,17 +95,21 @@ function getNewStructuredSettings(settings) {
     return newSettings;
 }
 
-register(function (question, customQuestionSettings, questionViewSettings) {
+(function () {
+    Confirmit.pageView.registerCustomQuestion(
+        "bb9f993d-0c63-49bf-afb7-aebc01e2bf74",
+        function (question, customQuestionSettings, questionViewSettings) {
 
-    //The new structure of settings was created during the first code refactoring
-    //which unlike previous one has subsections for progressBar, counter and keywords settings.
-    //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
-    if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
-        customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
-    }
+            //The new structure of settings was created during the first code refactoring
+            //which unlike previous one has subsections for progressBar, counter and keywords settings.
+            //A conversion needs to be made in order already existing questions to work properly (in index.html as well)
+            if(!!customQuestionSettings && customQuestionSettings.hasOwnProperty("pbEnabled")) {
+                customQuestionSettings = getNewStructuredSettings(customQuestionSettings);
+            }
 
-    customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
-
-    const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
-    dynamicOpenText.render();
-});
+            customQuestionSettings = getDefaultSettingsIfNeeded(customQuestionSettings);
+            const dynamicOpenText = new customQuestionsLibrary.DynamicOpenText(question, customQuestionSettings);
+            dynamicOpenText.render();
+        }
+    );
+})();

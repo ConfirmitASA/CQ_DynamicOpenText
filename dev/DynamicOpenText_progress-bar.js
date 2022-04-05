@@ -50,7 +50,15 @@ export default class ProgressBar {
 
             this.updatePrompt();
             this.updateBarColor();
-            this.updateBarWidth();
+
+            if(this.questionElement_textarea.offsetWidth > 0) {
+                this.updateBarWidth();
+            }
+            else {
+                let barElement = QuestionElementsGetters.getProgressBarElement(this.questionElement);
+
+                barElement.style.width = '480px';
+            }
 
             this.questionElement_textarea.addEventListener("input", this.updatePrompt);
             this.questionElement_textarea.addEventListener("keyup", this.updateBarColor);
